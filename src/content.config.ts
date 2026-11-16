@@ -139,6 +139,17 @@ const changelog = defineCollection({
   }),
 });
 
+const notes = defineCollection({
+  loader: glob({ pattern: '*.mdx', base: './src/content/notes' }),
+  schema: z.object({
+    title: z.string(),
+    summary: localized,
+    tags: z.array(z.string()).default([]),
+    date: z.coerce.date(),
+    draft: z.boolean().default(false),
+  }),
+});
+
 export const collections = {
   projects,
   experience,
@@ -147,4 +158,5 @@ export const collections = {
   skills,
   now,
   changelog,
+  notes,
 };

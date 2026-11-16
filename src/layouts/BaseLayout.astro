@@ -13,6 +13,7 @@ import '@fontsource/jetbrains-mono/700.css';
 import '../styles/global.css';
 import TerminalModal from '../components/islands/TerminalModal';
 import CatCompanion from '../components/islands/CatCompanion';
+import DeskAudio from '../components/islands/DeskAudio';
 import { getLocaleFromUrl, getLocalizedPath, useTranslations } from '../i18n/utils';
 import {
   getProfileData,
@@ -37,6 +38,7 @@ const t = useTranslations(locale);
 const otherLocale = locale === 'id' ? 'en' : 'id';
 const switchHref = getLocalizedPath(Astro.url.pathname, otherLocale);
 const homeHref = getLocalizedPath('/', locale);
+const notesHref = getLocalizedPath('/notes', locale);
 const nowHref = getLocalizedPath('/now', locale);
 const logHref = getLocalizedPath('/log', locale);
 const siteBase = (Astro.site?.toString() ?? 'https://alam-portfolio.vercel.app').replace(/\/$/, '');
@@ -151,6 +153,9 @@ const terminalContext: TerminalContext = {
             <a href={`${homeHref}#projects`} class="hover:text-tomato transition-colors">
               {t('nav.projects')}
             </a>
+            <a href={notesHref} class="hover:text-tomato transition-colors">
+              {t('nav.notes')}
+            </a>
             <a href={`${homeHref}#skills`} class="hover:text-tomato transition-colors">
               {t('nav.skills')}
             </a>
@@ -196,6 +201,9 @@ const terminalContext: TerminalContext = {
       >
         <p>{t('footer.note')}</p>
         <div class="flex flex-wrap items-center gap-4 font-mono text-xs">
+          <a href={notesHref} class="text-ink hover:text-tomato underline underline-offset-4">
+            /notes
+          </a>
           <a href={nowHref} class="text-ink hover:text-tomato underline underline-offset-4">
             /now
           </a>
@@ -211,6 +219,7 @@ const terminalContext: TerminalContext = {
 
     <TerminalModal client:idle context={terminalContext} />
     <CatCompanion client:idle locale={locale} />
+    <DeskAudio client:idle locale={locale} />
 
     <script>
       import { initDeskEffects } from '../lib/deskEffects';

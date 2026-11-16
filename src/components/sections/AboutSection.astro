@@ -1,5 +1,6 @@
 ---
 import Tape from '../ui/Tape.astro';
+import GitHubActivity from '../islands/GitHubActivity';
 import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
 import { getExperienceData, getNowData, getProfileData, pickLocale } from '../../lib/content';
 
@@ -12,6 +13,8 @@ const nowData = await getNowData();
 
 const bio = pickLocale(profile?.bio, locale);
 const nowSummary = pickLocale(nowData?.summary, locale);
+const githubUrl = profile?.socials?.find((s) => s.platform === 'github')?.url ?? '';
+const githubUsername = githubUrl.split('/').filter(Boolean).pop() || 'BaharudinAlamsyah27';
 ---
 
 <section id="about" aria-labelledby="about-heading" class="desk-section-about scroll-mt-20">
@@ -83,47 +86,51 @@ const nowSummary = pickLocale(nowData?.summary, locale);
       </div>
     </div>
 
-    <!-- Kartu /now (5 kolom) -->
-    <aside class="sticker-card relative rotate-[0.7deg] rounded-xl bg-paper-2 p-6 lg:col-span-5">
-      <Tape color="blush" rotate="rotate-2" class="absolute -top-3 right-8" />
+    <!-- Kolom Kanan (5 kolom): Kartu /now + GitHub Live Activity -->
+    <div class="space-y-6 lg:col-span-5">
+      <aside class="sticker-card relative rotate-[0.7deg] rounded-xl bg-paper-2 p-6">
+        <Tape color="blush" rotate="rotate-2" class="absolute -top-3 right-8" />
 
-      <div class="space-y-4">
-        <div class="flex items-center justify-between">
-          <h3 class="font-display text-xl font-bold">{t('about.nowTitle')}</h3>
-          <span class="bg-mustard text-ink rounded-sm border border-ink px-2 py-0.5 font-mono text-[11px] font-bold">
-            LIVE
-          </span>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-display text-xl font-bold">{t('about.nowTitle')}</h3>
+            <span class="bg-mustard text-ink rounded-sm border border-ink px-2 py-0.5 font-mono text-[11px] font-bold">
+              LIVE
+            </span>
+          </div>
+
+          <p class="text-sm leading-relaxed text-ink">{nowSummary}</p>
+
+          {
+            nowData && (
+              <div class="space-y-3 border-t-2 border-dashed border-ink/25 pt-4 text-xs sm:text-sm">
+                <div>
+                  <span class="font-mono text-[11px] font-bold uppercase text-cobalt">
+                    {locale === 'id' ? 'Sedang Dipelajari:' : 'Currently Learning:'}
+                  </span>
+                  <p class="mt-0.5 font-medium text-ink">{nowData.learning.join(' · ')}</p>
+                </div>
+
+                <div>
+                  <span class="font-mono text-[11px] font-bold uppercase text-tomato">
+                    {locale === 'id' ? 'Sedang Dibangun:' : 'Currently Building:'}
+                  </span>
+                  <p class="mt-0.5 font-medium text-ink">{nowData.building.join(' · ')}</p>
+                </div>
+
+                <div>
+                  <span class="font-mono text-[11px] font-bold uppercase text-ink-soft">
+                    {locale === 'id' ? 'Eksplorasi Akhir Pekan:' : 'Weekend Exploration:'}
+                  </span>
+                  <p class="mt-0.5 font-medium text-ink">{nowData.exploring.join(' · ')}</p>
+                </div>
+              </div>
+            )
+          }
         </div>
+      </aside>
 
-        <p class="text-sm leading-relaxed text-ink">{nowSummary}</p>
-
-        {
-          nowData && (
-            <div class="space-y-3 border-t-2 border-dashed border-ink/25 pt-4 text-xs sm:text-sm">
-              <div>
-                <span class="font-mono text-[11px] font-bold uppercase text-cobalt">
-                  {locale === 'id' ? 'Sedang Dipelajari:' : 'Currently Learning:'}
-                </span>
-                <p class="mt-0.5 font-medium text-ink">{nowData.learning.join(' · ')}</p>
-              </div>
-
-              <div>
-                <span class="font-mono text-[11px] font-bold uppercase text-tomato">
-                  {locale === 'id' ? 'Sedang Dibangun:' : 'Currently Building:'}
-                </span>
-                <p class="mt-0.5 font-medium text-ink">{nowData.building.join(' · ')}</p>
-              </div>
-
-              <div>
-                <span class="font-mono text-[11px] font-bold uppercase text-ink-soft">
-                  {locale === 'id' ? 'Eksplorasi Akhir Pekan:' : 'Weekend Exploration:'}
-                </span>
-                <p class="mt-0.5 font-medium text-ink">{nowData.exploring.join(' · ')}</p>
-              </div>
-            </div>
-          )
-        }
-      </div>
-    </aside>
+      <GitHubActivity client:visible username={githubUsername} locale={locale} />
+    </div>
   </div>
 </section>

@@ -1,0 +1,28 @@
+---
+title: "Catatan eSurat: Merapikan Disposisi & Penomoran Otomatis"
+summary:
+  id: "Pelajaran teknis saat membangun sistem persuratan internal: menjaga nomor surat tidak bentrok dan alur disposisi tetap jelas."
+  en: "Technical takeaways from building an internal correspondence system: preventing duplicate mail numbers and keeping dispositions traceable."
+tags:
+  - Web Programming
+  - eSurat
+  - Database
+date: 2026-11-10
+draft: false
+---
+
+Di lingkungan kantor seperti perbankan, urusan surat masuk dan surat keluar bukan hal sepele. Satu nomor surat yang kembar atau lembar disposisi yang terselip bisa menghambat tindak lanjut antar divisi.
+
+### 1. Masalah Klasik: Nomor Surat Kembar
+
+Saat dua staf menginput surat keluar hampir bersamaan, membaca nomor terakhir lalu menambah `+1` di sisi aplikasi berisiko menghasilkan nomor kembar (*race condition*).
+
+Solusi praktis yang saya pelajari:
+- Gunakan transaksi database (*database transaction*) atau *unique constraint* pada kolom nomor surat yang digabung dengan tahun/periode berjalan.
+- Pisahkan antara **nomor urut internal** (integer yang di-increment aman) dan **format tampilan surat** (kode divisi + bulan Romawi + tahun).
+
+### 2. Disposisi Berjenjang yang Mudah Dilacak
+
+Di kertas fisik, kita sering tidak tahu suratnya sedang berhenti di meja siapa. Di versi web **eSurat**, setiap perpindahan status dicatat sebagai riwayat (*audit trail*): siapa pengirim instruksi, catatan disposisinya apa, dan kapan terakhir dibuka oleh divisi tujuan.
+
+Pelajaran terbesarnya: **sistem internal yang baik bukan yang paling banyak tombolnya, tapi yang paling sedikit membuat staf bertanya-tanya.**

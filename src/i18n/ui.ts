@@ -11,6 +11,7 @@ export const ui = {
   id: {
     'skip.content': 'Langsung ke isi utama',
     'nav.projects': 'Project',
+    'nav.notes': 'Catatan',
     'nav.skills': 'Skill',
     'nav.about': 'Tentang',
     'nav.passport': 'Jelajah',
@@ -91,6 +92,7 @@ export const ui = {
   en: {
     'skip.content': 'Skip to main content',
     'nav.projects': 'Projects',
+    'nav.notes': 'Notes',
     'nav.skills': 'Skills',
     'nav.about': 'About',
     'nav.passport': 'Passport',

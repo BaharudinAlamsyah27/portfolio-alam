@@ -9,11 +9,11 @@
 
 | Item | Nilai |
 |---|---|
-| Fase aktif | **Fase 6 — Rilis (Konten Asli Siap ✅ · Tinggal Deploy Vercel)** |
-| Fase berikutnya | **Deploy GitHub & Vercel (Rp0)** |
-| Model disarankan berikutnya | **Gemini 3.8 Flash (Medium)** |
-| URL live | _siap dideploy_ |
-| Repo GitHub | _siap di-push ke https://github.com/BaharudinAlamsyah27/portfolio_ |
+| Fase aktif | **Fase 7 — Lanjutan (Batch 1 selesai ✅)** |
+| Fase berikutnya | **Fase 7 — Lanjutan (Batch 2: AI `ask` di Terminal + Buku Tamu Digital)** |
+| Model disarankan berikutnya | **Claude Sonnet 5.5 (Medium)** atau **Gemini 4 Argon (Medium)** untuk integrasi Serverless API (`ask` Gemini + Buku Tamu) |
+| URL live | _Live di Vercel_ |
+| Repo GitHub | `https://github.com/BaharudinAlamsyah27/portfolio-alam` |
 
 ## ✅ Checklist Fase
 
@@ -286,3 +286,29 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
 **Berikutnya:**
 - Git commit & push ke GitHub Alam (`BaharudinAlamsyah27`), lalu hubungkan ke Vercel untuk deploy online publik gratis (Rp0).
 - Rekomendasi model: tetap **Gemini 3.8 Flash (Medium)**.
+
+---
+
+### Sesi 8 — 2026-11-16 11:44–11:47 WIB
+**Model:** Gemini 4 Hydrogen (Medium)
+**Fase:** 7 — Lanjutan (Batch 1)
+
+**Dikerjakan:**
+- **Catatan Lab Teknis (`/notes` & `/en/notes`):**
+  - Menambahkan koleksi `notes` di `src/content.config.ts`, `keystatic.config.ts`, dan `getNotesData()` di `src/lib/content.ts`.
+  - Membuat `NotesView.astro`, `NoteDetail.astro`, rute `/notes` & `/notes/[slug]` (beserta `/en/notes`), memperbarui `sitemap.xml.ts` dan navigasi/footer `BaseLayout.astro`.
+  - Menulis 2 catatan lab awal nyata: `arsitektur-portfolio-rp0.mdx` dan `catatan-esurat-disposisi.mdx`.
+- **GitHub Live Activity Widget (`GitHubActivity.tsx`):**
+  - Island Preact (`client:visible`) di `AboutSection.astro` yang mengambil aktivitas commit publik dari GitHub API dengan cache `sessionStorage` 10 menit dan fallback rapi.
+- **Audio Ambience Meja Kerja (`DeskAudio.tsx`):**
+  - Island Preact (`client:idle`) di pojok kiri bawah menggunakan **Web Audio API** murni (0 KB file audio eksternal): mode *Hujan Halus*, *Kucing Purr*, dan *Fokus Hangat*, lengkap dengan pengatur volume.
+- Menambahkan entri changelog `0-5-0-lab-notes-audio-github.mdx`.
+- Verifikasi: `astro check` (**0 errors, 0 warnings, 0 hints** pada 44 file) dan `npm run build` menghasilkan **21 halaman statis** + `/sitemap.xml` dalam 2.44s.
+
+**Keputusan / dependency baru:**
+- Tidak ada dependency baru (Audio Ambience menggunakan Web Audio API native browser agar tetap Rp0 dan bebas bloat aset).
+
+**Berikutnya:**
+- `git add . && git commit && git push` agar perubahan ini otomatis ter-deploy ke Vercel.
+- Lanjut ke Batch 2 Fase 7: perintah **`ask` AI** di Terminal Mode (Gemini API via Vercel Function) dan **Buku Tamu Meja Kerja**.
+- Rekomendasi model: **Claude Sonnet 5.5 (Medium)** atau **Gemini 4 Argon (Medium)** (karena menyentuh Vercel Serverless Functions & integrasi API).

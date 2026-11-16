@@ -33,7 +33,7 @@ export default config({
     brand: { name: 'Meja Kerja Alam' },
     navigation: {
       Profil: ['profile', 'skills', 'now'],
-      Konten: ['projects', 'experience', 'places'],
+      Konten: ['projects', 'notes', 'experience', 'places'],
       Website: ['changelog'],
     },
   },
@@ -261,6 +261,25 @@ export default config({
         date: fields.date({ label: 'Tanggal' }),
         version: fields.text({ label: 'Versi (opsional)' }),
         body: fields.mdx({ label: 'Isi' }),
+      },
+    }),
+
+    notes: collection({
+      label: 'Catatan Lab (Blog Teknis)',
+      slugField: 'title',
+      path: 'src/content/notes/*',
+      format: { contentField: 'body' },
+      entryLayout: 'content',
+      schema: {
+        title: fields.slug({ name: { label: 'Judul catatan' } }),
+        summary: localizedText('Ringkasan singkat', true),
+        tags: fields.array(fields.text({ label: 'Tag' }), {
+          label: 'Topik / Tag',
+          itemLabel: (props) => props.value,
+        }),
+        date: fields.date({ label: 'Tanggal' }),
+        draft: fields.checkbox({ label: 'Draft (sembunyikan)', defaultValue: false }),
+        body: fields.mdx({ label: 'Isi catatan teknis' }),
       },
     }),
   },

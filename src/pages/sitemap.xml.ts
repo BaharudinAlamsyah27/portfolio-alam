@@ -1,13 +1,14 @@
 import type { APIRoute } from 'astro';
-import { getProjectsData } from '../lib/content';
+import { getNotesData, getProjectsData } from '../lib/content';
 
 export const GET: APIRoute = async ({ site }) => {
   const baseUrl = (site?.toString() ?? 'https://alam-portfolio.vercel.app').replace(/\/$/, '');
-  const projects = await getProjectsData(false);
+  const [projects, notes] = await Promise.all([getProjectsData(false), getNotesData(false)]);
 
-  const staticPaths = ['/', '/en/', '/now', '/en/now', '/log', '/en/log'];
+  const staticPaths = ['/', '/en/', '/notes', '/en/notes', '/now', '/en/now', '/log', '/en/log'];
   const projectPaths = projects.flatMap((p) => [`/projects/${p.id}`, `/en/projects/${p.id}`]);
-  const allPaths = [...staticPaths, ...projectPaths];
+  const notePaths = notes.flatMap((n) => [`/notes/${n.id}`, `/en/notes/${n.id}`]);
+  const allPaths = [...staticPaths, ...projectPaths, ...notePaths];
 
   const urls = allPaths
     .map(

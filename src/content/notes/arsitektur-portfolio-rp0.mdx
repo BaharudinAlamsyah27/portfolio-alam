@@ -1,0 +1,33 @@
+---
+title: Membangun Portfolio "Meja Kerja" dengan Biaya Rp0
+summary:
+  id: "Kenapa saya memilih Astro, Preact, Keystatic lokal, dan Vercel Hobby supaya website tetap cepat, bisa diedit lewat form, dan gratis selamanya."
+  en: "Why I picked Astro, Preact, local Keystatic, and Vercel Hobby to keep this site fast, editable via forms, and free to host."
+tags:
+  - Astro
+  - Arsitektur
+  - Rp0 Stack
+date: 2026-11-16
+draft: false
+---
+
+Waktu mulai merancang portfolio ini, syarat paling utamanya cuma dua: **biaya operasional Rp0** dan **jangan terasa seperti template AI yang seragam**.
+
+### Kenapa tidak pakai database?
+
+Untuk website portfolio pribadi, menyewa database atau VPS sering kali berlebihan. Sebagai gantinya:
+
+- Seluruh data project, pengalaman MagangHub, dan paspor jelajah disimpan sebagai file **YAML & MDX** di dalam repository Git.
+- Supaya saya tetap bisa mengedit lewat form yang nyaman (termasuk upload foto), saya pasang **Keystatic** dalam mode *local* yang hanya aktif saat `npm run dev`.
+- Saat di-build ke produksi di **Vercel**, seluruh Keystatic otomatis dilepas sehingga hasil akhirnya 100% HTML statis yang ringan.
+
+### Memisahkan UI Interaktif (Islands)
+
+Halaman utama tetap statis. Hanya bagian yang benar-benar butuh interaksi yang dibuat menjadi pulau (*island*) Preact:
+
+1. `AudienceSwitcher` untuk mengurutkan section sesuai tamu (Recruiter, Klien, atau Developer).
+2. `TerminalModal` (`Ctrl+K`) untuk pengunjung yang lebih suka mengetik perintah.
+3. `SkillPlayground` yang baru memuat library fisika **Matter.js** ketika tombol *Mode Fisika* diklik.
+4. `DeskAudio` yang memakai Web Audio API bawaan browser tanpa mengunduh file MP3 berat.
+
+Hasilnya: website tetap gesit di HP dengan koneksi pas-pasan, tapi tetap punya banyak kejutan kecil saat dieksplor.

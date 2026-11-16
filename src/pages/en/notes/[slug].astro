@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import NoteDetail from '../../../components/sections/NoteDetail.astro';
+import { getNotesData, pickLocale } from '../../../lib/content';
+
+export async function getStaticPaths() {
+  const notes = await getNotesData(true);
+  return notes.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const description = pickLocale(entry.data.summary, 'en');
+---
+
+<BaseLayout title={`${entry.data.title} — Alam`} description={description}>
+  <NoteDetail entry={entry} />
+</BaseLayout>

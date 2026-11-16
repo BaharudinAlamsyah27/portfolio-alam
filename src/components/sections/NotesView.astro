@@ -1,0 +1,81 @@
+---
+import Tape from '../ui/Tape.astro';
+import { getLocaleFromUrl, getLocalizedPath } from '../../i18n/utils';
+import { getNotesData, pickLocale } from '../../lib/content';
+
+const locale = getLocaleFromUrl(Astro.url);
+const notes = await getNotesData(false);
+const homeHref = getLocalizedPath('/', locale);
+---
+
+<section class="mx-auto max-w-3xl space-y-8">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <a href={homeHref} class="sticker-btn bg-paper-2 text-ink rounded-sm px-3.5 py-1.5 font-mono text-xs">
+      &larr; {locale === 'id' ? 'Kembali ke meja' : 'Back to desk'}
+    </a>
+
+    <span class="font-hand text-cobalt -rotate-1 text-base">
+      ✎ {locale === 'id' ? 'ditulis lewat /keystatic' : 'editable via /keystatic'}
+    </span>
+  </div>
+
+  <div class="space-y-2 border-b-2 border-ink pb-4">
+    <span class="bg-cobalt text-paper rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold">
+      /NOTES · LAB LOG
+    </span>
+    <h1 class="font-display text-3xl font-extrabold sm:text-4xl">
+      {locale === 'id' ? 'Catatan Lab & Tulisan Teknis' : 'Lab Notes & Technical Writing'}
+    </h1>
+    <p class="text-ink-soft text-sm sm:text-base">
+      {locale === 'id'
+        ? 'Catatan pendek dari hal-hal nyata yang saya kerjakan — mulai dari bug yang ketemu di kantor sampai arsitektur project.'
+        : 'Short notes from real work — from office system edge cases to side-project architecture.'}
+    </p>
+  </div>
+
+  <div class="space-y-6">
+    {
+      notes.map((entry, idx) => {
+        const summary = pickLocale(entry.data.summary, locale);
+        const noteHref = getLocalizedPath(`/notes/${entry.id}`, locale);
+        const dateStr = entry.data.date.toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-US', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+        });
+
+        return (
+          <article class="sticker-card relative rounded-md bg-paper p-6">
+            {idx === 0 && <Tape color="mustard" rotate="-rotate-1" class="absolute -top-3 left-8" />}
+
+            <div class="flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-ink-soft">
+              <span>{dateStr}</span>
+              <div class="flex flex-wrap gap-1.5">
+                {entry.data.tags.map((tag) => (
+                  <span class="bg-paper-2 text-ink rounded-sm border border-ink px-2 py-0.5 text-[11px] font-medium">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <h2 class="font-display mt-2.5 text-2xl font-extrabold leading-snug">
+              <a href={noteHref} class="hover:text-tomato underline-offset-4 hover:underline">
+                {entry.data.title}
+              </a>
+            </h2>
+
+            <p class="mt-2 text-sm leading-relaxed text-ink-soft sm:text-base">{summary}</p>
+
+            <div class="mt-4">
+              <a href={noteHref} class="sticker-btn bg-mustard text-ink rounded-sm px-3 py-1.5 font-mono text-xs">
+                <span>{locale === 'id' ? 'Baca catatan' : 'Read note'}</span>
+                <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </article>
+        );
+      })
+    }
+  </div>
+</section>
