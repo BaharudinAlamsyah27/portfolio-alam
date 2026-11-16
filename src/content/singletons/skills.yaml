@@ -1,0 +1,55 @@
+items:
+  - name: HTML5 & CSS Modern
+    category: web
+    level: dikuasai
+    note:
+      id: "Layout responsif, aksesibilitas, & animasi seperlunya"
+      en: "Responsive layouts, accessibility, & purposeful motion"
+  - name: JavaScript & TypeScript
+    category: web
+    level: dikuasai
+    note:
+      id: "Pegangan utama untuk logika aplikasi web"
+      en: "Daily driver for web application logic"
+  - name: Astro & Preact / React
+    category: web
+    level: dikuasai
+    note:
+      id: "Arsitektur island yang cepat & hemat bundle JS"
+      en: "Fast island architecture with minimal JS bundle"
+  - name: Tailwind CSS
+    category: web
+    level: dikuasai
+    note:
+      id: "Design token terpusat, tanpa CSS berantakan"
+      en: "Token-driven styling without messy stylesheets"
+  - name: Git & Kolaborasi Repo
+    category: tool
+    level: dikuasai
+    note:
+      id: "Workflow branch, commit rapi, & auto-deploy Vercel"
+      en: "Clean commits, branching, & Vercel auto-deploy"
+  - name: Mobile Development
+    category: mobile
+    level: didalami
+    note:
+      id: "Sedang mendalami pembuatan aplikasi lintas platform"
+      en: "Actively building cross-platform mobile apps"
+  - name: Integrasi AI & Prompting
+    category: ai
+    level: didalami
+    note:
+      id: "Orkestrasi multi-model & integrasi API AI ke web"
+      en: "Multi-model orchestration & web AI API integration"
+  - name: Game Development
+    category: game
+    level: dieksplor
+    note:
+      id: "Eksperimen mekanik game & fisika 2D di waktu luang"
+      en: "Weekend experiments with 2D physics & game loops"
+  - name: Jaringan Komputer
+    category: network
+    level: dieksplor
+    note:
+      id: "Ngulik dasar protokol, DNS, & alur trafik"
+      en: "Exploring protocols, DNS, & traffic routing"

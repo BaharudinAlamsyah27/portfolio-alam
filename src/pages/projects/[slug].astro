@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCaseStudy from '../../components/sections/ProjectCaseStudy.astro';
+import { getProjectsData, pickLocale } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const projects = await getProjectsData(true);
+  return projects.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const description = pickLocale(entry.data.summary, 'id');
+---
+
+<BaseLayout title={`${entry.data.title} — Alam`} description={description}>
+  <ProjectCaseStudy entry={entry} />
+</BaseLayout>

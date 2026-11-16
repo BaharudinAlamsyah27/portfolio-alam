@@ -1,0 +1,46 @@
+/* Design Tokens — "Meja Kerja yang Ceria" (AGENTS.md §5) */
+:root {
+  /* Warna permukaan & teks */
+  --paper: #fff8ec;
+  --paper-2: #f6ebd6;
+  --ink: #1f1b16;
+  --ink-soft: #5b5248;
+
+  /* Warna aksen */
+  --tomato: #f2542d;
+  --cobalt: #2d5bff;
+  --mustard: #f5b700;
+  --leaf: #2ba84a;
+  --blush: #ff8fb1;
+
+  /* Bayangan hard-shadow ala stiker */
+  --shadow-hard: 4px 4px 0 var(--ink);
+  --shadow-hard-sm: 2px 2px 0 var(--ink);
+  --shadow-hard-lg: 6px 6px 0 var(--ink);
+
+  /* Border */
+  --border-ink: 2px solid var(--ink);
+
+  /* Font stacks */
+  --font-display: 'Bricolage Grotesque Variable', 'Instrument Sans', system-ui, sans-serif;
+  --font-sans: 'Instrument Sans', system-ui, -apple-system, sans-serif;
+  --font-hand: 'Kalam', cursive, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+@theme {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-tomato: var(--tomato);
+  --color-cobalt: var(--cobalt);
+  --color-mustard: var(--mustard);
+  --color-leaf: var(--leaf);
+  --color-blush: var(--blush);
+
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+  --font-hand: var(--font-hand);
+  --font-mono: var(--font-mono);
+}

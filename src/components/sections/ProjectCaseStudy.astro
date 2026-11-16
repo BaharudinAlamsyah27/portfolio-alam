@@ -1,0 +1,91 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import Tape from '../ui/Tape.astro';
+import { getLocaleFromUrl, getLocalizedPath, useTranslations } from '../../i18n/utils';
+import { pickLocale } from '../../lib/content';
+
+interface Props {
+  entry: CollectionEntry<'projects'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+const backHref = `${getLocalizedPath('/', locale)}#projects`;
+const summary = pickLocale(entry.data.summary, locale);
+const statusKey = `projects.status.${entry.data.status}` as const;
+---
+
+<article class="mx-auto max-w-3xl space-y-8">
+  <a
+    href={backHref}
+    class="sticker-btn bg-paper-2 text-ink rounded-sm px-3.5 py-1.5 font-mono text-xs"
+  >
+    <span aria-hidden="true">&larr;</span>
+    <span>{locale === 'id' ? 'Kembali ke daftar project' : 'Back to projects'}</span>
+  </a>
+
+  <header class="sticker-card relative rounded-md bg-paper p-6 sm:p-8">
+    <Tape color="mustard" rotate="-rotate-1" class="absolute -top-3 left-10" />
+
+    <div class="flex flex-wrap items-center gap-2 font-mono text-xs">
+      <span class="bg-tomato text-paper rounded-sm border-2 border-ink px-2 py-0.5 font-bold uppercase">
+        {entry.data.category}
+      </span>
+      <span class="bg-paper-2 text-ink rounded-sm border border-ink px-2 py-0.5">
+        {t(statusKey)}
+      </span>
+    </div>
+
+    <h1 class="font-display mt-3 text-3xl font-extrabold leading-tight sm:text-4xl">
+      {entry.data.title}
+    </h1>
+
+    <p class="text-ink-soft mt-3 text-base leading-relaxed sm:text-lg">{summary}</p>
+
+    <div class="mt-5 flex flex-wrap items-center justify-between gap-4 border-t-2 border-dashed border-ink/25 pt-4">
+      <ul class="flex flex-wrap gap-1.5" aria-label="Tech stack">
+        {
+          entry.data.stack.map((tech) => (
+            <li class="bg-paper-2 text-ink rounded-sm border border-ink px-2.5 py-0.5 font-mono text-xs font-medium">
+              {tech}
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="flex flex-wrap gap-2.5">
+        {
+          entry.data.demoUrl && (
+            <a
+              href={entry.data.demoUrl}
+              class="sticker-btn bg-mustard text-ink rounded-sm px-3.5 py-1.5 font-mono text-xs"
+            >
+              {t('projects.demo')}
+            </a>
+          )
+        }
+        {
+          entry.data.repoUrl && (
+            <a
+              href={entry.data.repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="sticker-btn bg-paper text-ink rounded-sm px-3.5 py-1.5 font-mono text-xs"
+            >
+              {t('projects.repo')}
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </header>
+
+  <div
+    class="sticker-card space-y-4 rounded-md bg-paper p-6 leading-relaxed text-ink sm:p-8 [&_h2]:mt-6 [&_h2]:mb-2 [&_h2]:border-b-2 [&_h2]:border-ink [&_h2]:pb-1 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-bold [&_h2:first-child]:mt-0 [&_p]:text-ink-soft [&_p]:leading-relaxed"
+  >
+    <Content />
+  </div>
+</article>

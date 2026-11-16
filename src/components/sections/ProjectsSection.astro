@@ -1,0 +1,179 @@
+---
+import Tape from '../ui/Tape.astro';
+import { getLocaleFromUrl, getLocalizedPath, useTranslations } from '../../i18n/utils';
+import { getProjectsData, pickLocale } from '../../lib/content';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+const projects = await getProjectsData(false);
+
+const categoryColors: Record<string, string> = {
+  web: 'bg-tomato text-paper',
+  mobile: 'bg-cobalt text-paper',
+  ai: 'bg-mustard text-ink',
+  game: 'bg-blush text-ink',
+  network: 'bg-leaf text-paper',
+  other: 'bg-paper-2 text-ink',
+};
+---
+
+<section id="projects" aria-labelledby="projects-heading" class="desk-section-projects scroll-mt-20">
+  <div class="mb-8 flex flex-col justify-between gap-3 border-b-2 border-ink pb-4 sm:flex-row sm:items-end">
+    <div class="max-w-2xl space-y-2">
+      <span class="bg-tomato text-paper inline-block rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold uppercase shadow-[2px_2px_0_var(--ink)]">
+        01 · PROJECTS
+      </span>
+      <h2 id="projects-heading" class="font-display text-3xl font-extrabold sm:text-4xl">
+        {t('projects.heading')}
+      </h2>
+      <p class="text-ink-soft text-sm leading-relaxed sm:text-base">
+        {t('projects.sub')}
+      </p>
+    </div>
+
+    <span class="font-hand text-cobalt -rotate-2 text-base sm:text-lg">
+      ✎ {t('projects.marginNote')}
+    </span>
+  </div>
+
+  <!-- Filter kategori ringan -->
+  <div class="mb-6 flex flex-wrap items-center gap-2" role="group" aria-label="Filter kategori project">
+    {
+      ['all', ...Array.from(new Set(projects.map((p) => p.data.category)))].map((cat) => (
+        <button
+          type="button"
+          data-project-filter={cat}
+          aria-pressed={cat === 'all' ? 'true' : 'false'}
+          class={`rounded-sm border-2 border-ink px-3 py-1 font-mono text-xs font-bold uppercase transition-all ${
+            cat === 'all'
+              ? 'bg-ink text-paper shadow-[2px_2px_0_var(--mustard)]'
+              : 'bg-paper text-ink hover:bg-mustard/35'
+          }`}
+        >
+          {cat === 'all' ? (locale === 'id' ? 'semua' : 'all') : cat}
+        </button>
+      ))
+    }
+  </div>
+
+  <!-- Grid Asimetris (7 kolom + 5 kolom, bukan kartu kembar seragam) -->
+  <div class="grid gap-7 md:grid-cols-12">
+    {
+      projects.map((entry, idx) => {
+        const isWide = idx % 2 === 0;
+        const colSpan = isWide ? 'md:col-span-7' : 'md:col-span-5';
+        const cardSurface = isWide
+          ? 'bg-paper rounded-md -rotate-[0.4deg]'
+          : 'bg-paper-2 rounded-xl rotate-[0.6deg]';
+        const tapeColor = isWide ? 'mustard' : 'blush';
+        const summary = pickLocale(entry.data.summary, locale);
+        const statusKey = `projects.status.${entry.data.status}` as const;
+        const detailHref = getLocalizedPath(`/projects/${entry.id}`, locale);
+
+        return (
+          <article
+            data-project-card
+            data-category={entry.data.category}
+            class={`sticker-card relative flex flex-col justify-between p-6 ${colSpan} ${cardSurface}`}
+          >
+            <Tape
+              color={tapeColor}
+              rotate={isWide ? '-rotate-2' : 'rotate-2'}
+              class="absolute -top-3 left-8"
+            />
+
+            <div class="space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+                <span
+                  class={`rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold uppercase ${
+                    categoryColors[entry.data.category] ?? categoryColors.other
+                  }`}
+                >
+                  {entry.data.category}
+                </span>
+
+                <span class="bg-paper text-ink-soft rounded-sm border border-ink px-2 py-0.5 font-mono text-[11px]">
+                  {t(statusKey)}
+                </span>
+              </div>
+
+              <h3 class="font-display text-2xl font-extrabold leading-snug">
+                <a href={detailHref} class="hover:text-tomato underline-offset-4 hover:underline">
+                  {entry.data.title}
+                </a>
+              </h3>
+
+              <p class="text-ink-soft text-sm leading-relaxed sm:text-base">{summary}</p>
+            </div>
+
+            <div class="mt-6 space-y-4 border-t-2 border-dashed border-ink/25 pt-4">
+              <ul class="flex flex-wrap gap-1.5" aria-label="Tech stack">
+                {entry.data.stack.map((tech) => (
+                  <li class="bg-paper text-ink rounded-sm border border-ink px-2 py-0.5 font-mono text-xs font-medium shadow-[1px_1px_0_var(--ink)]">
+                    {tech}
+                  </li>
+                ))}
+              </ul>
+
+              <div class="flex flex-wrap items-center gap-3 pt-1">
+                <a
+                  href={detailHref}
+                  class="sticker-btn bg-mustard text-ink rounded-sm px-3 py-1.5 font-mono text-xs"
+                >
+                  <span>{locale === 'id' ? 'Baca Studi Kasus' : 'Read Case Study'}</span>
+                  <span aria-hidden="true">&rarr;</span>
+                </a>
+
+                {entry.data.demoUrl && (
+                  <a
+                    href={entry.data.demoUrl}
+                     class="sticker-btn bg-paper text-ink rounded-sm px-3 py-1.5 font-mono text-xs"
+                  >
+                    {t('projects.demo')}
+                  </a>
+                )}
+
+                {entry.data.repoUrl && (
+                  <a
+                    href={entry.data.repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="sticker-btn bg-paper text-ink rounded-sm px-3 py-1.5 font-mono text-xs"
+                  >
+                    {t('projects.repo')}
+                  </a>
+                )}
+              </div>
+            </div>
+          </article>
+        );
+      })
+    }
+  </div>
+</section>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-project-filter]');
+    const cards = document.querySelectorAll<HTMLElement>('[data-project-card]');
+    if (buttons.length === 0 || cards.length === 0) return;
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const chosen = btn.dataset.projectFilter || 'all';
+        buttons.forEach((b) => {
+          const active = b === btn;
+          b.setAttribute('aria-pressed', active ? 'true' : 'false');
+          b.className = active
+            ? 'rounded-sm border-2 border-ink px-3 py-1 font-mono text-xs font-bold uppercase transition-all bg-ink text-paper shadow-[2px_2px_0_var(--mustard)]'
+            : 'rounded-sm border-2 border-ink px-3 py-1 font-mono text-xs font-bold uppercase transition-all bg-paper text-ink hover:bg-mustard/35';
+        });
+
+        cards.forEach((card) => {
+          const match = chosen === 'all' || card.dataset.category === chosen;
+          card.classList.toggle('hidden', !match);
+        });
+      });
+    });
+  });
+</script>

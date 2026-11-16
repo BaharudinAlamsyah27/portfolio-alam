@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#FFF8EC" />
+  <rect x="48" y="48" width="1104" height="534" rx="16" fill="#F6EBD6" stroke="#1F1B16" stroke-width="6" />
+  <rect x="96" y="102" width="64" height="64" rx="8" fill="#F2542D" stroke="#1F1B16" stroke-width="5" />
+  <text x="128" y="148" text-anchor="middle" font-family="system-ui, sans-serif" font-size="38" font-weight="800" fill="#FFF8EC">A</text>
+  <text x="184" y="145" font-family="monospace" font-size="26" font-weight="700" fill="#1F1B16">alam. · Baharudin Alamsyah</text>
+  <text x="96" y="275" font-family="system-ui, sans-serif" font-size="68" font-weight="800" fill="#1F1B16">Lebih banyak kode</text>
+  <text x="96" y="355" font-family="system-ui, sans-serif" font-size="68" font-weight="800" fill="#F2542D">daripada kata.</text>
+  <text x="96" y="435" font-family="system-ui, sans-serif" font-size="28" fill="#5B5248">Web Programming · Mobile &amp; AI · Game Dev &amp; Networking</text>
+  <rect x="96" y="485" width="250" height="48" rx="6" fill="#F5B700" stroke="#1F1B16" stroke-width="4" />
+  <text x="221" y="517" text-anchor="middle" font-family="monospace" font-size="22" font-weight="700" fill="#1F1B16">&gt;_ Ctrl+K Terminal</text>
+</svg>

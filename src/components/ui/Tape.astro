@@ -1,0 +1,21 @@
+---
+interface Props {
+  color?: 'mustard' | 'paper' | 'blush';
+  rotate?: string;
+  class?: string;
+}
+
+const { color = 'mustard', rotate = '-rotate-2', class: className = '' } = Astro.props;
+
+const bgMap = {
+  mustard: 'bg-mustard/75',
+  paper: 'bg-paper-2/90',
+  blush: 'bg-blush/70',
+};
+---
+
+<div
+  aria-hidden="true"
+  class={`pointer-events-none h-6 w-24 border-x-2 border-dashed border-ink/40 shadow-[1px_1px_0_rgba(31,27,22,0.2)] ${bgMap[color]} ${rotate} ${className}`}
+>
+</div>

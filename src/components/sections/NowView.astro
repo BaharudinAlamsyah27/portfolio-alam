@@ -1,0 +1,95 @@
+---
+import Tape from '../ui/Tape.astro';
+import { getLocaleFromUrl, getLocalizedPath } from '../../i18n/utils';
+import { getNowData, pickLocale } from '../../lib/content';
+
+const locale = getLocaleFromUrl(Astro.url);
+const nowData = await getNowData();
+const summary = pickLocale(nowData?.summary, locale);
+const homeHref = getLocalizedPath('/', locale);
+const logHref = getLocalizedPath('/log', locale);
+
+const formattedDate = nowData?.updatedAt
+  ? nowData.updatedAt.toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-US', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    })
+  : '-';
+---
+
+<section class="mx-auto max-w-3xl space-y-8">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <a href={homeHref} class="sticker-btn bg-paper-2 text-ink rounded-sm px-3.5 py-1.5 font-mono text-xs">
+      &larr; {locale === 'id' ? 'Kembali ke meja' : 'Back to desk'}
+    </a>
+
+    <a href={logHref} class="font-mono text-xs font-semibold text-cobalt hover:underline">
+      {locale === 'id' ? 'Lihat Changelog (/log) →' : 'View Changelog (/log) →'}
+    </a>
+  </div>
+
+  <div class="sticker-card relative rounded-md bg-paper p-6 sm:p-8">
+    <Tape color="mustard" rotate="-rotate-2" class="absolute -top-3 left-10" />
+
+    <div class="flex flex-wrap items-center justify-between gap-2 border-b-2 border-ink pb-4">
+      <div>
+        <span class="bg-leaf text-paper rounded-sm border border-ink px-2 py-0.5 font-mono text-xs font-bold">
+          /NOW
+        </span>
+        <h1 class="font-display mt-2 text-3xl font-extrabold sm:text-4xl">
+          {locale === 'id' ? 'Sedang Apa Sekarang?' : 'What I’m Doing Now'}
+        </h1>
+      </div>
+
+      <span class="font-mono text-xs text-ink-soft">
+        {locale === 'id' ? 'Diperbarui:' : 'Updated:'} {formattedDate}
+      </span>
+    </div>
+
+    <p class="mt-5 text-base leading-relaxed text-ink sm:text-lg">{summary}</p>
+
+    {
+      nowData && (
+        <div class="mt-7 grid gap-5 sm:grid-cols-3">
+          <div class="bg-paper-2 rounded-sm border-2 border-ink p-4 shadow-[2px_2px_0_var(--ink)]">
+            <h2 class="font-mono text-xs font-bold uppercase text-cobalt">
+              {locale === 'id' ? 'Sedang Dipelajari' : 'Learning'}
+            </h2>
+            <ul class="mt-2.5 space-y-1.5 text-sm font-medium text-ink">
+              {nowData.learning.map((item) => (
+                <li>· {item}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="bg-paper-2 rounded-sm border-2 border-ink p-4 shadow-[2px_2px_0_var(--ink)]">
+            <h2 class="font-mono text-xs font-bold uppercase text-tomato">
+              {locale === 'id' ? 'Sedang Dibangun' : 'Building'}
+            </h2>
+            <ul class="mt-2.5 space-y-1.5 text-sm font-medium text-ink">
+              {nowData.building.map((item) => (
+                <li>· {item}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="bg-paper-2 rounded-sm border-2 border-ink p-4 shadow-[2px_2px_0_var(--ink)]">
+            <h2 class="font-mono text-xs font-bold uppercase text-ink-soft">
+              {locale === 'id' ? 'Eksplorasi' : 'Exploring'}
+            </h2>
+            <ul class="mt-2.5 space-y-1.5 text-sm font-medium text-ink">
+              {nowData.exploring.map((item) => (
+                <li>· {item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )
+    }
+
+    <p class="mt-6 font-hand text-base text-ink-soft">
+      * {locale === 'id' ? 'Terinspirasi dari gerakan nownownow.com — bukti website ini masih hidup.' : 'Inspired by nownownow.com — proof that this desk is alive.'}
+    </p>
+  </div>
+</section>

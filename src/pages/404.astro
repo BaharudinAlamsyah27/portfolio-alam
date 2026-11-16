@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HandDrawn from '../components/doodles/HandDrawn.astro';
+import Tape from '../components/ui/Tape.astro';
+import { getLocaleFromUrl, getLocalizedPath, useTranslations } from '../i18n/utils';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+const homeHref = getLocalizedPath('/', locale);
+---
+
+<BaseLayout title={`404 — ${t('notFound.title')}`}>
+  <section class="mx-auto max-w-lg py-10">
+    <div class="flex justify-end pr-8 -mb-6 relative z-10">
+      <HandDrawn variant="cat-peek" class="h-12 w-20" />
+    </div>
+
+    <div class="sticker-card relative rounded-md bg-paper p-8">
+      <Tape color="blush" rotate="-rotate-2" class="absolute -top-3 left-10" />
+
+      <p class="bg-tomato text-paper mb-4 inline-block rounded-sm border-2 border-ink px-2.5 py-1 font-mono text-sm font-bold shadow-[2px_2px_0_var(--ink)]">
+        ERR 404 · MEJA KOSONG
+      </p>
+
+      <h1 class="font-display mb-3 text-3xl font-extrabold">{t('notFound.title')}</h1>
+      <p class="text-ink-soft mb-6 leading-relaxed">{t('notFound.desc')}</p>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <a href={homeHref} class="sticker-btn bg-mustard text-ink rounded-sm px-4 py-2 text-sm">
+          &larr; {t('notFound.back')}
+        </a>
+
+        <button
+          type="button"
+          data-open-terminal-cmd="ls projects"
+          class="sticker-btn bg-ink text-paper rounded-sm px-4 py-2 font-mono text-xs"
+        >
+          <span class="text-mustard font-bold">&gt;_</span>
+          <span>ls projects</span>
+        </button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

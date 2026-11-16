@@ -1,0 +1,129 @@
+---
+import Tape from '../ui/Tape.astro';
+import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
+import { getExperienceData, getNowData, getProfileData, pickLocale } from '../../lib/content';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+const profile = await getProfileData();
+const experiences = await getExperienceData();
+const nowData = await getNowData();
+
+const bio = pickLocale(profile?.bio, locale);
+const nowSummary = pickLocale(nowData?.summary, locale);
+---
+
+<section id="about" aria-labelledby="about-heading" class="desk-section-about scroll-mt-20">
+  <div class="mb-8 max-w-2xl space-y-2 border-b-2 border-ink pb-4">
+    <span class="bg-mustard text-ink inline-block rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold uppercase shadow-[2px_2px_0_var(--ink)]">
+      03 · ABOUT & NOW
+    </span>
+    <h2 id="about-heading" class="font-display text-3xl font-extrabold sm:text-4xl">
+      {t('about.heading')}
+    </h2>
+    <p class="text-ink-soft text-sm leading-relaxed sm:text-base">
+      {t('about.sub')}
+    </p>
+  </div>
+
+  <div class="grid gap-7 lg:grid-cols-12">
+    <!-- Cerita & Timeline MagangHub (7 kolom) -->
+    <div class="sticker-card space-y-6 rounded-md bg-paper p-6 lg:col-span-7">
+      <div class="space-y-3">
+        <h3 class="font-display text-xl font-bold">{profile?.name ?? 'Baharudin Alamsyah'}</h3>
+        <p class="text-ink-soft text-sm leading-relaxed sm:text-base">{bio}</p>
+      </div>
+
+      <div class="border-t-2 border-dashed border-ink/25 pt-5">
+        <h4 class="font-mono text-xs font-bold uppercase tracking-wider text-ink-soft">
+          {t('about.timelineTitle')}
+        </h4>
+
+        <ol class="mt-4 space-y-4">
+          {
+            experiences.map((exp) => {
+              const roleTitle = pickLocale(exp.data.title, locale);
+              const desc = pickLocale(exp.data.description, locale);
+              return (
+                <li class="bg-paper-2 rounded-sm border-2 border-ink p-4 shadow-[2px_2px_0_var(--ink)]">
+                  <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span class="font-display text-base font-bold text-ink">
+                      {roleTitle} · <span class="text-tomato">{exp.data.organization}</span>
+                    </span>
+                    {exp.data.current && (
+                      <span class="bg-leaf text-paper rounded-sm border border-ink px-2 py-0.5 font-mono text-[10px] font-bold uppercase">
+                        AKTIF
+                      </span>
+                    )}
+                  </div>
+                  <p class="mt-1.5 text-xs leading-relaxed text-ink-soft sm:text-sm">{desc}</p>
+                </li>
+              );
+            })
+          }
+        </ol>
+      </div>
+
+      <div class="pt-2">
+        {
+          profile?.cvUrl ? (
+            <a
+              href={profile.cvUrl}
+              class="sticker-btn bg-tomato text-paper rounded-sm px-4 py-2 text-xs sm:text-sm"
+            >
+              {t('about.cvBtn')}
+            </a>
+          ) : (
+            <span class="bg-paper-2 text-ink-soft inline-block rounded-sm border-2 border-dashed border-ink/50 px-3.5 py-2 font-mono text-xs">
+              📄 {t('about.cvSoon')}
+            </span>
+          )
+        }
+      </div>
+    </div>
+
+    <!-- Kartu /now (5 kolom) -->
+    <aside class="sticker-card relative rotate-[0.7deg] rounded-xl bg-paper-2 p-6 lg:col-span-5">
+      <Tape color="blush" rotate="rotate-2" class="absolute -top-3 right-8" />
+
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-display text-xl font-bold">{t('about.nowTitle')}</h3>
+          <span class="bg-mustard text-ink rounded-sm border border-ink px-2 py-0.5 font-mono text-[11px] font-bold">
+            LIVE
+          </span>
+        </div>
+
+        <p class="text-sm leading-relaxed text-ink">{nowSummary}</p>
+
+        {
+          nowData && (
+            <div class="space-y-3 border-t-2 border-dashed border-ink/25 pt-4 text-xs sm:text-sm">
+              <div>
+                <span class="font-mono text-[11px] font-bold uppercase text-cobalt">
+                  {locale === 'id' ? 'Sedang Dipelajari:' : 'Currently Learning:'}
+                </span>
+                <p class="mt-0.5 font-medium text-ink">{nowData.learning.join(' · ')}</p>
+              </div>
+
+              <div>
+                <span class="font-mono text-[11px] font-bold uppercase text-tomato">
+                  {locale === 'id' ? 'Sedang Dibangun:' : 'Currently Building:'}
+                </span>
+                <p class="mt-0.5 font-medium text-ink">{nowData.building.join(' · ')}</p>
+              </div>
+
+              <div>
+                <span class="font-mono text-[11px] font-bold uppercase text-ink-soft">
+                  {locale === 'id' ? 'Eksplorasi Akhir Pekan:' : 'Weekend Exploration:'}
+                </span>
+                <p class="mt-0.5 font-medium text-ink">{nowData.exploring.join(' · ')}</p>
+              </div>
+            </div>
+          )
+        }
+      </div>
+    </aside>
+  </div>
+</section>

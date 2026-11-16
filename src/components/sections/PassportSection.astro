@@ -1,0 +1,125 @@
+---
+import Tape from '../ui/Tape.astro';
+import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
+import { getPlacesData, getProfileData, pickLocale } from '../../lib/content';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+const places = await getPlacesData();
+const profile = await getProfileData();
+const jogging = profile?.jogging ?? { totalKm: 0, favoriteRoute: '', note: undefined };
+const jogNote = pickLocale(jogging.note, locale);
+
+function formatStampDate(date?: Date) {
+  if (!date) return 'STAMP';
+  return date.toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-US', {
+    month: 'short',
+    year: 'numeric',
+  });
+}
+---
+
+<section
+  id="passport"
+  aria-labelledby="passport-heading"
+  class="desk-section-passport scroll-mt-20"
+>
+  <div class="mb-8 max-w-2xl space-y-2 border-b-2 border-ink pb-4">
+    <span class="bg-blush text-ink inline-block rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold uppercase shadow-[2px_2px_0_var(--ink)]">
+      03.5 · EXPLORATION
+    </span>
+    <h2 id="passport-heading" class="font-display text-3xl font-extrabold sm:text-4xl">
+      {t('passport.heading')}
+    </h2>
+    <p class="text-ink-soft text-sm leading-relaxed sm:text-base">
+      {t('passport.sub')}
+    </p>
+  </div>
+
+  <div class="grid gap-7 lg:grid-cols-12">
+    <!-- Kiri: Paspor Jelajah (8 kolom) -->
+    <div class="sticker-card relative rounded-md bg-paper p-6 lg:col-span-8">
+      <Tape color="paper" rotate="-rotate-1" class="absolute -top-3 left-10" />
+
+      <div class="mb-5 flex flex-wrap items-center justify-between gap-2 border-b-2 border-dashed border-ink/25 pb-3">
+        <h3 class="font-display text-xl font-bold">
+          {locale === 'id' ? 'Cap Paspor Tempat Jelajah' : 'Visited Places Stamp Book'}
+        </h3>
+        <span class="font-mono text-xs text-ink-soft">
+          {places.length} {locale === 'id' ? 'cap tercatat' : 'stamps collected'}
+        </span>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2">
+        {
+          places.map((place, idx) => {
+            const note = pickLocale(place.data.note, locale);
+            const tilt = idx % 2 === 0 ? '-rotate-[1deg]' : 'rotate-[1deg]';
+            const stampColor = idx % 2 === 0 ? 'border-cobalt text-cobalt' : 'border-tomato text-tomato';
+
+            return (
+              <article
+                class={`bg-paper-2 relative rounded-sm border-2 border-dashed border-ink p-4 shadow-[3px_3px_0_var(--ink)] ${tilt}`}
+              >
+                <div class="flex items-start justify-between gap-3">
+                  <div>
+                    <span class="font-mono text-[11px] font-bold uppercase text-ink-soft">
+                      {place.data.region || 'Indonesia'}
+                    </span>
+                    <h4 class="font-display text-lg font-extrabold text-ink">{place.data.name}</h4>
+                  </div>
+
+                  <span
+                    class={`shrink-0 rounded-full border-2 px-2.5 py-1 font-mono text-[10px] font-bold uppercase ${stampColor}`}
+                  >
+                    {formatStampDate(place.data.visitedAt)}
+                  </span>
+                </div>
+
+                {note && <p class="mt-2.5 text-xs leading-relaxed text-ink-soft sm:text-sm">{note}</p>}
+              </article>
+            );
+          })
+        }
+      </div>
+    </div>
+
+    <!-- Kanan: Catatan Lari Pagi / Jogging Stats (4 kolom) -->
+    <aside class="sticker-card relative flex flex-col justify-between rounded-xl bg-mustard/35 p-6 lg:col-span-4">
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-display text-xl font-bold">{t('passport.jogTitle')}</h3>
+          <span class="bg-paper rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold">
+            🏃 RUN
+          </span>
+        </div>
+
+        <div class="bg-paper rounded-sm border-2 border-ink p-4 shadow-[2px_2px_0_var(--ink)]">
+          <span class="font-mono text-[11px] uppercase text-ink-soft">{t('passport.jogKm')}</span>
+          <p class="font-display mt-0.5 text-4xl font-extrabold text-tomato">
+            {jogging.totalKm} <span class="text-lg font-bold text-ink">km</span>
+          </p>
+        </div>
+
+        <div class="space-y-1 text-sm">
+          <span class="font-mono text-[11px] font-bold uppercase text-ink-soft">
+            {t('passport.jogRoute')}
+          </span>
+          <p class="font-medium text-ink">{jogging.favoriteRoute || '-'}</p>
+        </div>
+
+        {jogNote && <p class="font-hand text-base text-ink-soft">{jogNote}</p>}
+      </div>
+
+      <button
+        type="button"
+        data-open-terminal-cmd="jog"
+        class="sticker-btn bg-paper text-ink mt-6 justify-center rounded-sm px-3.5 py-2 font-mono text-xs"
+      >
+        <span>&gt;_</span>
+        <span>{locale === 'id' ? 'Jalankan `jog` di terminal' : 'Run `jog` in terminal'}</span>
+      </button>
+    </aside>
+  </div>
+</section>

@@ -1,0 +1,118 @@
+---
+import SkillPlayground from '../islands/SkillPlayground';
+import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
+import { getSkillsData, pickLocale } from '../../lib/content';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+const skills = await getSkillsData();
+const playgroundSkills = skills.map((s) => ({
+  name: s.name,
+  category: s.category,
+  level: s.level,
+}));
+
+const groups = [
+  {
+    key: 'dikuasai' as const,
+    title: t('skills.level.dikuasai'),
+    desc: t('skills.level.dikuasai.desc'),
+    badgeBg: 'bg-leaf text-paper',
+    cardBg: 'bg-paper',
+    pillBg: 'bg-paper-2',
+  },
+  {
+    key: 'didalami' as const,
+    title: t('skills.level.didalami'),
+    desc: t('skills.level.didalami.desc'),
+    badgeBg: 'bg-cobalt text-paper',
+    cardBg: 'bg-paper-2',
+    pillBg: 'bg-paper',
+  },
+  {
+    key: 'dieksplor' as const,
+    title: t('skills.level.dieksplor'),
+    desc: t('skills.level.dieksplor.desc'),
+    badgeBg: 'bg-mustard text-ink',
+    cardBg: 'bg-paper',
+    pillBg: 'bg-mustard/25',
+  },
+];
+---
+
+<section id="skills" aria-labelledby="skills-heading" class="desk-section-skills scroll-mt-20">
+  <div class="mb-8 flex flex-col justify-between gap-3 border-b-2 border-ink pb-4 sm:flex-row sm:items-end">
+    <div class="max-w-2xl space-y-2">
+      <span class="bg-cobalt text-paper inline-block rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold uppercase shadow-[2px_2px_0_var(--ink)]">
+        02 · SKILLS
+      </span>
+      <h2 id="skills-heading" class="font-display text-3xl font-extrabold sm:text-4xl">
+        {t('skills.heading')}
+      </h2>
+      <p class="text-ink-soft text-sm leading-relaxed sm:text-base">
+        {t('skills.sub')}
+      </p>
+    </div>
+
+    <p class="font-hand text-ink-soft max-w-xs text-sm sm:text-right sm:text-base">
+      * {t('skills.playgroundNote')}
+    </p>
+  </div>
+
+  <SkillPlayground
+    client:visible
+    skills={playgroundSkills}
+    locale={locale}
+    labels={{
+      modeStatic: t('skills.modeStatic'),
+      modePhysics: t('skills.modePhysics'),
+      shake: t('skills.shake'),
+    }}
+  />
+
+  <div class="grid gap-6 lg:grid-cols-3">
+    {
+      groups.map((group, groupIdx) => {
+        const items = skills.filter((s) => s.level === group.key);
+        const tilt = groupIdx === 1 ? 'rotate-[0.5deg]' : groupIdx === 2 ? '-rotate-[0.5deg]' : '';
+
+        return (
+          <div class={`sticker-card flex flex-col justify-between rounded-md p-5 sm:p-6 ${group.cardBg} ${tilt}`}>
+            <div>
+              <div class="mb-3 flex items-center justify-between gap-2">
+                <span
+                  class={`rounded-sm border-2 border-ink px-2.5 py-0.5 font-mono text-xs font-bold uppercase ${group.badgeBg}`}
+                >
+                  {group.key}
+                </span>
+                <span class="font-mono text-xs text-ink-soft">{items.length} item</span>
+              </div>
+
+              <h3 class="font-display text-xl font-bold">{group.title}</h3>
+              <p class="mt-1 text-xs leading-relaxed text-ink-soft">{group.desc}</p>
+
+              <ul class="mt-5 space-y-2.5">
+                {items.map((skill) => {
+                  const note = pickLocale(skill.note, locale);
+                  return (
+                    <li
+                      class={`rounded-sm border-2 border-ink p-3 shadow-[2px_2px_0_var(--ink)] ${group.pillBg}`}
+                    >
+                      <div class="flex items-center justify-between gap-2">
+                        <span class="font-sans text-sm font-bold text-ink">{skill.name}</span>
+                        <span class="font-mono text-[10px] uppercase text-ink-soft">
+                          {skill.category}
+                        </span>
+                      </div>
+                      {note && <p class="mt-1 text-xs text-ink-soft">{note}</p>}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
+        );
+      })
+    }
+  </div>
+</section>
