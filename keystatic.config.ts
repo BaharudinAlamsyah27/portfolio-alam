@@ -33,7 +33,7 @@ export default config({
     brand: { name: 'Meja Kerja Alam' },
     navigation: {
       Profil: ['profile', 'skills', 'now'],
-      Konten: ['projects', 'notes', 'experience', 'places'],
+      Konten: ['projects', 'products', 'notes', 'experience', 'places'],
       Website: ['guestbook', 'changelog'],
     },
   },
@@ -294,7 +294,7 @@ export default config({
     }),
 
     notes: collection({
-      label: 'Catatan Lab (Blog Teknis)',
+      label: 'Catatan & Cerita (/notes)',
       slugField: 'title',
       path: 'src/content/notes/*',
       format: { contentField: 'body' },
@@ -302,13 +302,85 @@ export default config({
       schema: {
         title: fields.slug({ name: { label: 'Judul catatan' } }),
         summary: localizedText('Ringkasan singkat', true),
+        category: fields.select({
+          label: 'Rubrik / Kategori',
+          options: [
+            { label: 'Lab & Kode', value: 'lab' },
+            { label: 'Belajar', value: 'belajar' },
+            { label: 'Event & Lomba', value: 'event' },
+            { label: 'Opini', value: 'opini' },
+            { label: 'Cerita Jalan-jalan', value: 'jelajah' },
+            { label: 'Cerita Hidup', value: 'hidup' },
+          ],
+          defaultValue: 'lab',
+        }),
         tags: fields.array(fields.text({ label: 'Tag' }), {
           label: 'Topik / Tag',
           itemLabel: (props) => props.value,
         }),
         date: fields.date({ label: 'Tanggal' }),
         draft: fields.checkbox({ label: 'Draft (sembunyikan)', defaultValue: false }),
-        body: fields.mdx({ label: 'Isi catatan teknis' }),
+        body: fields.mdx({ label: 'Isi catatan' }),
+      },
+    }),
+
+    products: collection({
+      label: 'Toko Produk Web (/toko)',
+      slugField: 'title',
+      path: 'src/content/products/*',
+      format: { contentField: 'body' },
+      entryLayout: 'content',
+      schema: {
+        title: fields.slug({ name: { label: 'Nama produk website' } }),
+        summary: localizedText('Deskripsi singkat untuk kartu etalase', true),
+        cover: fields.image({
+          label: 'Gambar preview / screenshot',
+          directory: 'src/assets/products',
+          publicPath: '../../assets/products/',
+        }),
+        category: fields.select({
+          label: 'Bidang',
+          options: [
+            { label: 'Administrasi', value: 'administrasi' },
+            { label: 'Pendidikan', value: 'pendidikan' },
+            { label: 'Geospasial / Peta', value: 'geospasial' },
+            { label: 'Operasional & Piket', value: 'operasional' },
+            { label: 'Data Gudang / Stok', value: 'gudang' },
+            { label: 'Lainnya', value: 'lainnya' },
+          ],
+          defaultValue: 'administrasi',
+        }),
+        price: fields.text({
+          label: 'Harga tampil (contoh: Rp350.000)',
+          defaultValue: 'Rp350.000',
+        }),
+        scale: fields.select({
+          label: 'Skala sistem',
+          options: [
+            { label: 'Sederhana', value: 'sederhana' },
+            { label: 'Menengah', value: 'menengah' },
+          ],
+          defaultValue: 'sederhana',
+        }),
+        badge: fields.text({
+          label: 'Label stiker (contoh: Siap Pakai / Bisa Custom)',
+          defaultValue: 'Siap Pakai',
+        }),
+        features: fields.array(fields.text({ label: 'Fitur / yang didapat pembeli' }), {
+          label: 'Daftar fitur utama',
+          itemLabel: (props) => props.value,
+        }),
+        stack: fields.array(fields.text({ label: 'Teknologi' }), {
+          label: 'Tech stack',
+          itemLabel: (props) => props.value,
+        }),
+        demoUrl: fields.text({ label: 'Link live demo (opsional)' }),
+        buyUrl: fields.text({
+          label: 'Link checkout khusus (kosongkan = otomatis ke WhatsApp 087781308730)',
+        }),
+        order: fields.integer({ label: 'Urutan tampil', defaultValue: 100 }),
+        draft: fields.checkbox({ label: 'Draft (sembunyikan dari toko)', defaultValue: false }),
+        body: fields.mdx({ label: 'Detail lengkap produk & cara pakai' }),
       },
     }),
   },

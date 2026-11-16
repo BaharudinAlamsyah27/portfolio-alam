@@ -6,6 +6,22 @@ import { getNotesData, pickLocale } from '../../lib/content';
 const locale = getLocaleFromUrl(Astro.url);
 const notes = await getNotesData(false);
 const homeHref = getLocalizedPath('/', locale);
+
+const rubricLabels: Record<string, { id: string; en: string; badge: string }> = {
+  lab: { id: 'Lab & Kode', en: 'Lab & Code', badge: 'bg-cobalt text-paper' },
+  belajar: { id: 'Belajar', en: 'Learning', badge: 'bg-leaf text-paper' },
+  event: { id: 'Event & Lomba', en: 'Events', badge: 'bg-tomato text-paper' },
+  opini: { id: 'Opini', en: 'Opinion', badge: 'bg-mustard text-ink' },
+  jelajah: { id: 'Jalan-jalan', en: 'Travel', badge: 'bg-blush text-ink' },
+  hidup: { id: 'Cerita Hidup', en: 'Life Notes', badge: 'bg-paper-2 text-ink' },
+};
+
+const activeCategories = ['all', ...Array.from(new Set(notes.map((n) => n.data.category)))];
+
+function estimateReadMins(body?: string): number {
+  const words = (body ?? '').trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / 200));
+}
 ---
 
 <section class="mx-auto max-w-3xl space-y-8">
@@ -15,22 +31,46 @@ const homeHref = getLocalizedPath('/', locale);
     </a>
 
     <span class="font-hand text-cobalt -rotate-1 text-base">
-      ✎ {locale === 'id' ? 'ditulis lewat /keystatic' : 'editable via /keystatic'}
+      ✎ {locale === 'id' ? 'bisa ditulis & dikelompokkan via /keystatic' : 'editable via /keystatic'}
     </span>
   </div>
 
   <div class="space-y-2 border-b-2 border-ink pb-4">
     <span class="bg-cobalt text-paper rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold">
-      /NOTES · LAB LOG
+      /NOTES · TAMAN CATATAN
     </span>
     <h1 class="font-display text-3xl font-extrabold sm:text-4xl">
-      {locale === 'id' ? 'Catatan Lab & Tulisan Teknis' : 'Lab Notes & Technical Writing'}
+      {locale === 'id' ? 'Catatan Lab, Opini & Cerita' : 'Lab Notes, Opinions & Stories'}
     </h1>
     <p class="text-ink-soft text-sm sm:text-base">
       {locale === 'id'
-        ? 'Catatan pendek dari hal-hal nyata yang saya kerjakan — mulai dari bug yang ketemu di kantor sampai arsitektur project.'
-        : 'Short notes from real work — from office system edge cases to side-project architecture.'}
+        ? 'Kumpulan catatan pendek dari meja kerja Alam — mulai dari ngulik kode, belajar hal baru, lomba/event, sampai cerita jalan-jalan dan keseharian.'
+        : 'Short notes from Alam’s desk — covering code experiments, learning logs, events, travel stories, and daily reflections.'}
     </p>
+  </div>
+
+  <!-- Filter Rubrik -->
+  <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Filter rubrik catatan">
+    {
+      activeCategories.map((cat) => (
+        <button
+          type="button"
+          data-note-filter={cat}
+          aria-pressed={cat === 'all' ? 'true' : 'false'}
+          class={`rounded-sm border-2 border-ink px-3 py-1 font-mono text-xs font-bold transition-all ${
+            cat === 'all'
+              ? 'bg-ink text-paper shadow-[2px_2px_0_var(--mustard)]'
+              : 'bg-paper text-ink hover:bg-mustard/35'
+          }`}
+        >
+          {cat === 'all'
+            ? locale === 'id'
+              ? 'Semua'
+              : 'All'
+            : rubricLabels[cat]?.[locale] ?? cat}
+        </button>
+      ))
+    }
   </div>
 
   <div class="space-y-6">
@@ -38,6 +78,8 @@ const homeHref = getLocalizedPath('/', locale);
       notes.map((entry, idx) => {
         const summary = pickLocale(entry.data.summary, locale);
         const noteHref = getLocalizedPath(`/notes/${entry.id}`, locale);
+        const catInfo = rubricLabels[entry.data.category] ?? rubricLabels.lab;
+        const mins = estimateReadMins(entry.body);
         const dateStr = entry.data.date.toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-US', {
           day: 'numeric',
           month: 'short',
@@ -45,11 +87,23 @@ const homeHref = getLocalizedPath('/', locale);
         });
 
         return (
-          <article class="sticker-card relative rounded-md bg-paper p-6">
+          <article
+            data-note-card
+            data-category={entry.data.category}
+            class="sticker-card relative rounded-md bg-paper p-6"
+          >
             {idx === 0 && <Tape color="mustard" rotate="-rotate-1" class="absolute -top-3 left-8" />}
 
             <div class="flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-ink-soft">
-              <span>{dateStr}</span>
+              <div class="flex flex-wrap items-center gap-2">
+                <span class={`rounded-sm border border-ink px-2 py-0.5 text-[11px] font-bold ${catInfo.badge}`}>
+                  {catInfo[locale]}
+                </span>
+                <span>{dateStr}</span>
+                <span>·</span>
+                <span>{mins} {locale === 'id' ? 'mnt baca' : 'min read'}</span>
+              </div>
+
               <div class="flex flex-wrap gap-1.5">
                 {entry.data.tags.map((tag) => (
                   <span class="bg-paper-2 text-ink rounded-sm border border-ink px-2 py-0.5 text-[11px] font-medium">
@@ -79,3 +133,29 @@ const homeHref = getLocalizedPath('/', locale);
     }
   </div>
 </section>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-note-filter]');
+    const cards = document.querySelectorAll<HTMLElement>('[data-note-card]');
+    if (buttons.length === 0 || cards.length === 0) return;
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const chosen = btn.dataset.noteFilter || 'all';
+        buttons.forEach((b) => {
+          const active = b === btn;
+          b.setAttribute('aria-pressed', active ? 'true' : 'false');
+          b.className = active
+            ? 'rounded-sm border-2 border-ink px-3 py-1 font-mono text-xs font-bold transition-all bg-ink text-paper shadow-[2px_2px_0_var(--mustard)]'
+            : 'rounded-sm border-2 border-ink px-3 py-1 font-mono text-xs font-bold transition-all bg-paper text-ink hover:bg-mustard/35';
+        });
+
+        cards.forEach((card) => {
+          const match = chosen === 'all' || card.dataset.category === chosen;
+          card.classList.toggle('hidden', !match);
+        });
+      });
+    });
+  });
+</script>

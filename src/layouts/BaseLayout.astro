@@ -38,6 +38,7 @@ const t = useTranslations(locale);
 const otherLocale = locale === 'id' ? 'en' : 'id';
 const switchHref = getLocalizedPath(Astro.url.pathname, otherLocale);
 const homeHref = getLocalizedPath('/', locale);
+const tokoHref = getLocalizedPath('/toko', locale);
 const notesHref = getLocalizedPath('/notes', locale);
 const nowHref = getLocalizedPath('/now', locale);
 const logHref = getLocalizedPath('/log', locale);
@@ -153,6 +154,9 @@ const terminalContext: TerminalContext = {
             <a href={`${homeHref}#projects`} class="hover:text-tomato transition-colors">
               {t('nav.projects')}
             </a>
+            <a href={tokoHref} class="hover:text-tomato transition-colors">
+              {t('nav.shop')}
+            </a>
             <a href={notesHref} class="hover:text-tomato transition-colors">
               {t('nav.notes')}
             </a>
@@ -201,6 +205,9 @@ const terminalContext: TerminalContext = {
       >
         <p>{t('footer.note')}</p>
         <div class="flex flex-wrap items-center gap-4 font-mono text-xs">
+          <a href={tokoHref} class="text-ink hover:text-tomato underline underline-offset-4">
+            /toko
+          </a>
           <a href={notesHref} class="text-ink hover:text-tomato underline underline-offset-4">
             /notes
           </a>

@@ -335,3 +335,29 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
 **Berikutnya:**
 - Jalankan `git push` untuk memperbarui website live di Vercel.
 - Untuk perawatan harian (tambah project/catatan baru), cukup gunakan **Gemini 3.8 Flash**.
+
+---
+
+### Sesi 10 — 2026-11-16 13:22–13:27 WIB
+**Model:** Gemini 4 Hydrogen (Medium)
+**Fase:** 7 — Lanjutan (Etalase Toko `/toko` & 6 Rubrik `/notes`)
+
+**Dikerjakan:**
+- **Pengembangan `/notes` (Digital Garden Rubrik):**
+  - Menambahkan field `category` (`lab`, `belajar`, `event`, `opini`, `jelajah`, `hidup`) di `src/content.config.ts` dan `keystatic.config.ts`.
+  - Menambahkan filter rubrik interaktif, badge kategori berwarna, dan estimasi waktu baca di `NotesView.astro` serta `NoteDetail.astro`.
+  - Menambahkan catatan non-teknis pertama: `src/content/notes/cerita-magang-sragen.mdx` (rubrik *Cerita Hidup*).
+- **Galeri Toko Produk Web (`/toko` & `/en/toko`):**
+  - Menambahkan koleksi `products` di `src/content.config.ts`, `keystatic.config.ts`, dan `getProductsData()` di `src/lib/content.ts`.
+  - Membuat halaman etalase `ShopView.astro` (lengkap dengan filter bidang) dan halaman detail `ProductDetail.astro` (`/toko/[slug]` & `/en/toko/[slug]`) dengan tombol pemesanan otomatis ke WhatsApp Alam (`087781308730`) atau link checkout khusus (`buyUrl`).
+  - Menambahkan 3 produk contoh siap pakai/iklan skala sederhana–menengah: `sistem-piket-absensi-kantor.mdx`, `sistem-data-gudang-stok.mdx`, dan `peta-geospasial-sekolah.mdx`.
+  - Menautkan `/toko` ke navbar, footer `BaseLayout.astro`, dan `sitemap.xml.ts`, serta menambahkan changelog `0-7-0-toko-dan-rubrik-catatan.mdx`.
+- Verifikasi: `astro check` (**0 errors, 0 warnings, 0 hints** pada 53 file) dan `npm run build` menghasilkan **31 halaman statis** + `/sitemap.xml` dalam 12.26s.
+
+**Keputusan / dependency baru:**
+- Tidak ada dependency baru. Pemesanan produk toko menggunakan `wa.me/6287781308730` dengan pesan terisi otomatis (atau `buyUrl` opsional untuk Lynk.id/Mayar) agar tetap Rp0 dan praktis.
+
+**Berikutnya:**
+- Jalankan `git push` agar halaman `/toko` dan rubrik `/notes` langsung live di Vercel.
+- Isi produk/catatan baru atau unggah screenshot produk lewat `http://localhost:4321/keystatic`.
+- Rekomendasi model untuk pengisian konten/teks selanjutnya: **Gemini 3.8 Flash (Medium)**.

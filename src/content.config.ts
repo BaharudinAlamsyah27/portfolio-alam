@@ -144,10 +144,33 @@ const notes = defineCollection({
   schema: z.object({
     title: z.string(),
     summary: localized,
+    category: z.enum(['lab', 'belajar', 'event', 'opini', 'jelajah', 'hidup']).default('lab'),
     tags: z.array(z.string()).default([]),
     date: z.coerce.date(),
     draft: z.boolean().default(false),
   }),
+});
+
+const products = defineCollection({
+  loader: glob({ pattern: '*.mdx', base: './src/content/products' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      summary: localized,
+      cover: image().optional(),
+      category: z
+        .enum(['administrasi', 'pendidikan', 'geospasial', 'operasional', 'gudang', 'lainnya'])
+        .default('administrasi'),
+      price: z.string().default('Hubungi untuk harga'),
+      scale: z.enum(['sederhana', 'menengah']).default('sederhana'),
+      badge: z.string().default('Siap Pakai'),
+      features: z.array(z.string()).default([]),
+      stack: z.array(z.string()).default([]),
+      demoUrl: z.string().default(''),
+      buyUrl: z.string().default(''),
+      order: z.number().default(100),
+      draft: z.boolean().default(false),
+    }),
 });
 
 const guestbook = defineCollection({
@@ -176,5 +199,6 @@ export const collections = {
   now,
   changelog,
   notes,
+  products,
   guestbook,
 };

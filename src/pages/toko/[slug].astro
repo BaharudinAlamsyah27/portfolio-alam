@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductDetail from '../../components/sections/ProductDetail.astro';
+import { getProductsData, pickLocale } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const products = await getProductsData(true);
+  return products.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const description = pickLocale(entry.data.summary, 'id');
+---
+
+<BaseLayout title={`${entry.data.title} — Toko Alam`} description={description}>
+  <ProductDetail entry={entry} />
+</BaseLayout>

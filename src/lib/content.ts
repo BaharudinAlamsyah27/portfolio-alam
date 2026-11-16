@@ -78,3 +78,10 @@ export async function getGuestbookData() {
   const entries = await getCollection('guestbook');
   return entries[0]?.data?.entries ?? [];
 }
+
+export async function getProductsData(includeDrafts = false) {
+  const entries = await getCollection('products');
+  return entries
+    .filter((entry) => (includeDrafts ? true : !entry.data.draft))
+    .sort((a, b) => a.data.order - b.data.order);
+}

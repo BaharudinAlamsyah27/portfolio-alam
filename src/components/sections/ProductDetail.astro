@@ -1,0 +1,133 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import Tape from '../ui/Tape.astro';
+import { getLocaleFromUrl, getLocalizedPath } from '../../i18n/utils';
+import { pickLocale } from '../../lib/content';
+
+interface Props {
+  entry: CollectionEntry<'products'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const locale = getLocaleFromUrl(Astro.url);
+const backHref = getLocalizedPath('/toko', locale);
+const summary = pickLocale(entry.data.summary, locale);
+
+const WA_NUMBER = '6287781308730';
+const orderHref =
+  entry.data.buyUrl && entry.data.buyUrl.trim().length > 0
+    ? entry.data.buyUrl
+    : `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
+        locale === 'id'
+          ? `Halo Alam, saya tertarik memesan produk web "${entry.data.title}" (${entry.data.price}).`
+          : `Hi Alam, I'm interested in ordering "${entry.data.title}" (${entry.data.price}).`,
+      )}`;
+---
+
+<article class="mx-auto max-w-3xl space-y-8">
+  <a href={backHref} class="sticker-btn bg-paper-2 text-ink rounded-sm px-3.5 py-1.5 font-mono text-xs">
+    &larr; {locale === 'id' ? 'Kembali ke etalase toko' : 'Back to shop'}
+  </a>
+
+  <header class="sticker-card relative rounded-md bg-paper p-6 sm:p-8">
+    <Tape color="mustard" rotate="-rotate-1" class="absolute -top-3 left-10" />
+
+    {
+      entry.data.cover && (
+        <div class="mb-5 overflow-hidden rounded-sm border-2 border-ink bg-paper-2">
+          <Image
+            src={entry.data.cover}
+            alt={entry.data.title}
+            width={900}
+            height={520}
+            class="w-full object-cover"
+          />
+        </div>
+      )
+    }
+
+    <div class="flex flex-wrap items-center gap-2 font-mono text-xs">
+      <span class="bg-tomato text-paper rounded-sm border-2 border-ink px-2 py-0.5 font-bold uppercase">
+        {entry.data.category}
+      </span>
+      <span class="bg-paper-2 text-ink rounded-sm border border-ink px-2 py-0.5 uppercase">
+        {entry.data.scale}
+      </span>
+      <span class="bg-cobalt text-paper rounded-sm border border-ink px-2 py-0.5 font-bold uppercase">
+        {entry.data.badge}
+      </span>
+    </div>
+
+    <h1 class="font-display mt-3 text-3xl font-extrabold leading-tight sm:text-4xl">
+      {entry.data.title}
+    </h1>
+
+    <div class="bg-mustard text-ink mt-4 inline-block rounded-sm border-2 border-ink px-3.5 py-1 font-mono text-lg font-extrabold shadow-[2px_2px_0_var(--ink)]">
+      {entry.data.price}
+    </div>
+
+    <p class="mt-4 text-base leading-relaxed text-ink-soft sm:text-lg">{summary}</p>
+
+    {
+      entry.data.features.length > 0 && (
+        <div class="bg-paper-2 mt-5 rounded-sm border-2 border-ink p-4">
+          <h2 class="font-mono text-xs font-bold uppercase text-ink">
+            {locale === 'id' ? 'Fitur Utama:' : 'Key Features:'}
+          </h2>
+          <ul class="mt-2.5 grid gap-2 text-sm sm:grid-cols-2">
+            {entry.data.features.map((feat) => (
+              <li class="flex items-start gap-2">
+                <span class="text-leaf font-bold">✓</span>
+                <span>{feat}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+
+    <div class="mt-6 flex flex-wrap items-center justify-between gap-4 border-t-2 border-dashed border-ink/25 pt-5">
+      <div class="flex flex-wrap gap-1.5">
+        {
+          entry.data.stack.map((tech) => (
+            <span class="bg-paper-2 text-ink rounded-sm border border-ink px-2.5 py-0.5 font-mono text-xs font-medium">
+              {tech}
+            </span>
+          ))
+        }
+      </div>
+
+      <div class="flex flex-wrap gap-2.5">
+        {
+          entry.data.demoUrl && (
+            <a
+              href={entry.data.demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="sticker-btn bg-paper text-ink rounded-sm px-4 py-2 font-mono text-xs"
+            >
+              {locale === 'id' ? 'Lihat Demo' : 'Live Demo'}
+            </a>
+          )
+        }
+        <a
+          href={orderHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="sticker-btn bg-leaf text-paper rounded-sm px-5 py-2 font-mono text-xs"
+        >
+          {locale === 'id' ? 'Pesan via WhatsApp' : 'Order via WhatsApp'} &rarr;
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div
+    class="sticker-card space-y-4 rounded-md bg-paper p-6 leading-relaxed text-ink sm:p-8 [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:font-display [&_h3]:text-xl [&_h3]:font-bold [&_li]:ml-5 [&_li]:list-disc [&_li]:text-ink-soft [&_p]:text-ink-soft [&_p]:leading-relaxed [&_ul]:space-y-1.5"
+  >
+    <Content />
+  </div>
+</article>

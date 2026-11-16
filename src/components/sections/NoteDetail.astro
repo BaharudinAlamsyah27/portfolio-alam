@@ -14,6 +14,20 @@ const { Content } = await render(entry);
 const locale = getLocaleFromUrl(Astro.url);
 const backHref = getLocalizedPath('/notes', locale);
 const summary = pickLocale(entry.data.summary, locale);
+
+const rubricLabels: Record<string, { id: string; en: string; badge: string }> = {
+  lab: { id: 'Lab & Kode', en: 'Lab & Code', badge: 'bg-cobalt text-paper' },
+  belajar: { id: 'Belajar', en: 'Learning', badge: 'bg-leaf text-paper' },
+  event: { id: 'Event & Lomba', en: 'Events', badge: 'bg-tomato text-paper' },
+  opini: { id: 'Opini', en: 'Opinion', badge: 'bg-mustard text-ink' },
+  jelajah: { id: 'Jalan-jalan', en: 'Travel', badge: 'bg-blush text-ink' },
+  hidup: { id: 'Cerita Hidup', en: 'Life Notes', badge: 'bg-paper-2 text-ink' },
+};
+
+const catInfo = rubricLabels[entry.data.category] ?? rubricLabels.lab;
+const wordCount = (entry.body ?? '').trim().split(/\s+/).filter(Boolean).length;
+const readMins = Math.max(1, Math.ceil(wordCount / 200));
+
 const dateStr = entry.data.date.toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-US', {
   day: 'numeric',
   month: 'long',
@@ -23,14 +37,22 @@ const dateStr = entry.data.date.toLocaleDateString(locale === 'id' ? 'id-ID' : '
 
 <article class="mx-auto max-w-3xl space-y-8">
   <a href={backHref} class="sticker-btn bg-paper-2 text-ink rounded-sm px-3.5 py-1.5 font-mono text-xs">
-    &larr; {locale === 'id' ? 'Semua catatan lab' : 'All lab notes'}
+    &larr; {locale === 'id' ? 'Semua catatan' : 'All notes'}
   </a>
 
   <header class="sticker-card relative rounded-md bg-paper p-6 sm:p-8">
     <Tape color="mustard" rotate="-rotate-1" class="absolute -top-3 left-10" />
 
     <div class="flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-ink-soft">
-      <span>{dateStr}</span>
+      <div class="flex flex-wrap items-center gap-2">
+        <span class={`rounded-sm border border-ink px-2 py-0.5 text-[11px] font-bold ${catInfo.badge}`}>
+          {catInfo[locale]}
+        </span>
+        <span>{dateStr}</span>
+        <span>·</span>
+        <span>{readMins} {locale === 'id' ? 'mnt baca' : 'min read'}</span>
+      </div>
+
       <div class="flex flex-wrap gap-1.5">
         {
           entry.data.tags.map((tag) => (

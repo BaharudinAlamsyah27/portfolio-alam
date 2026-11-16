@@ -1,0 +1,227 @@
+---
+import { Image } from 'astro:assets';
+import Tape from '../ui/Tape.astro';
+import { getLocaleFromUrl, getLocalizedPath } from '../../i18n/utils';
+import { getProductsData, pickLocale } from '../../lib/content';
+
+const locale = getLocaleFromUrl(Astro.url);
+const products = await getProductsData(false);
+const homeHref = getLocalizedPath('/', locale);
+
+const WA_NUMBER = '6287781308730';
+
+const catLabels: Record<string, { id: string; en: string }> = {
+  administrasi: { id: 'Administrasi', en: 'Administration' },
+  pendidikan: { id: 'Pendidikan', en: 'Education' },
+  geospasial: { id: 'Geospasial', en: 'Geospatial' },
+  operasional: { id: 'Operasional & Piket', en: 'Operations & Roster' },
+  gudang: { id: 'Data Gudang', en: 'Warehouse & Stock' },
+  lainnya: { id: 'Lainnya', en: 'Other' },
+};
+
+const categories = ['all', ...Array.from(new Set(products.map((p) => p.data.category)))];
+
+function getOrderUrl(title: string, price: string, customBuyUrl: string) {
+  if (customBuyUrl && customBuyUrl.trim().length > 0) return customBuyUrl;
+  const msg =
+    locale === 'id'
+      ? `Halo Alam, saya tertarik dengan produk web "${title}" (${price}). Boleh tanya detail & demonya?`
+      : `Hi Alam, I'm interested in the web product "${title}" (${price}). Could you share more details?`;
+  return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+}
+---
+
+<section class="mx-auto max-w-5xl space-y-8">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <a href={homeHref} class="sticker-btn bg-paper-2 text-ink rounded-sm px-3.5 py-1.5 font-mono text-xs">
+      &larr; {locale === 'id' ? 'Kembali ke meja' : 'Back to desk'}
+    </a>
+
+    <span class="font-hand text-cobalt -rotate-1 text-base">
+      ✎ {locale === 'id' ? 'kelola produk & harga lewat /keystatic' : 'manage products via /keystatic'}
+    </span>
+  </div>
+
+  <div class="space-y-2 border-b-2 border-ink pb-4">
+    <span class="bg-tomato text-paper rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold uppercase shadow-[2px_2px_0_var(--ink)]">
+      /TOKO · ETALASE PRODUK WEB
+    </span>
+    <h1 class="font-display text-3xl font-extrabold sm:text-4xl">
+      {locale === 'id' ? 'Galeri Sistem Web Siap Pakai & Custom' : 'Ready-to-Use & Custom Web Systems'}
+    </h1>
+    <p class="max-w-2xl text-sm leading-relaxed text-ink-soft sm:text-base">
+      {locale === 'id'
+        ? 'Kumpulan sistem web skala sederhana hingga menengah (administrasi, piket, gudang, pendidikan, hingga geospasial). Cocok untuk instansi, UMKM, atau bahan referensi/iklan pengembangan custom.'
+        : 'A catalog of simple-to-medium web systems (admin, duty roster, warehouse, education, and WebGIS). Available as ready-to-deploy source code or tailored to your needs.'}
+    </p>
+  </div>
+
+  <!-- Filter Bidang -->
+  <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Filter bidang produk">
+    {
+      categories.map((cat) => (
+        <button
+          type="button"
+          data-shop-filter={cat}
+          aria-pressed={cat === 'all' ? 'true' : 'false'}
+          class={`rounded-sm border-2 border-ink px-3 py-1 font-mono text-xs font-bold transition-all ${
+            cat === 'all'
+              ? 'bg-ink text-paper shadow-[2px_2px_0_var(--mustard)]'
+              : 'bg-paper text-ink hover:bg-mustard/35'
+          }`}
+        >
+          {cat === 'all' ? (locale === 'id' ? 'Semua' : 'All') : catLabels[cat]?.[locale] ?? cat}
+        </button>
+      ))
+    }
+  </div>
+
+  <!-- Grid Etalase Produk -->
+  <div class="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+    {
+      products.map((entry, idx) => {
+        const summary = pickLocale(entry.data.summary, locale);
+        const detailHref = getLocalizedPath(`/toko/${entry.id}`, locale);
+        const orderHref = getOrderUrl(entry.data.title, entry.data.price, entry.data.buyUrl);
+        const tilt = idx % 2 === 0 ? '-rotate-[0.4deg]' : 'rotate-[0.4deg]';
+
+        return (
+          <article
+            data-shop-card
+            data-category={entry.data.category}
+            class={`sticker-card relative flex flex-col justify-between rounded-md bg-paper p-5 ${tilt}`}
+          >
+            {idx === 0 && <Tape color="mustard" rotate="-rotate-2" class="absolute -top-3 left-8" />}
+
+            <div class="space-y-3.5">
+              {entry.data.cover && (
+                <div class="overflow-hidden rounded-sm border-2 border-ink bg-paper-2">
+                  <Image
+                    src={entry.data.cover}
+                    alt={entry.data.title}
+                    width={600}
+                    height={360}
+                    class="h-40 w-full object-cover"
+                  />
+                </div>
+              )}
+
+              <div class="flex flex-wrap items-center justify-between gap-2 pt-1 font-mono text-[11px]">
+                <span class="bg-paper-2 text-ink rounded-sm border border-ink px-2 py-0.5 font-bold uppercase">
+                  {catLabels[entry.data.category]?.[locale] ?? entry.data.category}
+                </span>
+                <span class="bg-cobalt text-paper rounded-sm border border-ink px-2 py-0.5 font-bold uppercase">
+                  {entry.data.badge}
+                </span>
+              </div>
+
+              <h2 class="font-display text-xl font-extrabold leading-snug">
+                <a href={detailHref} class="hover:text-tomato underline-offset-4 hover:underline">
+                  {entry.data.title}
+                </a>
+              </h2>
+
+              <div class="bg-mustard text-ink inline-block rounded-sm border-2 border-ink px-3 py-1 font-mono text-sm font-extrabold shadow-[2px_2px_0_var(--ink)]">
+                {entry.data.price}
+              </div>
+
+              <p class="text-sm leading-relaxed text-ink-soft">{summary}</p>
+
+              {entry.data.features.length > 0 && (
+                <ul class="space-y-1 border-t border-dashed border-ink/25 pt-3 text-xs text-ink">
+                  {entry.data.features.slice(0, 3).map((feat) => (
+                    <li class="flex items-start gap-1.5">
+                      <span class="text-leaf font-bold">✓</span>
+                      <span>{feat}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div class="mt-5 space-y-3 border-t-2 border-dashed border-ink/25 pt-4">
+              <div class="flex flex-wrap gap-1">
+                {entry.data.stack.map((tech) => (
+                  <span class="bg-paper-2 text-ink rounded-sm border border-ink px-2 py-0.5 font-mono text-[10px] font-semibold">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+
+              <div class="flex flex-wrap gap-2">
+                <a
+                  href={orderHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="sticker-btn bg-leaf text-paper flex-1 justify-center rounded-sm px-3 py-2 font-mono text-xs"
+                >
+                  {locale === 'id' ? 'Pesan / WA' : 'Order / WA'} &rarr;
+                </a>
+
+                <a
+                  href={detailHref}
+                  class="sticker-btn bg-paper-2 text-ink rounded-sm px-3 py-2 font-mono text-xs"
+                >
+                  {locale === 'id' ? 'Detail' : 'Details'}
+                </a>
+              </div>
+            </div>
+          </article>
+        );
+      })
+    }
+  </div>
+
+  <!-- Banner Ajakan Custom Order -->
+  <aside class="sticker-card rounded-md bg-paper-2 p-6 sm:flex sm:items-center sm:justify-between sm:gap-6">
+    <div class="space-y-1">
+      <h2 class="font-display text-xl font-bold">
+        {locale === 'id' ? 'Butuh sistem web khusus sesuai alur tempat Anda?' : 'Need a custom web system tailored to your workflow?'}
+      </h2>
+      <p class="text-sm text-ink-soft">
+        {locale === 'id'
+          ? 'Bisa konsultasi gratis dulu lewat WhatsApp untuk estimasi waktu dan biaya yang pas.'
+          : 'Feel free to chat on WhatsApp to discuss scope, timeline, and budget.'}
+      </p>
+    </div>
+
+    <a
+      href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
+        locale === 'id'
+          ? 'Halo Alam, saya ingin konsultasi pembuatan website custom.'
+          : 'Hi Alam, I would like to discuss a custom web project.',
+      )}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="sticker-btn bg-tomato text-paper mt-4 shrink-0 rounded-sm px-4 py-2.5 font-mono text-xs sm:mt-0"
+    >
+      WhatsApp Alam &rarr;
+    </a>
+  </aside>
+</section>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-shop-filter]');
+    const cards = document.querySelectorAll<HTMLElement>('[data-shop-card]');
+    if (buttons.length === 0 || cards.length === 0) return;
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const chosen = btn.dataset.shopFilter || 'all';
+        buttons.forEach((b) => {
+          const active = b === btn;
+          b.setAttribute('aria-pressed', active ? 'true' : 'false');
+          b.className = active
+            ? 'rounded-sm border-2 border-ink px-3 py-1 font-mono text-xs font-bold transition-all bg-ink text-paper shadow-[2px_2px_0_var(--mustard)]'
+            : 'rounded-sm border-2 border-ink px-3 py-1 font-mono text-xs font-bold transition-all bg-paper text-ink hover:bg-mustard/35';
+        });
+
+        cards.forEach((card) => {
+          const match = chosen === 'all' || card.dataset.category === chosen;
+          card.classList.toggle('hidden', !match);
+        });
+      });
+    });
+  });
+</script>
