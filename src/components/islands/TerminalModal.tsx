@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import {
+  answerQuestionLocally,
   autocompleteInput,
   executeCommand,
   type TerminalContext,
@@ -24,7 +25,16 @@ const THEME_STYLES: Record<TerminalTheme, string> = {
   amber: 'bg-[#261D0F] text-[#FFE8A3] border-[#F5B700]',
 };
 
-const QUICK_CMDS = ['help', 'whoami', 'ls projects', 'skills', 'cat', 'jog', 'sudo hire-me'];
+const QUICK_CMDS = [
+  'help',
+  'whoami',
+  'ls projects',
+  'skills',
+  'ask apa keahlian Alam?',
+  'cat',
+  'jog',
+  'sudo hire-me',
+];
 
 export default function TerminalModal({ context }: Props) {
   const [open, setOpen] = useState(false);
@@ -127,10 +137,46 @@ export default function TerminalModal({ context }: Props) {
     if (result.clear) {
       setEntries([]);
     } else {
+      const entryId = nextId.current++;
       setEntries((prev) => [
         ...prev,
-        { id: nextId.current++, command: trimmed, lines: result.lines },
+        { id: entryId, command: trimmed, lines: result.lines },
       ]);
+
+      if (result.askQuestion) {
+        const q = result.askQuestion;
+        fetch('/api/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: q, locale: context.locale }),
+        })
+          .then((res) => (res.ok ? res.json() : { fallback: true }))
+          .then((data: { answer?: string; fallback?: boolean }) => {
+            const finalLines: TerminalLine[] =
+              data.answer && !data.fallback
+                ? [
+                    {
+                      kind: 'accent',
+                      text:
+                        context.locale === 'id'
+                          ? '🤖 [Gemini AI · Meja Alam]:'
+                          : '🤖 [Gemini AI · Alam’s Desk]:',
+                    },
+                    { kind: 'info', text: data.answer },
+                  ]
+                : answerQuestionLocally(q, context);
+
+            setEntries((prev) =>
+              prev.map((item) => (item.id === entryId ? { ...item, lines: finalLines } : item)),
+            );
+          })
+          .catch(() => {
+            const fallbackLines = answerQuestionLocally(q, context);
+            setEntries((prev) =>
+              prev.map((item) => (item.id === entryId ? { ...item, lines: fallbackLines } : item)),
+            );
+          });
+      }
     }
 
     setCmdHistory((prev) => [trimmed, ...prev.slice(0, 29)]);

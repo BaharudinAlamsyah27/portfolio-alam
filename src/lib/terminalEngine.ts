@@ -41,6 +41,7 @@ export interface CommandResult {
   navigate?: string;
   scrollTo?: string;
   setTheme?: TerminalTheme;
+  askQuestion?: string;
 }
 
 const VALID_THEMES: TerminalTheme[] = ['ink', 'paper', 'forest', 'amber'];
@@ -55,6 +56,7 @@ const BASE_COMMANDS = [
   'cat',
   'contact',
   'jog',
+  'ask ',
   'theme ',
   'sudo hire-me',
   'clear',
@@ -96,6 +98,7 @@ export function executeCommand(rawInput: string, ctx: TerminalContext): CommandR
         { kind: 'info', text: '  cat               — ' + (isId ? 'Panggil kucing ASCII 🐈' : 'Summon ASCII cat 🐈') },
         { kind: 'info', text: '  jog               — ' + (isId ? 'Statistik jogging pagi' : 'Morning jogging stats') },
         { kind: 'info', text: '  contact           — ' + (isId ? 'Info kontak & pindah ke form' : 'Contact info & scroll to form') },
+        { kind: 'info', text: '  ask <pertanyaan>  — ' + (isId ? 'Tanya AI tentang Alam 🤖' : 'Ask AI about Alam 🤖') },
         { kind: 'info', text: '  theme <nama>      — ink | paper | forest | amber' },
         { kind: 'info', text: '  sudo hire-me      — ' + (isId ? 'Akses cepat HR / Klien' : 'Fast-track HR / Client mode') },
         { kind: 'info', text: '  clear / exit      — ' + (isId ? 'Bersihkan / tutup' : 'Clear / close') },
@@ -332,6 +335,37 @@ export function executeCommand(rawInput: string, ctx: TerminalContext): CommandR
     };
   }
 
+  if (cmd === 'ask') {
+    if (!arg) {
+      return {
+        lines: [
+          {
+            kind: 'accent',
+            text: isId
+              ? 'Pemakaian: ask <pertanyaan tentang Alam>'
+              : 'Usage: ask <question about Alam>',
+          },
+          {
+            kind: 'muted',
+            text: isId
+              ? 'Contoh: ask apa saja project Alam di BPRS Sukowati?'
+              : 'Example: ask what projects has Alam built?',
+          },
+        ],
+      };
+    }
+
+    return {
+      lines: [
+        {
+          kind: 'muted',
+          text: isId ? '🤖 Memikirkan jawaban...' : '🤖 Thinking...',
+        },
+      ],
+      askQuestion: arg,
+    };
+  }
+
   return {
     lines: [
       {
@@ -362,4 +396,126 @@ export function autocompleteInput(partial: string, ctx: TerminalContext): string
 
   const cmdMatch = BASE_COMMANDS.find((c) => c.startsWith(lower));
   return cmdMatch ?? null;
+}
+
+/**
+ * Mesin penjawab lokal berbasis data Content Collections.
+ * Digunakan ketika /api/ask (Gemini API) belum dikonfigurasi atau sedang offline,
+ * sehingga perintah `ask <pertanyaan>` selalu bisa menjawab secara akurat & instan.
+ */
+export function answerQuestionLocally(question: string, ctx: TerminalContext): TerminalLine[] {
+  const q = question.toLowerCase();
+  const isId = ctx.locale === 'id';
+
+  if (/(magang|bprs|sukowati|kantor|pengalaman|kerja|intern)/.test(q)) {
+    return [
+      {
+        kind: 'accent',
+        text: isId ? '🤖 [Asisten Meja Alam]:' : '🤖 [Alam’s Desk Assistant]:',
+      },
+      {
+        kind: 'info',
+        text: isId
+          ? 'Saat ini Alam menjalani program MagangHub sebagai IT Staff di BPRS Sukowati Sragen. Di sana ia mengembangkan & merawat sistem internal seperti website perusahaan, eSurat (disposisi & arsip surat), CMMS, dan monitoring keaktifan anggota.'
+          : 'Alam is currently an IT Staff intern (MagangHub) at BPRS Sukowati Sragen, building and maintaining internal systems including the corporate website, eSurat (digital correspondence), CMMS, and member monitoring.',
+      },
+    ];
+  }
+
+  if (/(project|proyek|buat|bikin|portofolio|esurat|kredit|armada)/.test(q)) {
+    const titles = ctx.projects.map((p) => p.title).join('; ');
+    return [
+      {
+        kind: 'accent',
+        text: isId ? '🤖 [Asisten Meja Alam]:' : '🤖 [Alam’s Desk Assistant]:',
+      },
+      {
+        kind: 'info',
+        text: isId
+          ? `Project utama Alam meliputi: ${titles}. Ketik "ls projects" lalu "open <slug>" untuk membaca masalah, proses, dan hasilnya.`
+          : `Alam’s featured projects include: ${titles}. Type "ls projects" then "open <slug>" to read the full case studies.`,
+      },
+    ];
+  }
+
+  if (/(skill|keahlian|bisa|bahasa|framework|stack|teknologi|tech)/.test(q)) {
+    const core = ctx.skills
+      .filter((s) => s.level === 'dikuasai')
+      .map((s) => s.name)
+      .join(', ');
+    const learning = ctx.skills
+      .filter((s) => s.level === 'didalami')
+      .map((s) => s.name)
+      .join(', ');
+    return [
+      {
+        kind: 'accent',
+        text: isId ? '🤖 [Asisten Meja Alam]:' : '🤖 [Alam’s Desk Assistant]:',
+      },
+      {
+        kind: 'info',
+        text: isId
+          ? `Pegangan utama Alam adalah Web Programming (${core}). Saat ini ia sedang mendalami ${learning}, serta mengeksplor game dev dan jaringan komputer.`
+          : `Alam’s daily drivers are in Web Programming (${core}). He is actively deepening ${learning}, while exploring game dev and networking.`,
+      },
+    ];
+  }
+
+  if (/(lokasi|tinggal|domisili|asal|mana|sragen|brebes|remote|onsite|pindah)/.test(q)) {
+    return [
+      {
+        kind: 'accent',
+        text: isId ? '🤖 [Asisten Meja Alam]:' : '🤖 [Alam’s Desk Assistant]:',
+      },
+      {
+        kind: 'info',
+        text: isId
+          ? `Alam berasal dari Brebes dan sekarang berdomisili di Sragen, Jawa Tengah. Ia terbuka untuk peluang kerja full-time (onsite/hybrid/remote) maupun kolaborasi proyek web.`
+          : `Alam is originally from Brebes and currently based in Sragen, Central Java. He is open to full-time roles (onsite/hybrid/remote) and freelance web projects.`,
+      },
+    ];
+  }
+
+  if (/(kontak|hubungi|email|hire|rekrut|cv|resume|wa|linkedin)/.test(q)) {
+    return [
+      {
+        kind: 'accent',
+        text: isId ? '🤖 [Asisten Meja Alam]:' : '🤖 [Alam’s Desk Assistant]:',
+      },
+      {
+        kind: 'info',
+        text: isId
+          ? `Kamu bisa menghubungi Alam lewat email ${ctx.profile.email}, LinkedIn, atau langsung ketik "sudo hire-me" untuk mengunduh CV (${ctx.profile.cvUrl}) dan menuju form kontak.`
+          : `You can reach Alam at ${ctx.profile.email}, on LinkedIn, or type "sudo hire-me" to grab his CV (${ctx.profile.cvUrl}) and jump to the contact form.`,
+      },
+    ];
+  }
+
+  if (/(hobi|kucing|cat|jogging|lari|sifat|orangnya|introvert)/.test(q)) {
+    return [
+      {
+        kind: 'accent',
+        text: isId ? '🤖 [Asisten Meja Alam]:' : '🤖 [Alam’s Desk Assistant]:',
+      },
+      {
+        kind: 'info',
+        text: isId
+          ? `Di luar layar, Alam suka kucing, jogging pagi (sudah tercatat ${ctx.profile.jogging.totalKm} km), dan menjelajah tempat baru. Orangnya teliti, hati-hati, dan lebih banyak kerja daripada bicara.`
+          : `Away from the keyboard, Alam enjoys cats, morning jogs (${ctx.profile.jogging.totalKm} km logged), and exploring new places. He’s thorough, careful, and prefers shipping code over long small talk.`,
+      },
+    ];
+  }
+
+  return [
+    {
+      kind: 'accent',
+      text: isId ? '🤖 [Asisten Meja Alam]:' : '🤖 [Alam’s Desk Assistant]:',
+    },
+    {
+      kind: 'info',
+      text: isId
+        ? `${ctx.profile.name} (${ctx.profile.nickname}) adalah fresh graduate & IT Staff (MagangHub) di BPRS Sukowati Sragen yang fokus di Web Programming, sedang mendalami Mobile & AI. Coba tanya soal project, skill, pengalaman magang, lokasi, atau cara menghubungi Alam!`
+        : `${ctx.profile.name} (${ctx.profile.nickname}) is a fresh graduate & IT Staff intern (MagangHub) at BPRS Sukowati Sragen focused on Web Programming, deepening Mobile & AI. Try asking about his projects, skills, internship, location, or contact info!`,
+    },
+  ];
 }

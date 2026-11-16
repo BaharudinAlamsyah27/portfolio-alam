@@ -95,6 +95,9 @@
 .desk-section-passport {
   order: 35;
 }
+.desk-section-guestbook {
+  order: 38;
+}
 .desk-section-contact {
   order: 40;
 }

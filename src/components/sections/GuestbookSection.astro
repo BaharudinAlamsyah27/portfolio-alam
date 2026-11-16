@@ -1,0 +1,31 @@
+---
+import GuestbookWall from '../islands/GuestbookWall';
+import { getLocaleFromUrl } from '../../i18n/utils';
+import { getGuestbookData } from '../../lib/content';
+
+const locale = getLocaleFromUrl(Astro.url);
+const entries = await getGuestbookData();
+const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
+---
+
+<section
+  id="guestbook"
+  aria-labelledby="guestbook-heading"
+  class="desk-section-guestbook scroll-mt-20"
+>
+  <div class="mb-8 max-w-2xl space-y-2 border-b-2 border-ink pb-4">
+    <span class="bg-mustard text-ink inline-block rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold uppercase shadow-[2px_2px_0_var(--ink)]">
+      03.8 · GUESTBOOK
+    </span>
+    <h2 id="guestbook-heading" class="font-display text-3xl font-extrabold sm:text-4xl">
+      {locale === 'id' ? 'Papan Catatan Tamu' : 'Desk Guestbook Wall'}
+    </h2>
+    <p class="text-ink-soft text-sm leading-relaxed sm:text-base">
+      {locale === 'id'
+        ? 'Sudah mampir ke meja kerja saya? Tinggalkan catatan tempel singkat — salam kenal, kesan, atau pesan untuk Alam.'
+        : 'Dropped by my digital desk? Pin a sticky note — say hello, share feedback, or leave a note for Alam.'}
+    </p>
+  </div>
+
+  <GuestbookWall client:visible initialEntries={entries} locale={locale} web3formsKey={web3formsKey} />
+</section>

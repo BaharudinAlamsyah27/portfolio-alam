@@ -150,6 +150,23 @@ const notes = defineCollection({
   }),
 });
 
+const guestbook = defineCollection({
+  loader: glob({ pattern: 'guestbook.yaml', base: './src/content/singletons' }),
+  schema: z.object({
+    entries: z
+      .array(
+        z.object({
+          name: z.string(),
+          role: z.string().default('Tamu'),
+          message: z.string(),
+          color: z.enum(['mustard', 'blush', 'paper', 'leaf']).default('mustard'),
+          date: z.string().default('2026-11-16'),
+        }),
+      )
+      .default([]),
+  }),
+});
+
 export const collections = {
   projects,
   experience,
@@ -159,4 +176,5 @@ export const collections = {
   now,
   changelog,
   notes,
+  guestbook,
 };

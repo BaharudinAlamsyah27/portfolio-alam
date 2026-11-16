@@ -34,7 +34,7 @@ export default config({
     navigation: {
       Profil: ['profile', 'skills', 'now'],
       Konten: ['projects', 'notes', 'experience', 'places'],
-      Website: ['changelog'],
+      Website: ['guestbook', 'changelog'],
     },
   },
 
@@ -150,6 +150,35 @@ export default config({
         learning: fields.array(fields.text({ label: 'Topik' }), { label: 'Sedang dipelajari' }),
         building: fields.array(fields.text({ label: 'Project' }), { label: 'Sedang dibangun' }),
         exploring: fields.array(fields.text({ label: 'Topik' }), { label: 'Sedang dieksplor' }),
+      },
+    }),
+
+    guestbook: singleton({
+      label: 'Buku Tamu Meja Kerja',
+      path: 'src/content/singletons/guestbook',
+      schema: {
+        entries: fields.array(
+          fields.object({
+            name: fields.text({ label: 'Nama tamu' }),
+            role: fields.text({ label: 'Peran / asal (contoh: Sesama Dev)' }),
+            message: fields.text({ label: 'Pesan singkat', multiline: true }),
+            color: fields.select({
+              label: 'Warna kertas tempel',
+              options: [
+                { label: 'Kuning Mustard', value: 'mustard' },
+                { label: 'Merah Muda Blush', value: 'blush' },
+                { label: 'Kertas Krem', value: 'paper' },
+                { label: 'Hijau Daun', value: 'leaf' },
+              ],
+              defaultValue: 'mustard',
+            }),
+            date: fields.text({ label: 'Tanggal (YYYY-MM-DD)', defaultValue: '2026-11-16' }),
+          }),
+          {
+            label: 'Daftar catatan tamu yang ditempel di meja',
+            itemLabel: (props) => `${props.fields.name.value} (${props.fields.role.value})`,
+          },
+        ),
       },
     }),
   },

@@ -73,3 +73,8 @@ export async function getNotesData(includeDrafts = false) {
     .filter((entry) => (includeDrafts ? true : !entry.data.draft))
     .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
+
+export async function getGuestbookData() {
+  const entries = await getCollection('guestbook');
+  return entries[0]?.data?.entries ?? [];
+}

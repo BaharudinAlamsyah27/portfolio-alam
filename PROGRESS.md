@@ -9,9 +9,9 @@
 
 | Item | Nilai |
 |---|---|
-| Fase aktif | **Fase 7 — Lanjutan (Batch 1 selesai ✅)** |
-| Fase berikutnya | **Fase 7 — Lanjutan (Batch 2: AI `ask` di Terminal + Buku Tamu Digital)** |
-| Model disarankan berikutnya | **Claude Sonnet 5.5 (Medium)** atau **Gemini 4 Argon (Medium)** untuk integrasi Serverless API (`ask` Gemini + Buku Tamu) |
+| Fase aktif | **Fase 7 — Lanjutan (Seluruh 5 Fitur Selesai ✅)** |
+| Fase berikutnya | **Pemeliharaan & Penambahan Konten Berkala via `/keystatic`** |
+| Model disarankan berikutnya | **Gemini 3.8 Flash (Medium)** untuk update konten / teks ringan sehari-hari |
 | URL live | _Live di Vercel_ |
 | Repo GitHub | `https://github.com/BaharudinAlamsyah27/portfolio-alam` |
 
@@ -312,3 +312,26 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
 - `git add . && git commit && git push` agar perubahan ini otomatis ter-deploy ke Vercel.
 - Lanjut ke Batch 2 Fase 7: perintah **`ask` AI** di Terminal Mode (Gemini API via Vercel Function) dan **Buku Tamu Meja Kerja**.
 - Rekomendasi model: **Claude Sonnet 5.5 (Medium)** atau **Gemini 4 Argon (Medium)** (karena menyentuh Vercel Serverless Functions & integrasi API).
+
+---
+
+### Sesi 9 — 2026-11-16 11:48–13:16 WIB
+**Model:** Gemini 4 Argon (Medium)
+**Fase:** 7 — Lanjutan (Batch 2: AI `ask` + Buku Tamu Meja Kerja)
+
+**Dikerjakan:**
+- **Perintah `ask <pertanyaan>` di Terminal Mode (`api/ask.mjs` + `terminalEngine.ts` + `TerminalModal.tsx`):**
+  - Membuat Vercel Serverless Function `api/ask.mjs` yang memanggil `gemini-2.5-flash` jika `GEMINI_API_KEY` diset di environment Vercel, tanpa perlu mengubah build Astro yang 100% statis.
+  - Membuat mesin penjawab lokal pintar `answerQuestionLocally()` di `src/lib/terminalEngine.ts` sebagai fallback otomatis agar perintah `ask` langsung berfungsi 100% akurat baik di lokal maupun sebelum API key diisi.
+- **Papan Catatan Tamu (`GuestbookWall.tsx` + `GuestbookSection.astro` + `guestbook.yaml`):**
+  - Menambahkan singleton `guestbook` di `src/content.config.ts`, `keystatic.config.ts`, dan `src/lib/content.ts`.
+  - Pengunjung dapat menempelkan catatan baru dengan pilihan warna kertas (`mustard`, `blush`, `paper`, `leaf`), langsung tampil di papan (`localStorage`), dan opsional mengirim notifikasi ke inbox Alam via Web3Forms untuk dikurasi permanen lewat `/keystatic`.
+- Menambahkan `.env.example` dan entri changelog `0-6-0-ai-ask-guestbook.mdx`.
+- Verifikasi: `astro check` (**0 errors, 0 warnings, 0 hints** pada 47 file) dan `npm run build` (**21 halaman statis** lolos).
+
+**Keputusan / dependency baru:**
+- Tidak ada dependency baru (`api/ask.mjs` memanggil REST endpoint Gemini API secara langsung menggunakan `fetch` bawaan Node.js di Vercel).
+
+**Berikutnya:**
+- Jalankan `git push` untuk memperbarui website live di Vercel.
+- Untuk perawatan harian (tambah project/catatan baru), cukup gunakan **Gemini 3.8 Flash**.

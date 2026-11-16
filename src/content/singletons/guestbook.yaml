@@ -1,0 +1,11 @@
+entries:
+  - name: Alam (Tuan Rumah)
+    role: Web Developer · Sragen
+    message: Selamat datang di meja kerja digital saya! Silakan tempel catatan kecil atau salam kenal di papan ini.
+    color: mustard
+    date: "2026-11-16"
+  - name: Kucing Meja Kerja
+    role: Maskot Resmi
+    message: Meong! Jangan lupa ketik `cat` atau `ask apa hobi Alam?` di Terminal Mode (Ctrl+K).
+    color: blush
+    date: "2026-11-16"
