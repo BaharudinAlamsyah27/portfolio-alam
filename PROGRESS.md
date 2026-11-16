@@ -338,7 +338,33 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
 
 ---
 
-### Sesi 10 — 2026-11-16 13:22–13:27 WIB
+### Sesi 11 — 2026-11-16 13:46–13:54 WIB
+**Model:** Gemini 4 Hydrogen / Gemini 3.8 Flash (Medium)
+**Fase:** 7 — Lanjutan (Fitur Konversi Toko: Kalkulator Custom, Akun Demo, FAQ & Garansi)
+
+**Dikerjakan:**
+- **Kalkulator Estimasi Custom Project (`CustomCostCalculator.tsx`):**
+  - Island Preact interaktif (`client:visible`) di `/toko` untuk memilih sistem dasar (Piket, Gudang, WebGIS, atau Custom) dan mencentang add-on (install remote, hosting domain, notif WhatsApp gateway, kop surat PDF, multi role, GPS koordinat).
+  - Menghitung grand total secara otomatis dan menyediakan tombol kirim rincian terformat ke WhatsApp Alam (`087781308730`) serta tombol salin rincian nota meja kerja.
+- **Kartu Akun Demo Testing (`DemoAccountBox.astro`):**
+  - Ditambahkan ke skema `products` (`demoCredentials` dan `proofOfWork`) di `content.config.ts` dan `keystatic.config.ts`.
+  - Ditampilkan di halaman detail produk `/toko/[slug]` dengan kredensial testing per-role (Admin & Petugas) dan tombol buka demo live.
+  - Memperbarui 3 produk awal dengan kredensial demo dan bukti implementasi nyata (BPRS Sukowati & UMKM).
+- **Bagian Garansi & FAQ Toko (`ShopFaqSection.astro`):**
+  - Komponen akordeon tanya-jawab seputar 100% unencrypted source code, bantuan instalasi lokal/remote AnyDesk, garansi bug 30 hari, penyesuaian alur SOP, dan metode pembayaran/pengiriman.
+  - Ditambahkan trust badges bar di bagian bawah.
+- **Cetak / Simpan Ringkasan Spek (PDF):**
+  - Menambahkan tombol print siap cetak di `ProductDetail.astro` untuk mempermudah calon pembeli mengajukan anggaran ke atasan/kantor.
+- **Changelog:** Menambahkan entri `0-8-0-kalkulator-demo-faq-toko.mdx`.
+- Verifikasi: `astro check` (**0 errors, 0 warnings, 0 hints** pada 56 file) dan `npm run build` menghasilkan **31 halaman statis** + `/sitemap.xml` dalam 4.41s.
+
+**Keputusan / dependency baru:**
+- Tidak ada dependency baru (menggunakan Preact bawaan & styling Tailwind v4).
+
+**Berikutnya:**
+- Jalankan `git push` di terminal Anda agar seluruh fitur konversi toko live di Vercel.
+- Siap mengerjakan project-project sistem berikutnya untuk diiklankan di toko!
+
 **Model:** Gemini 4 Hydrogen (Medium)
 **Fase:** 7 — Lanjutan (Etalase Toko `/toko` & 6 Rubrik `/notes`)
 

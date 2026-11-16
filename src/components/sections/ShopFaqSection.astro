@@ -1,0 +1,124 @@
+---
+interface Props {
+  locale?: string;
+}
+
+const { locale = 'id' } = Astro.props;
+
+const faqs = [
+  {
+    q: {
+      id: 'Apakah source code 100% full, bebas diedit, dan tanpa enkripsi?',
+      en: 'Is the source code 100% open, editable, and unencrypted?',
+    },
+    a: {
+      id: 'Ya, 100% full source code terbuka tanpa enkripsi (tidak menggunakan IonCube atau proteksi lisensi tersembunyi). Anda bebas mengubah database, menambah modul, mengganti tema/logo, dan memakainya seterusnya.',
+      en: 'Yes, 100% full unencrypted source code. You are completely free to modify the database, add features, change logos, and use it indefinitely.',
+    },
+  },
+  {
+    q: {
+      id: 'Saya pemula atau bukan programmer, apakah dibantu cara pasangnya?',
+      en: 'I am a beginner or non-tech user, will I get installation help?',
+    },
+    a: {
+      id: 'Pasti dibantu. Setiap produk sudah dilengkapi petunjuk instalasi lokal (XAMPP / Laragon) dan cPanel dalam bentuk PDF/video. Jika masih bingung, kami siap bantu lewat remote AnyDesk / TeamViewer sampai sistem berjalan lancar di layar Anda.',
+      en: 'Absolutely. Every package includes clear step-by-step PDF/video installation guides for local XAMPP/Laragon and cPanel hosting. Remote desktop setup via AnyDesk is also available.',
+    },
+  },
+  {
+    q: {
+      id: 'Bagaimana jika ada bug atau error setelah sistem diterima?',
+      en: 'What if I encounter a bug or error after receiving the system?',
+    },
+    a: {
+      id: 'Ada Garansi Penanganan Bug 30 Hari. Jika ada fungsi fitur dasar yang gagal jalan atau error bawaan sistem, akan langsung kami perbaiki tanpa biaya tambahan.',
+      en: 'You get a 30-day Bug Fix Warranty. If any core feature fails or encounters an inherent error, we will fix it at no additional cost.',
+    },
+  },
+  {
+    q: {
+      id: 'Bisakah request ubah alur, tambah fitur, atau sesuaikan SOP kantor saya?',
+      en: 'Can I request custom features or workflow tweaks for my organization?',
+    },
+    a: {
+      id: 'Sangat bisa! Anda bisa memilih tambahan fitur lewat Kalkulator Paket di atas atau langsung ceritakan alur kantor via WhatsApp. Kami akan berikan estimasi waktu dan biaya yang transparan sebelum mulai.',
+      en: 'Very welcome! You can use the Project Estimator above or chat via WhatsApp. We will provide a transparent scope, timeline, and quote before development starts.',
+    },
+  },
+  {
+    q: {
+      id: 'Bagaimana metode pembayaran dan proses pengiriman filenya?',
+      en: 'What are the payment methods and how are files delivered?',
+    },
+    a: {
+      id: 'Pembayaran dapat melalui transfer Bank (BCA, Mandiri, atau QRIS). Setelah konfirmasi, tautan Google Drive pribadi berisi Source Code + Database .sql + Dokumentasi akan langsung dikirimkan ke WhatsApp/Email Anda.',
+      en: 'Payments via Bank Transfer (BCA, Mandiri, or QRIS). Once confirmed, a private Google Drive link containing Source Code + Database .sql + Docs is immediately delivered.',
+    },
+  },
+];
+---
+
+<section class="sticker-card relative rounded-md bg-paper p-6 sm:p-8">
+  <div class="space-y-2 border-b-2 border-dashed border-ink/20 pb-4">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <span class="bg-leaf text-paper rounded-sm border-2 border-ink px-2.5 py-0.5 font-mono text-xs font-bold uppercase shadow-[2px_2px_0_var(--ink)]">
+        🛡️ {locale === 'id' ? 'Garansi & FAQ' : 'Warranty & FAQ'}
+      </span>
+      <span class="font-hand text-ink-soft text-sm">
+        {locale === 'id' ? 'Tenang, ada pendampingan sampai jalan' : 'Peace of mind with guided setup'}
+      </span>
+    </div>
+    <h2 class="font-display text-2xl font-extrabold sm:text-3xl">
+      {locale === 'id' ? 'Pertanyaan yang Sering Diajukan' : 'Frequently Asked Questions'}
+    </h2>
+    <p class="text-xs leading-relaxed text-ink-soft sm:text-sm">
+      {locale === 'id'
+        ? 'Hal-hal penting seputar lisensi, instalasi, dan garansi purna jual untuk memastikan Anda puas dan sistem berjalan optimal.'
+        : 'Important information regarding licensing, setup assistance, and warranties to ensure you get the best experience.'}
+    </p>
+  </div>
+
+  <div class="mt-6 space-y-3.5">
+    {faqs.map((faq, idx) => (
+      <details class="group rounded-sm border-2 border-ink bg-paper-2 p-4 transition-all open:bg-paper open:shadow-[3px_3px_0_var(--ink)]">
+        <summary class="flex cursor-pointer items-center justify-between font-display text-sm font-bold text-ink sm:text-base">
+          <span>
+            {idx + 1}. {faq.q[locale as 'id' | 'en'] ?? faq.q.id}
+          </span>
+          <span class="ml-2 font-mono text-xs font-bold transition-transform group-open:rotate-180">
+            ▼
+          </span>
+        </summary>
+        <p class="mt-3 border-t border-dashed border-ink/20 pt-2.5 text-xs leading-relaxed text-ink-soft sm:text-sm">
+          {faq.a[locale as 'id' | 'en'] ?? faq.a.id}
+        </p>
+      </details>
+    ))}
+  </div>
+
+  <!-- Trust Badges Bar -->
+  <div class="mt-6 grid gap-3 border-t-2 border-dashed border-ink/25 pt-5 sm:grid-cols-3">
+    <div class="flex items-center gap-2.5 rounded-sm border border-ink/30 bg-paper-2 p-2.5 font-mono text-xs">
+      <span class="text-lg">🔓</span>
+      <div>
+        <div class="font-bold text-ink">100% Unencrypted</div>
+        <div class="text-[10px] text-ink-soft">Full Source Code & SQL</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-2.5 rounded-sm border border-ink/30 bg-paper-2 p-2.5 font-mono text-xs">
+      <span class="text-lg">🛠️</span>
+      <div>
+        <div class="font-bold text-ink">Garansi Bug 30 Hari</div>
+        <div class="text-[10px] text-ink-soft">Dukungan teknis responsif</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-2.5 rounded-sm border border-ink/30 bg-paper-2 p-2.5 font-mono text-xs">
+      <span class="text-lg">🤝</span>
+      <div>
+        <div class="font-bold text-ink">Bantuan Remote PC</div>
+        <div class="text-[10px] text-ink-soft">Via AnyDesk / TeamViewer</div>
+      </div>
+    </div>
+  </div>
+</section>

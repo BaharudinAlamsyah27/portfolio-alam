@@ -375,6 +375,9 @@ export default config({
           itemLabel: (props) => props.value,
         }),
         demoUrl: fields.text({ label: 'Link live demo (opsional)' }),
+        proofOfWork: fields.text({
+          label: 'Bukti implementasi / social proof (contoh: Teruji di operasional BPRS Sukowati Sragen)',
+        }),
         buyUrl: fields.text({
           label: 'Link checkout khusus (kosongkan = otomatis ke WhatsApp 087781308730)',
         }),

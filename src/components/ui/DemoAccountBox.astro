@@ -1,0 +1,86 @@
+---
+interface Credential {
+  role: string;
+  username: string;
+  password: string;
+}
+
+interface Props {
+  demoUrl?: string;
+  demoCredentials?: Credential[];
+  proofOfWork?: string;
+  locale?: string;
+}
+
+const {
+  demoUrl = '',
+  demoCredentials = [],
+  proofOfWork = '',
+  locale = 'id',
+} = Astro.props;
+---
+
+<div class="space-y-4 rounded-md border-2 border-ink bg-paper-2 p-5 shadow-[4px_4px_0_var(--ink)]">
+  <div class="flex flex-wrap items-center justify-between gap-2 border-b-2 border-dashed border-ink/20 pb-3">
+    <div class="flex items-center gap-2">
+      <span class="bg-cobalt text-paper rounded-sm border border-ink px-2 py-0.5 font-mono text-[11px] font-bold uppercase">
+        🎮 {locale === 'id' ? 'Coba Akun Demo' : 'Live Test Account'}
+      </span>
+      <span class="font-mono text-xs font-bold text-ink">
+        {locale === 'id' ? 'Akses Pengujian' : 'Testing Credentials'}
+      </span>
+    </div>
+
+    {demoUrl && (
+      <a
+        href={demoUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="sticker-btn bg-leaf text-paper rounded-sm px-3 py-1 font-mono text-xs font-bold"
+      >
+        {locale === 'id' ? 'Buka Live Demo ↗' : 'Launch Demo ↗'}
+      </a>
+    )}
+  </div>
+
+  {demoCredentials.length > 0 ? (
+    <div class="grid gap-3 sm:grid-cols-2">
+      {demoCredentials.map((cred) => (
+        <div class="rounded-sm border-2 border-ink bg-paper p-3 shadow-[2px_2px_0_var(--ink)]">
+          <div class="flex items-center justify-between border-b border-dashed border-ink/25 pb-1.5 font-mono text-xs">
+            <span class="font-bold text-tomato">Role: {cred.role}</span>
+            <span class="bg-paper-2 text-ink rounded px-1.5 py-0.2 text-[10px]">Testing</span>
+          </div>
+          <div class="mt-2 space-y-1 font-mono text-xs">
+            <div class="flex items-center justify-between">
+              <span class="text-ink-soft">User:</span>
+              <code class="bg-mustard/30 text-ink rounded px-1.5 py-0.5 font-bold">{cred.username}</code>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-ink-soft">Pass:</span>
+              <code class="bg-paper-2 text-ink rounded border border-ink/30 px-1.5 py-0.5 font-bold">{cred.password}</code>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <p class="font-mono text-xs text-ink-soft">
+      {locale === 'id'
+        ? 'Akses demo interaktif sedang disiapkan. Hubungi WhatsApp untuk demonstrasi layar langsung.'
+        : 'Interactive demo is being prepared. Contact WhatsApp for a live screen share demo.'}
+    </p>
+  )}
+
+  {proofOfWork && (
+    <div class="flex items-start gap-2 rounded-sm border border-ink/30 bg-mustard/20 p-2.5 text-xs text-ink">
+      <span class="text-tomato font-bold shrink-0">⭐ Bukti Nyata:</span>
+      <p class="leading-relaxed">{proofOfWork}</p>
+    </div>
+  )}
+
+  <div class="flex items-center justify-between text-[11px] text-ink-soft">
+    <span>ℹ️ Data database demo di-reset berkala untuk pengujian bebas.</span>
+    <span class="font-mono text-[10px]">v1.0 Ready</span>
+  </div>
+</div>

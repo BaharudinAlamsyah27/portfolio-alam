@@ -1,6 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import Tape from '../ui/Tape.astro';
+import CustomCostCalculator from '../islands/CustomCostCalculator';
+import ShopFaqSection from './ShopFaqSection.astro';
 import { getLocaleFromUrl, getLocalizedPath } from '../../i18n/utils';
 import { getProductsData, pickLocale } from '../../lib/content';
 
@@ -54,10 +56,32 @@ function getOrderUrl(title: string, price: string, customBuyUrl: string) {
         ? 'Kumpulan sistem web skala sederhana hingga menengah (administrasi, piket, gudang, pendidikan, hingga geospasial). Cocok untuk instansi, UMKM, atau bahan referensi/iklan pengembangan custom.'
         : 'A catalog of simple-to-medium web systems (admin, duty roster, warehouse, education, and WebGIS). Available as ready-to-deploy source code or tailored to your needs.'}
     </p>
+
+    <!-- Quick Jump Links -->
+    <div class="flex flex-wrap items-center gap-2 pt-2">
+      <a
+        href="#produk"
+        class="sticker-btn bg-paper text-ink rounded-sm px-2.5 py-1 font-mono text-xs"
+      >
+        📦 {locale === 'id' ? 'Katalog Produk' : 'Product Catalog'}
+      </a>
+      <a
+        href="#kalkulator"
+        class="sticker-btn bg-mustard text-ink rounded-sm px-2.5 py-1 font-mono text-xs font-bold"
+      >
+        🧮 {locale === 'id' ? 'Kalkulator Custom' : 'Custom Estimator'}
+      </a>
+      <a
+        href="#faq"
+        class="sticker-btn bg-leaf text-paper rounded-sm px-2.5 py-1 font-mono text-xs font-bold"
+      >
+        🛡️ {locale === 'id' ? 'Garansi & FAQ' : 'Warranty & FAQ'}
+      </a>
+    </div>
   </div>
 
   <!-- Filter Bidang -->
-  <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Filter bidang produk">
+  <div id="produk" class="flex flex-wrap items-center gap-2" role="group" aria-label="Filter bidang produk">
     {
       categories.map((cat) => (
         <button
@@ -127,6 +151,12 @@ function getOrderUrl(title: string, price: string, customBuyUrl: string) {
 
               <p class="text-sm leading-relaxed text-ink-soft">{summary}</p>
 
+              {entry.data.proofOfWork && (
+                <div class="rounded-sm border border-ink/20 bg-mustard/20 px-2 py-1 text-[11px] text-ink font-mono leading-tight">
+                  ⭐ {entry.data.proofOfWork}
+                </div>
+              )}
+
               {entry.data.features.length > 0 && (
                 <ul class="space-y-1 border-t border-dashed border-ink/25 pt-3 text-xs text-ink">
                   {entry.data.features.slice(0, 3).map((feat) => (
@@ -170,6 +200,16 @@ function getOrderUrl(title: string, price: string, customBuyUrl: string) {
         );
       })
     }
+  </div>
+
+  <!-- Kalkulator Estimasi Custom Project -->
+  <div id="kalkulator" class="pt-6">
+    <CustomCostCalculator client:visible locale={locale} />
+  </div>
+
+  <!-- FAQ & Garansi Purna Jual -->
+  <div id="faq" class="pt-4">
+    <ShopFaqSection locale={locale} />
   </div>
 
   <!-- Banner Ajakan Custom Order -->

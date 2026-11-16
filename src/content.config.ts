@@ -167,6 +167,16 @@ const products = defineCollection({
       features: z.array(z.string()).default([]),
       stack: z.array(z.string()).default([]),
       demoUrl: z.string().default(''),
+      demoCredentials: z
+        .array(
+          z.object({
+            role: z.string(),
+            username: z.string(),
+            password: z.string(),
+          }),
+        )
+        .default([]),
+      proofOfWork: z.string().default(''),
       buyUrl: z.string().default(''),
       order: z.number().default(100),
       draft: z.boolean().default(false),

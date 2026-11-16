@@ -2,6 +2,7 @@
 import { render, type CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import Tape from '../ui/Tape.astro';
+import DemoAccountBox from '../ui/DemoAccountBox.astro';
 import { getLocaleFromUrl, getLocalizedPath } from '../../i18n/utils';
 import { pickLocale } from '../../lib/content';
 
@@ -101,6 +102,14 @@ const orderHref =
       </div>
 
       <div class="flex flex-wrap gap-2.5">
+        <button
+          type="button"
+          onclick="window.print()"
+          class="sticker-btn bg-paper-2 text-ink rounded-sm px-3.5 py-2 font-mono text-xs"
+        >
+          🖨️ {locale === 'id' ? 'Cetak / PDF' : 'Print / PDF'}
+        </button>
+
         {
           entry.data.demoUrl && (
             <a
@@ -124,6 +133,14 @@ const orderHref =
       </div>
     </div>
   </header>
+
+  <!-- Box Akun Demo Testing & Kredensial -->
+  <DemoAccountBox
+    demoUrl={entry.data.demoUrl}
+    demoCredentials={entry.data.demoCredentials}
+    proofOfWork={entry.data.proofOfWork}
+    locale={locale}
+  />
 
   <div
     class="sticker-card space-y-4 rounded-md bg-paper p-6 leading-relaxed text-ink sm:p-8 [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:font-display [&_h3]:text-xl [&_h3]:font-bold [&_li]:ml-5 [&_li]:list-disc [&_li]:text-ink-soft [&_p]:text-ink-soft [&_p]:leading-relaxed [&_ul]:space-y-1.5"
