@@ -357,7 +357,7 @@ const terminalContext: TerminalContext = {
 
     <TerminalModal client:idle context={terminalContext} />
     <CatCompanion client:idle locale={locale} />
-    <DeskAudio client:idle locale={locale} />
+    <DeskAudio client:idle locale={locale} transition:persist="desk-audio" />
 
     <script>
       import { initDeskEffects } from '../lib/deskEffects';

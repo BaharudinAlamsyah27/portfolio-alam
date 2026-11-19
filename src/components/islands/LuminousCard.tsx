@@ -41,7 +41,7 @@ export default function LuminousCard({
       <div class={`flip-inner ${flipped ? 'is-flipped' : ''}`}>
         {/* ==================== SISI DEPAN: Arch Gotik Ruberios + Balon Dialog ==================== */}
         <div
-          class={`flip-face sticker-card relative rounded-md bg-paper p-3.5 ${
+          class={`flip-face relative rounded-md border-2 border-ink bg-paper p-3.5 shadow-[4px_4px_0_var(--ink)] ${
             flipped ? 'pointer-events-none' : 'pointer-events-auto'
           }`}
         >
@@ -118,7 +118,7 @@ export default function LuminousCard({
 
         {/* ==================== SISI BELAKANG: Quick Stats Fungsional ==================== */}
         <div
-          class={`flip-face flip-back sticker-card flex flex-col justify-between rounded-md bg-paper-2 p-4 ${
+          class={`flip-face flip-back flex flex-col justify-between rounded-md border-2 border-ink bg-paper-2 p-4 shadow-[4px_4px_0_var(--ink)] ${
             flipped ? 'pointer-events-auto' : 'pointer-events-none'
           }`}
         >
