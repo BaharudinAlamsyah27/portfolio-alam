@@ -404,6 +404,9 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
   - Merapikan target tautan eksternal (`target="_blank" rel="noopener noreferrer"`) serta tipografi MDX (`blockquote`, `ol`, `ul`, `code`, `strong`).
 - **Project Baru (`src/content/projects/sentinelbank-fds.mdx`):**
   - Menambahkan **SentinelBank FDS — Sistem Deteksi Kecurangan Transaksi Perbankan Hibrida** (`order: 0`, `category: ai`, `featured: true`) beserta tautan Live Demo Vercel dan repo GitHub, arsitektur 3 lapis, metrik evaluasi (`ROC-AUC 0,988`, `VDR 91,6%`, `CIR 2,55%`), dan panduan mencoba langsung.
+- **Upgrade Filter & Kategori Proyek Skala Banyak (`ProjectsSection.astro`, `content.config.ts`, `keystatic.config.ts`):**
+  - Menambahkan kategori `enterprise` (*Sistem Kantor / Enterprise*) dan `gis` (*Geospasial / WebGIS*) melengkapi `web`, `ai`, `mobile`, `game`, `network`, `other`.
+  - Menambahkan panel filter lengkap di beranda: tab kategori dengan jumlah proyek, pencarian kata kunci, dropdown filter teknologi (`Tech Stack`), tombol toggle **Live Demo Saja**, counter hasil, tombol reset, empty state, dan auto-tombol *"Tampilkan Semua Proyek"* ketika jumlah proyek melebihi 6.
 - **Changelog:** Menambahkan `src/content/changelog/0-9-0-live-preview-sentinelbank.mdx`.
 
 **Keputusan / dependency baru:**

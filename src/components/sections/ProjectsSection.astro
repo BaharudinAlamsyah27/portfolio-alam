@@ -13,16 +13,44 @@ const isExternalUrl = (url: string) => /^https?:\/\//i.test(url.trim());
 
 const categoryColors: Record<string, string> = {
   web: 'bg-tomato text-paper',
-  mobile: 'bg-cobalt text-paper',
   ai: 'bg-mustard text-ink',
+  enterprise: 'bg-cobalt text-paper',
+  gis: 'bg-leaf text-paper',
+  mobile: 'bg-cobalt text-paper',
   game: 'bg-blush text-ink',
   network: 'bg-leaf text-paper',
   other: 'bg-paper-2 text-ink',
 };
+
+const categoryLabels: Record<string, { id: string; en: string }> = {
+  all: { id: 'Semua', en: 'All' },
+  web: { id: 'Web App', en: 'Web App' },
+  ai: { id: 'AI & Data', en: 'AI & Data' },
+  enterprise: { id: 'Sistem Kantor', en: 'Enterprise' },
+  gis: { id: 'Geospasial', en: 'Geospatial' },
+  mobile: { id: 'Mobile', en: 'Mobile' },
+  game: { id: 'Game', en: 'Game' },
+  network: { id: 'Jaringan', en: 'Network' },
+  other: { id: 'Lainnya', en: 'Other' },
+};
+
+const categoryCounts = projects.reduce<Record<string, number>>((acc, p) => {
+  acc[p.data.category] = (acc[p.data.category] ?? 0) + 1;
+  return acc;
+}, {});
+
+const availableCategories = ['all', ...Object.keys(categoryCounts)];
+
+const allStacks = Array.from(
+  new Set(projects.flatMap((p) => p.data.stack.map((s) => s.trim())).filter(Boolean)),
+).sort((a, b) => a.localeCompare(b));
+
+const liveDemoCount = projects.filter((p) => isExternalUrl(p.data.demoUrl)).length;
+const INITIAL_VISIBLE = 6;
 ---
 
 <section id="projects" aria-labelledby="projects-heading" class="desk-section-projects scroll-mt-20">
-  <div class="mb-8 flex flex-col justify-between gap-3 border-b-2 border-ink pb-4 sm:flex-row sm:items-end">
+  <div class="mb-6 flex flex-col justify-between gap-3 border-b-2 border-ink pb-4 sm:flex-row sm:items-end">
     <div class="max-w-2xl space-y-2">
       <span class="bg-tomato text-paper inline-block rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold uppercase shadow-[2px_2px_0_var(--ink)]">
         01 · PROJECTS
@@ -40,28 +68,110 @@ const categoryColors: Record<string, string> = {
     </span>
   </div>
 
-  <!-- Filter kategori ringan -->
-  <div class="mb-6 flex flex-wrap items-center gap-2" role="group" aria-label="Filter kategori project">
-    {
-      ['all', ...Array.from(new Set(projects.map((p) => p.data.category)))].map((cat) => (
+  <!-- Panel Filter, Kategori, Tech Stack, & Pencarian (siap menampung puluhan sistem) -->
+  <div class="mb-7 space-y-3 rounded-md border-2 border-ink bg-paper-2 p-4 shadow-[3px_3px_0_var(--ink)]">
+    <!-- Baris 1: Tab Kategori + Jumlah -->
+    <div class="flex flex-wrap items-center gap-2" role="group" aria-label={locale === 'id' ? 'Filter kategori project' : 'Filter project category'}>
+      {
+        availableCategories.map((cat) => {
+          const count = cat === 'all' ? projects.length : (categoryCounts[cat] ?? 0);
+          const label = categoryLabels[cat]?.[locale] ?? cat;
+          return (
+            <button
+              type="button"
+              data-project-filter={cat}
+              aria-pressed={cat === 'all' ? 'true' : 'false'}
+              class={`inline-flex items-center gap-1.5 rounded-sm border-2 border-ink px-3 py-1 font-mono text-xs font-bold transition-all ${
+                cat === 'all'
+                  ? 'bg-ink text-paper shadow-[2px_2px_0_var(--mustard)]'
+                  : 'bg-paper text-ink hover:bg-mustard/35'
+              }`}
+            >
+              <span>{label}</span>
+              <span
+                data-count-badge
+                class={`rounded-sm px-1.5 py-0.2 text-[10px] ${
+                  cat === 'all' ? 'bg-mustard text-ink' : 'bg-paper-2 text-ink-soft'
+                }`}
+              >
+                {count}
+              </span>
+            </button>
+          );
+        })
+      }
+    </div>
+
+    <!-- Baris 2: Cari + Filter Teknologi + Toggle Live Demo -->
+    <div class="grid gap-2.5 pt-1 sm:grid-cols-12">
+      <div class="sm:col-span-5">
+        <label for="project-search-input" class="sr-only">
+          {locale === 'id' ? 'Cari proyek' : 'Search projects'}
+        </label>
+        <input
+          id="project-search-input"
+          type="search"
+          data-project-search
+          placeholder={
+            locale === 'id'
+              ? 'Cari judul, sistem, atau stack (mis. AI, Next.js, Laravel)...'
+              : 'Search title, system, or stack (e.g. AI, Next.js)...'
+          }
+          class="w-full rounded-sm border-2 border-ink bg-paper px-3 py-1.5 font-mono text-xs text-ink placeholder:text-ink-soft/75 focus:outline-none focus:ring-2 focus:ring-mustard"
+        />
+      </div>
+
+      <div class="sm:col-span-4">
+        <label for="project-stack-select" class="sr-only">
+          {locale === 'id' ? 'Filter teknologi' : 'Filter by tech stack'}
+        </label>
+        <select
+          id="project-stack-select"
+          data-project-stack
+          class="w-full rounded-sm border-2 border-ink bg-paper px-3 py-1.5 font-mono text-xs font-medium text-ink focus:outline-none focus:ring-2 focus:ring-mustard"
+        >
+          <option value="all">
+            {locale === 'id' ? 'Semua Teknologi (Stack)' : 'All Technologies (Stack)'}
+          </option>
+          {allStacks.map((tech) => <option value={tech.toLowerCase()}>{tech}</option>)}
+        </select>
+      </div>
+
+      <div class="flex items-center gap-2 sm:col-span-3">
         <button
           type="button"
-          data-project-filter={cat}
-          aria-pressed={cat === 'all' ? 'true' : 'false'}
-          class={`rounded-sm border-2 border-ink px-3 py-1 font-mono text-xs font-bold uppercase transition-all ${
-            cat === 'all'
-              ? 'bg-ink text-paper shadow-[2px_2px_0_var(--mustard)]'
-              : 'bg-paper text-ink hover:bg-mustard/35'
-          }`}
+          data-project-live-toggle
+          aria-pressed="false"
+          class="inline-flex w-full items-center justify-center gap-1.5 rounded-sm border-2 border-ink bg-paper px-3 py-1.5 font-mono text-xs font-bold text-ink transition-all hover:bg-leaf/20"
         >
-          {cat === 'all' ? (locale === 'id' ? 'semua' : 'all') : cat}
+          <span class="h-2 w-2 rounded-full bg-leaf" aria-hidden="true" />
+          <span>{locale === 'id' ? `Live Demo (${liveDemoCount})` : `Live Demo (${liveDemoCount})`}</span>
         </button>
-      ))
-    }
+      </div>
+    </div>
+
+    <!-- Baris Status Hasil + Reset -->
+    <div class="flex flex-wrap items-center justify-between gap-2 border-t border-dashed border-ink/20 pt-2 font-mono text-[11px] text-ink-soft">
+      <span data-project-result-count>
+        {
+          locale === 'id'
+            ? `Menampilkan ${Math.min(projects.length, INITIAL_VISIBLE)} dari ${projects.length} proyek`
+            : `Showing ${Math.min(projects.length, INITIAL_VISIBLE)} of ${projects.length} projects`
+        }
+      </span>
+
+      <button
+        type="button"
+        data-project-reset
+        class="hidden font-bold text-tomato underline underline-offset-2 hover:text-ink"
+      >
+        {locale === 'id' ? 'Reset filter' : 'Reset filters'}
+      </button>
+    </div>
   </div>
 
   <!-- Grid Asimetris (7 kolom + 5 kolom, bukan kartu kembar seragam) -->
-  <div class="grid gap-7 md:grid-cols-12">
+  <div class="grid gap-7 md:grid-cols-12" data-project-grid data-initial-visible={INITIAL_VISIBLE}>
     {
       projects.map((entry, idx) => {
         const isWide = idx % 2 === 0;
@@ -74,12 +184,29 @@ const categoryColors: Record<string, string> = {
         const statusKey = `projects.status.${entry.data.status}` as const;
         const detailHref = getLocalizedPath(`/projects/${entry.id}`, locale);
         const hasExternalDemo = isExternalUrl(entry.data.demoUrl);
+        const catLabel = categoryLabels[entry.data.category]?.[locale] ?? entry.data.category;
+        const searchableText = [
+          entry.data.title,
+          summary,
+          catLabel,
+          entry.data.category,
+          ...entry.data.stack,
+        ]
+          .join(' ')
+          .toLowerCase();
+        const stacksAttr = entry.data.stack.map((s) => s.trim().toLowerCase()).join('|');
+        const hiddenInitially = idx >= INITIAL_VISIBLE;
 
         return (
           <article
             data-project-card
             data-category={entry.data.category}
-            class={`sticker-card relative flex flex-col justify-between p-6 ${colSpan} ${cardSurface}`}
+            data-stacks={stacksAttr}
+            data-search={searchableText}
+            data-has-live={hasExternalDemo ? 'true' : 'false'}
+            class={`sticker-card relative flex flex-col justify-between p-6 ${colSpan} ${cardSurface} ${
+              hiddenInitially ? 'hidden' : ''
+            }`}
           >
             <Tape
               color={tapeColor}
@@ -94,7 +221,7 @@ const categoryColors: Record<string, string> = {
                     categoryColors[entry.data.category] ?? categoryColors.other
                   }`}
                 >
-                  {entry.data.category}
+                  {catLabel}
                 </span>
 
                 <span class="bg-paper text-ink-soft rounded-sm border border-ink px-2 py-0.5 font-mono text-[11px]">
@@ -182,30 +309,191 @@ const categoryColors: Record<string, string> = {
       })
     }
   </div>
+
+  <!-- Empty State jika hasil filter kosong -->
+  <div
+    data-project-empty
+    class="mt-6 hidden rounded-md border-2 border-dashed border-ink/40 bg-paper-2 p-8 text-center"
+  >
+    <p class="font-display text-lg font-bold text-ink">
+      {locale === 'id' ? 'Belum ada proyek yang cocok dengan filter ini.' : 'No projects match these filters.'}
+    </p>
+    <p class="mt-1 text-xs text-ink-soft">
+      {locale === 'id' ? 'Coba ubah kata kunci atau reset filter untuk melihat semua karya.' : 'Try adjusting your search or reset filters to view all projects.'}
+    </p>
+    <button
+      type="button"
+      data-project-reset-empty
+      class="sticker-btn bg-mustard text-ink mt-4 rounded-sm px-4 py-1.5 font-mono text-xs"
+    >
+      {locale === 'id' ? 'Reset Semua Filter' : 'Reset All Filters'}
+    </button>
+  </div>
+
+  <!-- Tombol Tampilkan Semua (otomatis muncul bila proyek > 6) -->
+  {
+    projects.length > INITIAL_VISIBLE && (
+      <div class="mt-8 flex justify-center" data-project-showmore-wrap>
+        <button
+          type="button"
+          data-project-showmore
+          class="sticker-btn bg-paper text-ink rounded-sm px-5 py-2.5 font-mono text-xs font-bold"
+        >
+          {locale === 'id'
+            ? `Tampilkan Semua Proyek (+${projects.length - INITIAL_VISIBLE} lainnya)`
+            : `Show All Projects (+${projects.length - INITIAL_VISIBLE} more)`}
+        </button>
+      </div>
+    )
+  }
 </section>
 
 <script>
   document.addEventListener('astro:page-load', () => {
-    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-project-filter]');
-    const cards = document.querySelectorAll<HTMLElement>('[data-project-card]');
-    if (buttons.length === 0 || cards.length === 0) return;
+    const grid = document.querySelector<HTMLElement>('[data-project-grid]');
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-project-card]'));
+    if (!grid || cards.length === 0) return;
+
+    const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-project-filter]'));
+    const searchInput = document.querySelector<HTMLInputElement>('[data-project-search]');
+    const stackSelect = document.querySelector<HTMLSelectElement>('[data-project-stack]');
+    const liveToggle = document.querySelector<HTMLButtonElement>('[data-project-live-toggle]');
+    const resultCountEl = document.querySelector<HTMLElement>('[data-project-result-count]');
+    const resetBtn = document.querySelector<HTMLButtonElement>('[data-project-reset]');
+    const resetEmptyBtn = document.querySelector<HTMLButtonElement>('[data-project-reset-empty]');
+    const emptyEl = document.querySelector<HTMLElement>('[data-project-empty]');
+    const showMoreWrap = document.querySelector<HTMLElement>('[data-project-showmore-wrap]');
+    const showMoreBtn = document.querySelector<HTMLButtonElement>('[data-project-showmore]');
+
+    const initialLimit = Number(grid.dataset.initialVisible || '6');
+    const isEn = document.documentElement.lang === 'en';
+
+    let activeCategory = 'all';
+    let searchQuery = '';
+    let activeStack = 'all';
+    let liveOnly = false;
+    let expandedAll = false;
+
+    const applyFilters = () => {
+      const hasActiveFilter =
+        activeCategory !== 'all' ||
+        searchQuery.trim().length > 0 ||
+        activeStack !== 'all' ||
+        liveOnly;
+
+      const matched: HTMLElement[] = [];
+
+      cards.forEach((card) => {
+        const cat = card.dataset.category || '';
+        const stacks = (card.dataset.stacks || '').split('|');
+        const haystack = card.dataset.search || '';
+        const hasLive = card.dataset.hasLive === 'true';
+
+        const matchCat = activeCategory === 'all' || cat === activeCategory;
+        const matchStack = activeStack === 'all' || stacks.includes(activeStack);
+        const matchSearch = !searchQuery.trim() || haystack.includes(searchQuery.trim().toLowerCase());
+        const matchLive = !liveOnly || hasLive;
+
+        if (matchCat && matchStack && matchSearch && matchLive) {
+          matched.push(card);
+        }
+      });
+
+      const showLimit = hasActiveFilter || expandedAll ? matched.length : initialLimit;
+      const visibleSet = new Set(matched.slice(0, showLimit));
+
+      cards.forEach((card) => {
+        card.classList.toggle('hidden', !visibleSet.has(card));
+      });
+
+      if (emptyEl) {
+        emptyEl.classList.toggle('hidden', matched.length > 0);
+      }
+
+      if (showMoreWrap) {
+        const shouldHideShowMore = hasActiveFilter || expandedAll || matched.length <= initialLimit;
+        showMoreWrap.classList.toggle('hidden', shouldHideShowMore);
+      }
+
+      if (resetBtn) {
+        resetBtn.classList.toggle('hidden', !hasActiveFilter);
+      }
+
+      if (resultCountEl) {
+        const shown = visibleSet.size;
+        const total = cards.length;
+        resultCountEl.textContent = isEn
+          ? `Showing ${shown} of ${total} projects`
+          : `Menampilkan ${shown} dari ${total} proyek`;
+      }
+    };
+
+    const syncCategoryButtons = () => {
+      buttons.forEach((btn) => {
+        const active = (btn.dataset.projectFilter || 'all') === activeCategory;
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+        btn.className = active
+          ? 'inline-flex items-center gap-1.5 rounded-sm border-2 border-ink px-3 py-1 font-mono text-xs font-bold transition-all bg-ink text-paper shadow-[2px_2px_0_var(--mustard)]'
+          : 'inline-flex items-center gap-1.5 rounded-sm border-2 border-ink px-3 py-1 font-mono text-xs font-bold transition-all bg-paper text-ink hover:bg-mustard/35';
+        const badge = btn.querySelector<HTMLElement>('[data-count-badge]');
+        if (badge) {
+          badge.className = active
+            ? 'rounded-sm px-1.5 py-0.2 text-[10px] bg-mustard text-ink'
+            : 'rounded-sm px-1.5 py-0.2 text-[10px] bg-paper-2 text-ink-soft';
+        }
+      });
+    };
+
+    const syncLiveButton = () => {
+      if (!liveToggle) return;
+      liveToggle.setAttribute('aria-pressed', liveOnly ? 'true' : 'false');
+      liveToggle.className = liveOnly
+        ? 'inline-flex w-full items-center justify-center gap-1.5 rounded-sm border-2 border-ink bg-leaf px-3 py-1.5 font-mono text-xs font-bold text-paper shadow-[2px_2px_0_var(--ink)] transition-all'
+        : 'inline-flex w-full items-center justify-center gap-1.5 rounded-sm border-2 border-ink bg-paper px-3 py-1.5 font-mono text-xs font-bold text-ink transition-all hover:bg-leaf/20';
+    };
+
+    const resetAll = () => {
+      activeCategory = 'all';
+      searchQuery = '';
+      activeStack = 'all';
+      liveOnly = false;
+      if (searchInput) searchInput.value = '';
+      if (stackSelect) stackSelect.value = 'all';
+      syncCategoryButtons();
+      syncLiveButton();
+      applyFilters();
+    };
 
     buttons.forEach((btn) => {
       btn.addEventListener('click', () => {
-        const chosen = btn.dataset.projectFilter || 'all';
-        buttons.forEach((b) => {
-          const active = b === btn;
-          b.setAttribute('aria-pressed', active ? 'true' : 'false');
-          b.className = active
-            ? 'rounded-sm border-2 border-ink px-3 py-1 font-mono text-xs font-bold uppercase transition-all bg-ink text-paper shadow-[2px_2px_0_var(--mustard)]'
-            : 'rounded-sm border-2 border-ink px-3 py-1 font-mono text-xs font-bold uppercase transition-all bg-paper text-ink hover:bg-mustard/35';
-        });
-
-        cards.forEach((card) => {
-          const match = chosen === 'all' || card.dataset.category === chosen;
-          card.classList.toggle('hidden', !match);
-        });
+        activeCategory = btn.dataset.projectFilter || 'all';
+        syncCategoryButtons();
+        applyFilters();
       });
+    });
+
+    searchInput?.addEventListener('input', () => {
+      searchQuery = searchInput.value;
+      applyFilters();
+    });
+
+    stackSelect?.addEventListener('change', () => {
+      activeStack = stackSelect.value;
+      applyFilters();
+    });
+
+    liveToggle?.addEventListener('click', () => {
+      liveOnly = !liveOnly;
+      syncLiveButton();
+      applyFilters();
+    });
+
+    resetBtn?.addEventListener('click', resetAll);
+    resetEmptyBtn?.addEventListener('click', resetAll);
+
+    showMoreBtn?.addEventListener('click', () => {
+      expandedAll = true;
+      applyFilters();
     });
   });
 </script>

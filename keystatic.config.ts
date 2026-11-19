@@ -18,11 +18,13 @@ const localizedText = (label: string, multiline = false) =>
   );
 
 const categoryOptions = [
-  { label: 'Web', value: 'web' },
-  { label: 'Mobile', value: 'mobile' },
-  { label: 'AI', value: 'ai' },
-  { label: 'Game', value: 'game' },
-  { label: 'Jaringan', value: 'network' },
+  { label: 'Web App', value: 'web' },
+  { label: 'AI & Data', value: 'ai' },
+  { label: 'Sistem Kantor / Enterprise', value: 'enterprise' },
+  { label: 'Geospasial / WebGIS', value: 'gis' },
+  { label: 'Mobile App', value: 'mobile' },
+  { label: 'Game Dev', value: 'game' },
+  { label: 'Jaringan / Infra', value: 'network' },
   { label: 'Lainnya', value: 'other' },
 ] as const;
 

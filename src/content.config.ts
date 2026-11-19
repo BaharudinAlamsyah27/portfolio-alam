@@ -8,7 +8,7 @@ const localized = z.object({
   en: z.string().default(''),
 });
 
-const category = z.enum(['web', 'mobile', 'ai', 'game', 'network', 'other']);
+const category = z.enum(['web', 'ai', 'enterprise', 'gis', 'mobile', 'game', 'network', 'other']);
 
 const socialPlatform = z.enum([
   'github',
