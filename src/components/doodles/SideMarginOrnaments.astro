@@ -1,0 +1,232 @@
+---
+/**
+ * Ornamen & Hiasan Margin Kiri-Kanan (khusus layar desktop lebar >= 1280px / xl)
+ * Mengisi ruang kosong di sisi kiri & kanan meja kerja tanpa mengganggu konten utama.
+ * Memadukan nuansa nostalgik "The Night We Met", Budaya Jawa (Batik & Wayang),
+ * Rimuru Tempest (Tensura), serta hobi (Sepeda & Liverpool/Bola).
+ * 0 KB JS — SVG vektor ringan & ramah prefers-reduced-motion.
+ */
+---
+
+<div
+  class="pointer-events-none fixed inset-0 z-10 hidden overflow-hidden select-none xl:block"
+  aria-hidden="true"
+>
+  {/* ==================== BINGKAI VERTIKAL BATIK KIRI & KANAN ==================== */}
+  <div class="absolute top-14 bottom-0 left-0 w-2.5 border-r border-ink/25 bg-slime-soft/55">
+    <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="side-parang-l" width="10" height="24" patternUnits="userSpaceOnUse">
+          <path d="M0 12L10 2M0 24L10 14" stroke="var(--slime-deep)" stroke-width="1.4" stroke-opacity="0.55" />
+          <circle cx="5" cy="12" r="1.2" fill="var(--mustard)" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#side-parang-l)" />
+    </svg>
+  </div>
+
+  <div class="absolute top-14 right-0 bottom-0 w-2.5 border-l border-ink/25 bg-slime-soft/55">
+    <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="side-parang-r" width="10" height="24" patternUnits="userSpaceOnUse">
+          <path d="M10 12L0 2M10 24L0 14" stroke="var(--slime-deep)" stroke-width="1.4" stroke-opacity="0.55" />
+          <circle cx="5" cy="12" r="1.2" fill="var(--mustard)" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#side-parang-r)" />
+    </svg>
+  </div>
+
+  {/* ==================== RAIL ORNAMEN KIRI ==================== */}
+  <div class="absolute top-20 bottom-16 left-5 flex w-24 flex-col items-center justify-between py-2 opacity-85">
+    {/* 1. Bulan Sabit + Awan Mega Mendung Biru + Lentera Malam ("The Night We Met") */}
+    <div class="-rotate-3">
+      <svg viewBox="0 0 96 92" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-22 w-24">
+        {/* Bulan sabit hangat */}
+        <path
+          d="M58 10C45 12 36 22 38 35C40 47 51 54 63 52C53 50 47 42 47 32C47 22 51 15 58 10Z"
+          fill="var(--mustard)"
+          fill-opacity="0.75"
+          stroke="var(--ink)"
+          stroke-width="2"
+          stroke-linejoin="round"
+        />
+        {/* Bintang & kunang-kunang kecil */}
+        <path d="M22 18L24 23L29 25L24 27L22 32L20 27L15 25L20 23L22 18Z" fill="var(--mustard)" stroke="var(--ink)" stroke-width="1.2" />
+        <circle cx="76" cy="24" r="2.2" fill="var(--slime)" stroke="var(--ink)" stroke-width="1.2" />
+        <circle cx="16" cy="44" r="1.8" fill="var(--slime-deep)" />
+        {/* Awan Mega Mendung biru Rimuru */}
+        <path
+          d="M12 68C14 58 23 54 32 58C37 51 48 49 56 54C63 50 75 53 79 62C84 63 86 68 83 72H14C10 72 10 69 12 68Z"
+          fill="var(--slime)"
+          fill-opacity="0.72"
+          stroke="var(--ink)"
+          stroke-width="2"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M22 72C25 65 33 63 40 66C46 61 56 61 62 66C68 64 74 67 76 72Z"
+          fill="var(--slime-deep)"
+          fill-opacity="0.35"
+        />
+      </svg>
+    </div>
+
+    {/* Garis titik penghubung halus */}
+    <span class="h-8 border-l-2 border-dashed border-ink/20" />
+
+    {/* 2. Kaset Pita Analog Nostalgia ("The Night We Met") */}
+    <div class="rotate-3">
+      <svg viewBox="0 0 92 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-16 w-22">
+        <rect x="6" y="10" width="80" height="48" rx="6" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="2.2" />
+        <rect x="13" y="16" width="66" height="24" rx="2" fill="var(--slime-soft)" stroke="var(--ink)" stroke-width="1.6" />
+        {/* Label pita */}
+        <line x1="18" y1="22" x2="54" y2="22" stroke="var(--tomato)" stroke-width="2" stroke-linecap="round" />
+        <line x1="18" y1="27" x2="42" y2="27" stroke="var(--ink)" stroke-width="1.4" stroke-linecap="round" stroke-opacity="0.6" />
+        {/* Dua roda pita kaset */}
+        <circle cx="31" cy="34" r="4.2" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.6" />
+        <circle cx="61" cy="34" r="4.2" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.6" />
+        <path d="M35 34H57" stroke="var(--ink)" stroke-width="1.4" stroke-dasharray="2 2" />
+        {/* Bagian bawah kaset */}
+        <path d="M24 58L28 47H64L68 58" fill="var(--mustard)" fill-opacity="0.55" stroke="var(--ink)" stroke-width="1.6" stroke-linejoin="round" />
+        {/* Not balok melayang */}
+        <path d="M78 8V2L86 0V6" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="76.5" cy="8.5" r="2" fill="var(--tomato)" />
+        <circle cx="84.5" cy="6.5" r="2" fill="var(--slime-deep)" />
+      </svg>
+    </div>
+
+    <span class="h-8 border-l-2 border-dashed border-ink/20" />
+
+    {/* 3. Rimuru Slime Santai di atas Awan Biru */}
+    <div class="-rotate-2">
+      <svg viewBox="0 0 88 70" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-17 w-22">
+        {/* Mahkota emas kecil */}
+        <path d="M34 19L36 10L41 14.5L44 8L47 14.5L52 10L54 19Z" fill="var(--mustard)" stroke="var(--ink)" stroke-width="1.8" stroke-linejoin="round" />
+        {/* Badan Rimuru Slime */}
+        <path
+          d="M16 49C16 32 27 20 44 20C61 20 72 32 72 49C72 55 61 57 44 57C27 57 16 55 16 49Z"
+          fill="var(--slime)"
+          stroke="var(--ink)"
+          stroke-width="2.2"
+        />
+        <ellipse cx="31" cy="30" rx="6" ry="3.2" transform="rotate(-22 31 30)" fill="var(--paper)" fill-opacity="0.82" />
+        <path d="M32 42C34 40.3 37 40.3 39 42" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" />
+        <path d="M49 42C51 40.3 54 40.3 56 42" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" />
+        <ellipse cx="28.5" cy="45.5" rx="3" ry="1.5" fill="var(--blush)" fill-opacity="0.7" />
+        <ellipse cx="59.5" cy="45.5" rx="3" ry="1.5" fill="var(--blush)" fill-opacity="0.7" />
+        {/* Tetesan gel */}
+        <circle cx="78" cy="36" r="2.2" fill="var(--slime)" stroke="var(--ink)" stroke-width="1.4" />
+        <circle cx="10" cy="42" r="1.8" fill="var(--slime-soft)" stroke="var(--ink)" stroke-width="1.3" />
+      </svg>
+    </div>
+
+    <span class="h-8 border-l-2 border-dashed border-ink/20" />
+
+    {/* 4. Doodle Sepeda Gowes + Angin */}
+    <div class="rotate-2">
+      <svg viewBox="0 0 92 56" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-14 w-22">
+        <circle cx="24" cy="38" r="12" fill="var(--slime-soft)" fill-opacity="0.6" stroke="var(--ink)" stroke-width="2.2" />
+        <circle cx="68" cy="38" r="12" fill="var(--slime-soft)" fill-opacity="0.6" stroke="var(--ink)" stroke-width="2.2" />
+        <circle cx="24" cy="38" r="2.5" fill="var(--ink)" />
+        <circle cx="68" cy="38" r="2.5" fill="var(--ink)" />
+        <path
+          d="M24 38L41 18H58L68 38M41 18L46 38H24M58 18L61 11H69M36 13H45"
+          stroke="var(--ink)"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        {/* Garis angin */}
+        <path d="M4 22H16M8 28H14" stroke="var(--slime-deep)" stroke-width="1.6" stroke-linecap="round" />
+      </svg>
+    </div>
+  </div>
+
+  {/* ==================== RAIL ORNAMEN KANAN ==================== */}
+  <div class="absolute top-20 right-5 bottom-16 flex w-24 flex-col items-center justify-between py-2 opacity-85">
+    {/* 1. Gunungan Wayang + Aksen Batik */}
+    <div class="rotate-2">
+      <svg viewBox="0 0 76 94" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-23 w-20">
+        <path
+          d="M38 6C51 22 63 38 65 62C65.5 69 61 75 54 77H22C15 75 10.5 69 11 62C13 38 25 22 38 6Z"
+          fill="var(--mustard)"
+          fill-opacity="0.32"
+          stroke="var(--ink)"
+          stroke-width="2.2"
+          stroke-linejoin="round"
+        />
+        <path d="M38 17V77" stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round" />
+        <path
+          d="M38 30C30 31 25 37 22 44M38 30C46 31 51 37 54 44M38 46C29 47 23 53 20 61M38 46C47 47 53 53 56 61"
+          stroke="var(--ink)"
+          stroke-width="1.6"
+          stroke-linecap="round"
+        />
+        <path d="M30 77V63H46V77" fill="var(--slime-soft)" stroke="var(--ink)" stroke-width="1.8" stroke-linejoin="round" />
+        <path d="M38 77V88" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round" />
+        <circle cx="12" cy="18" r="2" fill="var(--slime)" stroke="var(--ink)" stroke-width="1.2" />
+        <circle cx="66" cy="24" r="1.8" fill="var(--tomato)" />
+      </svg>
+    </div>
+
+    <span class="h-8 border-l-2 border-dashed border-ink/20" />
+
+    {/* 2. Cap Pos Kenangan (Brebes -> Sragen) */}
+    <div class="-rotate-3">
+      <svg viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-20 w-20">
+        <circle cx="44" cy="44" r="36" fill="var(--paper-2)" fill-opacity="0.75" stroke="var(--cobalt)" stroke-width="2" stroke-dasharray="5 3" />
+        <circle cx="44" cy="44" r="28" stroke="var(--cobalt)" stroke-width="1.4" />
+        <text x="44" y="37" text-anchor="middle" fill="var(--ink)" font-family="monospace" font-size="8.5" font-weight="700">
+          BREBES
+        </text>
+        <path d="M27 44H61" stroke="var(--tomato)" stroke-width="1.6" stroke-linecap="round" />
+        <text x="44" y="55" text-anchor="middle" fill="var(--ink)" font-family="monospace" font-size="8.5" font-weight="700">
+          SRAGEN
+        </text>
+        <circle cx="44" cy="44" r="2.2" fill="var(--mustard)" stroke="var(--ink)" stroke-width="1" />
+      </svg>
+    </div>
+
+    <span class="h-8 border-l-2 border-dashed border-ink/20" />
+
+    {/* 3. Stiker Bola + Syal Merah Liverpool (YNWA) */}
+    <div class="rotate-3">
+      <svg viewBox="0 0 92 72" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-18 w-22">
+        {/* Pita syal merah YNWA */}
+        <rect x="8" y="42" width="76" height="20" rx="4" fill="var(--tomato)" stroke="var(--ink)" stroke-width="2" />
+        <text x="46" y="55.5" text-anchor="middle" fill="var(--paper)" font-family="monospace" font-size="10.5" font-weight="800">
+          ★ YNWA ★
+        </text>
+        {/* Bola sepak di atas pita */}
+        <circle cx="46" cy="24" r="16" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.2" />
+        <polygon points="46,16 53,21 50.5,29 41.5,29 39,21" fill="var(--ink)" />
+        <path
+          d="M46 8V16M61 19L53 21M55.5 36.5L50.5 29M36.5 36.5L41.5 29M31 19L39 21"
+          stroke="var(--ink)"
+          stroke-width="1.6"
+        />
+      </svg>
+    </div>
+
+    <span class="h-8 border-l-2 border-dashed border-ink/20" />
+
+    {/* 4. Siluet Hutan Pinus & Bintang Malam ("The Night We Met") */}
+    <div class="-rotate-2">
+      <svg viewBox="0 0 92 72" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-18 w-22">
+        {/* Lingkaran bingkai langit malam */}
+        <circle cx="46" cy="36" r="31" fill="var(--slime-soft)" fill-opacity="0.7" stroke="var(--ink)" stroke-width="2" />
+        {/* Bintang & kunang-kunang */}
+        <circle cx="30" cy="20" r="2" fill="var(--mustard)" />
+        <circle cx="62" cy="18" r="2.2" fill="var(--mustard)" />
+        <circle cx="48" cy="14" r="1.4" fill="var(--ink)" />
+        {/* Tiga pohon pinus siluet */}
+        <path d="M28 58L35 34L42 58Z" fill="var(--ink)" fill-opacity="0.82" />
+        <path d="M40 62L49 26L58 62Z" fill="var(--ink)" />
+        <path d="M54 58L61 38L68 58Z" fill="var(--ink)" fill-opacity="0.78" />
+        {/* Garis kabut lembut */}
+        <path d="M22 57H70" stroke="var(--slime)" stroke-width="2.2" stroke-linecap="round" stroke-opacity="0.75" />
+      </svg>
+    </div>
+  </div>
+</div>

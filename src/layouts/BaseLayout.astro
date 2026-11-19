@@ -17,6 +17,7 @@ import DeskAudio from '../components/islands/DeskAudio';
 import RimuruDoodle from '../components/doodles/RimuruDoodle.astro';
 import CultureOrnaments from '../components/doodles/CultureOrnaments.astro';
 import MidnightAtmosphere from '../components/doodles/MidnightAtmosphere.astro';
+import SideMarginOrnaments from '../components/doodles/SideMarginOrnaments.astro';
 import { getLocaleFromUrl, getLocalizedPath, useTranslations } from '../i18n/utils';
 import {
   getProfileData,
@@ -258,6 +259,7 @@ const terminalContext: TerminalContext = {
     </footer>
 
     <MidnightAtmosphere />
+    <SideMarginOrnaments />
 
     <TerminalModal client:idle context={terminalContext} />
     <CatCompanion client:idle locale={locale} />
