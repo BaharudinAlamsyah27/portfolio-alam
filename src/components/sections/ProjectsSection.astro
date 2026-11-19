@@ -257,7 +257,7 @@ const liveDemoCount = allProjects.filter((p) => isExternalUrl(p.data.demoUrl)).l
             data-stacks={stacksAttr}
             data-search={searchableText}
             data-has-live={hasExternalDemo ? 'true' : 'false'}
-            class={`sticker-card relative flex flex-col justify-between p-6 ${colSpan} ${cardSurface}`}
+            class={`sticker-card relative flex min-w-0 flex-col justify-between p-5 sm:p-6 ${colSpan} ${cardSurface}`}
           >
             <Tape
               color={tapeColor}
@@ -268,7 +268,7 @@ const liveDemoCount = allProjects.filter((p) => isExternalUrl(p.data.demoUrl)).l
             {idx === 0 && (
               <span
                 aria-label={locale === 'id' ? 'Proyek terbaru' : 'Newest project'}
-                class="tensura-blob-bob bg-slime text-ink pointer-events-none absolute -top-4 -right-3 z-20 inline-flex h-12 w-12 items-center justify-center rounded-[58%_42%_54%_46%/48%_56%_44%_52%] border-2 border-ink font-mono text-[10px] font-extrabold tracking-tight shadow-[2px_2px_0_var(--ink)] select-none"
+                class="tensura-blob-bob bg-slime text-ink pointer-events-none absolute -top-4 right-2 z-20 inline-flex h-12 w-12 items-center justify-center rounded-[58%_42%_54%_46%/48%_56%_44%_52%] border-2 border-ink font-mono text-[10px] font-extrabold tracking-tight shadow-[2px_2px_0_var(--ink)] select-none sm:-right-3"
               >
                 NEW!
               </span>

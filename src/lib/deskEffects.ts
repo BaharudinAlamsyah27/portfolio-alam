@@ -116,21 +116,29 @@ async function runPageEffects() {
       const sub = headerBlock?.querySelector<HTMLElement>('p');
       const words = splitHeadingWords(heading);
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: heading,
-          start: 'top 86%',
-          toggleActions: 'play none none reset',
-        },
-      });
+      const isAlreadyVisible =
+        heading.getBoundingClientRect().top < window.innerHeight * 0.96;
+
+      const tl = gsap.timeline(
+        isAlreadyVisible
+          ? undefined
+          : {
+              scrollTrigger: {
+                trigger: heading,
+                start: 'top 98%',
+                once: true,
+              },
+            },
+      );
 
       if (badge) {
         tl.from(badge, {
-          x: -26,
-          scale: 0.78,
+          x: -22,
+          scale: 0.82,
           opacity: 0,
-          duration: 0.36,
+          duration: 0.34,
           ease: 'back.out(2)',
+          clearProps: 'opacity,transform',
         });
       }
 
@@ -138,14 +146,15 @@ async function runPageEffects() {
         tl.from(
           words,
           {
-            x: -22,
+            x: -20,
             opacity: 0,
             clipPath: 'inset(0 100% 0 0)',
-            duration: 0.42,
-            stagger: 0.075,
+            duration: 0.4,
+            stagger: 0.07,
             ease: 'power3.out',
+            clearProps: 'clipPath,transform,opacity',
           },
-          badge ? '-=0.22' : 0,
+          badge ? '-=0.2' : 0,
         );
       }
 
@@ -153,12 +162,13 @@ async function runPageEffects() {
         tl.from(
           sub,
           {
-            x: -16,
+            x: -14,
             opacity: 0,
-            duration: 0.38,
+            duration: 0.36,
             ease: 'power2.out',
+            clearProps: 'transform,opacity',
           },
-          '-=0.25',
+          '-=0.22',
         );
       }
 
@@ -167,30 +177,27 @@ async function runPageEffects() {
       }
     }
 
-    // 5. Reveal kartu (.sticker-card) secara bertahap saat masuk viewport
+    // 5. Reveal kartu (.sticker-card) per kartu tanpa pernah menyembunyikan konten (no blank gaps!)
     const secCards = Array.from(sec.querySelectorAll<HTMLElement>('.sticker-card')).filter(
       (c) => c.dataset.gsapInit !== '1',
     );
-    if (secCards.length > 0) {
-      secCards.forEach((c) => {
-        c.dataset.gsapInit = '1';
-      });
-      const tween = gsap.from(secCards, {
-        y: 30,
-        opacity: 0,
-        duration: 0.52,
-        stagger: 0.09,
+    secCards.forEach((card) => {
+      card.dataset.gsapInit = '1';
+      const tween = gsap.from(card, {
+        y: 18,
+        duration: 0.45,
         ease: 'power2.out',
+        clearProps: 'transform',
         scrollTrigger: {
-          trigger: secCards[0],
-          start: 'top 88%',
-          toggleActions: 'play none none reset',
+          trigger: card,
+          start: 'top 96%',
+          once: true,
         },
       });
       if (tween.scrollTrigger) {
         triggers.push(tween.scrollTrigger);
       }
-    }
+    });
   });
 
   window.setTimeout(() => {

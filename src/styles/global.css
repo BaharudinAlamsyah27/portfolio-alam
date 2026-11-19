@@ -8,12 +8,16 @@
     font-family: var(--font-sans);
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+    max-width: 100%;
   }
 
   body {
     min-height: 100dvh;
     background-color: var(--paper);
     color: var(--ink);
+    overflow-x: clip;
+    max-width: 100%;
     transition: background-color 280ms ease, color 280ms ease;
     /* Tekstur kertas halus + corak Kawung samar (hangat & nyaman dibaca) */
     background-image:
@@ -296,7 +300,13 @@
 .desk-sections {
   display: flex;
   flex-direction: column;
-  gap: 5rem;
+  gap: 3rem;
+}
+
+@media (min-width: 640px) {
+  .desk-sections {
+    gap: 4.5rem;
+  }
 }
 
 .desk-section-projects {
