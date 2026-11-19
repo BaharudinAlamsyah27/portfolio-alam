@@ -268,6 +268,128 @@
     animation: header-marquee 28s linear infinite;
   }
 
+  /* Animasi 5 ornamen baru: Kereta Api, Bendera ID, Roket, Chip IC, & Gundam */
+  @keyframes train-cruise {
+    0% {
+      transform: translateX(-240px);
+    }
+    100% {
+      transform: translateX(calc(100vw + 80px));
+    }
+  }
+
+  @keyframes train-puff {
+    0% {
+      transform: translate(0, 0) scale(0.7);
+      opacity: 0.55;
+    }
+    100% {
+      transform: translate(-12px, -8px) scale(1.4);
+      opacity: 0;
+    }
+  }
+
+  @keyframes flag-flutter {
+    0%,
+    100% {
+      transform: skewY(0deg) scaleX(1);
+    }
+    50% {
+      transform: skewY(-4deg) scaleX(0.95);
+    }
+  }
+
+  @keyframes rocket-bob {
+    0%,
+    100% {
+      transform: translateY(2px) rotate(12deg);
+    }
+    50% {
+      transform: translateY(-6px) rotate(16deg);
+    }
+  }
+
+  @keyframes flame-flicker {
+    0%,
+    100% {
+      transform: scaleY(0.88);
+      opacity: 0.85;
+    }
+    50% {
+      transform: scaleY(1.16);
+      opacity: 1;
+    }
+  }
+
+  @keyframes chip-pulse {
+    0%,
+    100% {
+      opacity: 0.7;
+      transform: scale(0.96);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.04);
+    }
+  }
+
+  @keyframes gundam-bob {
+    0%,
+    100% {
+      transform: translateY(0px) rotate(-2deg);
+    }
+    50% {
+      transform: translateY(-4px) rotate(2deg);
+    }
+  }
+
+  @keyframes gundam-eyes {
+    0%,
+    100% {
+      opacity: 0.45;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  .train-runner {
+    animation: train-cruise 20s linear infinite;
+    will-change: transform;
+  }
+
+  .train-smoke {
+    animation: train-puff 1.2s ease-out infinite;
+    transform-origin: center;
+  }
+
+  .flag-wave-group {
+    animation: flag-flutter 1.8s ease-in-out infinite;
+    transform-origin: 6px 12px;
+  }
+
+  .rocket-hover {
+    animation: rocket-bob 2.4s ease-in-out infinite;
+  }
+
+  .rocket-flame {
+    animation: flame-flicker 0.28s ease-in-out infinite;
+    transform-origin: 28px 48px;
+  }
+
+  .chip-core-pulse {
+    animation: chip-pulse 2.2s ease-in-out infinite;
+    transform-origin: 32px 32px;
+  }
+
+  .gundam-float {
+    animation: gundam-bob 3.4s ease-in-out infinite;
+  }
+
+  .gundam-eye-glow {
+    animation: gundam-eyes 2s ease-in-out infinite;
+  }
+
   h1,
   h2,
   h3,

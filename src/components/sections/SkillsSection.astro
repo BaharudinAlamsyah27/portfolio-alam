@@ -2,6 +2,7 @@
 import SkillPlayground from '../islands/SkillPlayground';
 import CultureOrnaments from '../doodles/CultureOrnaments.astro';
 import RimuruDoodle from '../doodles/RimuruDoodle.astro';
+import TechHobbyOrnaments from '../doodles/TechHobbyOrnaments.astro';
 import Tape from '../ui/Tape.astro';
 import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
 import { getSkillsData, pickLocale } from '../../lib/content';
@@ -46,9 +47,12 @@ const groups = [
 <section id="skills" aria-labelledby="skills-heading" class="desk-section-skills scroll-mt-20">
   <div class="mb-8 flex flex-col justify-between gap-3 border-b-2 border-ink pb-4 sm:flex-row sm:items-end">
     <div class="max-w-2xl space-y-2">
-      <span class="bg-cobalt text-paper inline-block rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold uppercase shadow-[2px_2px_0_var(--ink)]">
-        02 · SKILLS
-      </span>
+      <div class="flex items-center gap-2.5">
+        <span class="bg-cobalt text-paper inline-block rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold uppercase shadow-[2px_2px_0_var(--ink)]">
+          02 · SKILLS
+        </span>
+        <TechHobbyOrnaments variant="chip" class="h-9 w-9" />
+      </div>
       <h2 id="skills-heading" class="font-display text-3xl font-extrabold sm:text-4xl">
         {t('skills.heading')}
       </h2>

@@ -19,6 +19,7 @@ import CultureOrnaments from '../components/doodles/CultureOrnaments.astro';
 import MidnightAtmosphere from '../components/doodles/MidnightAtmosphere.astro';
 import SideMarginOrnaments from '../components/doodles/SideMarginOrnaments.astro';
 import TensuraAmbientSquares from '../components/doodles/TensuraAmbientSquares.astro';
+import TechHobbyOrnaments from '../components/doodles/TechHobbyOrnaments.astro';
 import { getLocaleFromUrl, getLocalizedPath, useTranslations } from '../i18n/utils';
 import {
   getProfileData,
@@ -317,6 +318,7 @@ const terminalContext: TerminalContext = {
     </main>
 
     <footer class="relative z-10 border-t-2 border-ink bg-paper-2">
+      <TechHobbyOrnaments variant="train-track" />
       <CultureOrnaments variant="batik-ribbon" class="rounded-none border-b border-ink/30" />
       <div
         class="mx-auto flex max-w-5xl flex-col gap-3 px-5 py-6 text-sm text-ink-soft sm:flex-row sm:items-center sm:justify-between"

@@ -1,6 +1,7 @@
 ---
 import Tape from '../ui/Tape.astro';
 import CultureOrnaments from '../doodles/CultureOrnaments.astro';
+import TechHobbyOrnaments from '../doodles/TechHobbyOrnaments.astro';
 import GitHubActivity from '../islands/GitHubActivity';
 import HobbyStickers from '../islands/HobbyStickers';
 import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
@@ -20,16 +21,23 @@ const githubUsername = githubUrl.split('/').filter(Boolean).pop() || 'BaharudinA
 ---
 
 <section id="about" aria-labelledby="about-heading" class="desk-section-about scroll-mt-20">
-  <div class="mb-8 max-w-2xl space-y-2 border-b-2 border-ink pb-4">
-    <span class="bg-mustard text-ink inline-block rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold uppercase shadow-[2px_2px_0_var(--ink)]">
-      03 · ABOUT & NOW
-    </span>
-    <h2 id="about-heading" class="font-display text-3xl font-extrabold sm:text-4xl">
-      {t('about.heading')}
-    </h2>
-    <p class="text-ink-soft text-sm leading-relaxed sm:text-base">
-      {t('about.sub')}
-    </p>
+  <div class="mb-8 flex flex-col justify-between gap-3 border-b-2 border-ink pb-4 sm:flex-row sm:items-end">
+    <div class="max-w-2xl space-y-2">
+      <span class="bg-mustard text-ink inline-block rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold uppercase shadow-[2px_2px_0_var(--ink)]">
+        03 · ABOUT & NOW
+      </span>
+      <h2 id="about-heading" class="font-display text-3xl font-extrabold sm:text-4xl">
+        {t('about.heading')}
+      </h2>
+      <p class="text-ink-soft text-sm leading-relaxed sm:text-base">
+        {t('about.sub')}
+      </p>
+    </div>
+
+    <div class="flex items-center gap-2 self-start sm:self-end">
+      <TechHobbyOrnaments variant="gundam" />
+      <span class="font-hand text-cobalt text-sm">RX-78 spirit</span>
+    </div>
   </div>
 
   <div class="grid gap-7 lg:grid-cols-12">

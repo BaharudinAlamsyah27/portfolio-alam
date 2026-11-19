@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import AudienceSwitcher from '../islands/AudienceSwitcher';
 import HandDrawn from '../doodles/HandDrawn.astro';
 import RimuruSticker from '../islands/RimuruSticker';
+import TechHobbyOrnaments from '../doodles/TechHobbyOrnaments.astro';
 import Tape from '../ui/Tape.astro';
 import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
 import { getProfileData, pickLocale } from '../../lib/content';
@@ -26,6 +27,7 @@ const tagline = pickLocale(profile?.tagline, locale) || t('home.title');
             class="bg-leaf inline-block h-2.5 w-2.5 rounded-full border border-ink"
             aria-hidden="true"></span>
           <span>{t('status.magang')}</span>
+          <TechHobbyOrnaments variant="flag-id" class="ml-0.5" />
         </div>
 
         <span class="font-mono text-xs uppercase tracking-wider text-ink-soft">
