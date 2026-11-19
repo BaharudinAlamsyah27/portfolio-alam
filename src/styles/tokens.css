@@ -16,6 +16,10 @@
   --slime-soft: #dff4ff;
   --slime-deep: #1b7fd6;
 
+  /* Dinding rel ornamen samping (Opsi A: Krem x Biru Mega Mendung) */
+  --wall-bg: #e7f4fc;
+  --wall-cell: #f7fcff;
+
   /* Bayangan hard-shadow ala stiker */
   --shadow-hard: 4px 4px 0 var(--ink);
   --shadow-hard-sm: 2px 2px 0 var(--ink);
@@ -31,7 +35,32 @@
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 }
 
-/* Suasana "The Night We Met" — Meja Kerja Malam yang Hangat, Nostalgik & Hening */
+/* Opsi B: "Rimuru Mist" — Serba Biru-Es Bersih, Segar & Modern */
+html[data-theme='rimuru'] {
+  --paper: #f2f8fd;
+  --paper-2: #e1f0fb;
+  --ink: #132238;
+  --ink-soft: #425a78;
+
+  --tomato: #e84d3d;
+  --cobalt: #1d63dc;
+  --mustard: #f2b705;
+  --leaf: #1f9d55;
+  --blush: #f48bb2;
+  --slime: #38bdf8;
+  --slime-soft: #d4edfe;
+  --slime-deep: #0b6ec7;
+
+  --wall-bg: #d9ecfa;
+  --wall-cell: #eef7fe;
+
+  --shadow-hard: 4px 4px 0 #132238;
+  --shadow-hard-sm: 2px 2px 0 #132238;
+  --shadow-hard-lg: 6px 6px 0 #132238;
+  --border-ink: 2px solid #132238;
+}
+
+/* Opsi C: "The Night We Met" — Meja Kerja Malam yang Hangat, Nostalgik & Hening */
 html[data-theme='midnight'] {
   --paper: #121723;
   --paper-2: #1a2132;
@@ -46,6 +75,9 @@ html[data-theme='midnight'] {
   --slime: #5bc6f7;
   --slime-soft: #1a3046;
   --slime-deep: #8fdcff;
+
+  --wall-bg: #0d121d;
+  --wall-cell: #161e2e;
 
   --shadow-hard: 4px 4px 0 #070a11;
   --shadow-hard-sm: 2px 2px 0 #070a11;

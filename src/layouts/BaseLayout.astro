@@ -92,14 +92,15 @@ const terminalContext: TerminalContext = {
 ---
 
 <!doctype html>
-<html lang={locale} data-audience="semua" data-theme="midnight">
+<html lang={locale} data-audience="semua" data-theme="day">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script is:inline>
       (function () {
         const saved = localStorage.getItem('alam-theme');
-        const theme = saved === 'day' || saved === 'midnight' ? saved : 'midnight';
+        const theme =
+          saved === 'day' || saved === 'rimuru' || saved === 'midnight' ? saved : 'day';
         document.documentElement.dataset.theme = theme;
       })();
     </script>
@@ -190,13 +191,21 @@ const terminalContext: TerminalContext = {
           <button
             type="button"
             data-theme-toggle
-            aria-label={locale === 'id' ? 'Ganti suasana Malam / Pagi' : 'Switch Midnight / Day mood'}
-            title={locale === 'id' ? 'Ganti suasana Malam / Pagi' : 'Switch Midnight / Day mood'}
+            aria-label={
+              locale === 'id'
+                ? 'Ganti tema (Krem / Rimuru / Malam)'
+                : 'Switch theme (Cream / Rimuru / Night)'
+            }
+            title={
+              locale === 'id'
+                ? 'Klik untuk ganti tema: Krem → Rimuru → Malam'
+                : 'Click to cycle theme: Cream → Rimuru → Night'
+            }
             class="sticker-btn bg-paper-2 text-ink rounded-sm px-2.5 py-1 font-mono text-xs"
           >
-            <span data-theme-icon aria-hidden="true">🌙</span>
+            <span data-theme-icon aria-hidden="true">☀️</span>
             <span data-theme-label class="hidden sm:inline">
-              {locale === 'id' ? 'Malam' : 'Night'}
+              {locale === 'id' ? 'Krem' : 'Cream'}
             </span>
           </button>
 
@@ -269,18 +278,24 @@ const terminalContext: TerminalContext = {
       import { initDeskEffects } from '../lib/deskEffects';
       initDeskEffects();
 
+      const THEMES = ['day', 'rimuru', 'midnight'] as const;
+      type ThemeName = (typeof THEMES)[number];
+
       const applySavedTheme = () => {
         const saved = localStorage.getItem('alam-theme');
-        const theme = saved === 'day' || saved === 'midnight' ? saved : 'midnight';
+        const theme: ThemeName =
+          saved === 'day' || saved === 'rimuru' || saved === 'midnight' ? saved : 'day';
         document.documentElement.dataset.theme = theme;
         const isEn = document.documentElement.lang === 'en';
         const icon = document.querySelector<HTMLElement>('[data-theme-icon]');
         const label = document.querySelector<HTMLElement>('[data-theme-label]');
-        if (icon) icon.textContent = theme === 'midnight' ? '🌙' : '☀️';
-        if (label) {
-          label.textContent =
-            theme === 'midnight' ? (isEn ? 'Night' : 'Malam') : isEn ? 'Day' : 'Pagi';
-        }
+        const meta: Record<ThemeName, { icon: string; id: string; en: string }> = {
+          day: { icon: '☀️', id: 'Krem', en: 'Cream' },
+          rimuru: { icon: '💧', id: 'Rimuru', en: 'Rimuru' },
+          midnight: { icon: '🌙', id: 'Malam', en: 'Night' },
+        };
+        if (icon) icon.textContent = meta[theme].icon;
+        if (label) label.textContent = isEn ? meta[theme].en : meta[theme].id;
       };
 
       const bindThemeToggle = () => {
@@ -289,7 +304,8 @@ const terminalContext: TerminalContext = {
         if (!btn || btn.dataset.bound === 'true') return;
         btn.dataset.bound = 'true';
         btn.addEventListener('click', () => {
-          const next = document.documentElement.dataset.theme === 'midnight' ? 'day' : 'midnight';
+          const curr = (document.documentElement.dataset.theme || 'day') as ThemeName;
+          const next = THEMES[(THEMES.indexOf(curr) + 1) % THEMES.length];
           localStorage.setItem('alam-theme', next);
           applySavedTheme();
         });
