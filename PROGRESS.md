@@ -387,3 +387,27 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
 - Jalankan `git push` agar halaman `/toko` dan rubrik `/notes` langsung live di Vercel.
 - Isi produk/catatan baru atau unggah screenshot produk lewat `http://localhost:4321/keystatic`.
 - Rekomendasi model untuk pengisian konten/teks selanjutnya: **Gemini 3.8 Flash (Medium)**.
+
+---
+
+### Sesi 12 — 2026-11-19 09:54–10:00 WIB
+**Model:** Gemini 4 Neon (Medium)
+**Fase:** 7 — Lanjutan (Live Interactive Website Preview & Project SentinelBank FDS)
+
+**Dikerjakan:**
+- **Komponen Pratinjau Website Langsung (`src/components/islands/LiveSitePreview.tsx`):**
+  - Island Preact (`client:visible`, `loading="lazy"`) dengan 2 mode tampilan bergaya browser "Meja Kerja":
+    - `variant="card"` di kartu beranda (`ProjectsSection.astro`): menampilkan tampilan asli website secara langsung dengan penskalaan proporsional responsif (`ResizeObserver` dari 1280×800), lengkap dengan tombol *Coba Klik / Kunci Scroll* dan *Buka ↗*.
+    - `variant="full"` di halaman studi kasus (`ProjectCaseStudy.astro`): jendela pratinjau interaktif penuh dengan address bar, toggle *Desktop / Mobile (390px)*, tombol muat ulang (`↻`), dan tautan layar penuh.
+- **Integrasi di `ProjectsSection.astro` & `ProjectCaseStudy.astro`:**
+  - Otomatis menampilkan `LiveSitePreview` untuk setiap project yang memiliki `demoUrl` eksternal (`https://...`), atau fallback `<Image />` bila hanya memiliki `cover`.
+  - Merapikan target tautan eksternal (`target="_blank" rel="noopener noreferrer"`) serta tipografi MDX (`blockquote`, `ol`, `ul`, `code`, `strong`).
+- **Project Baru (`src/content/projects/sentinelbank-fds.mdx`):**
+  - Menambahkan **SentinelBank FDS — Sistem Deteksi Kecurangan Transaksi Perbankan Hibrida** (`order: 0`, `category: ai`, `featured: true`) beserta tautan Live Demo Vercel dan repo GitHub, arsitektur 3 lapis, metrik evaluasi (`ROC-AUC 0,988`, `VDR 91,6%`, `CIR 2,55%`), dan panduan mencoba langsung.
+- **Changelog:** Menambahkan `src/content/changelog/0-9-0-live-preview-sentinelbank.mdx`.
+
+**Keputusan / dependency baru:**
+- Tidak ada dependency baru (menggunakan `<iframe>` dengan `loading="lazy"`, `sandbox` aman, dan `ResizeObserver` bawaan browser agar tetap Rp0 dan menjaga anggaran performa Lighthouse).
+
+**Berikutnya:**
+- Jalankan `git push` di terminal agar project SentinelBank FDS dan pratinjau live website-nya langsung tampil di Vercel.

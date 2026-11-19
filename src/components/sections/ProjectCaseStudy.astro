@@ -1,6 +1,8 @@
 ---
 import { render, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 import Tape from '../ui/Tape.astro';
+import LiveSitePreview from '../islands/LiveSitePreview';
 import { getLocaleFromUrl, getLocalizedPath, useTranslations } from '../../i18n/utils';
 import { pickLocale } from '../../lib/content';
 
@@ -16,9 +18,10 @@ const t = useTranslations(locale);
 const backHref = `${getLocalizedPath('/', locale)}#projects`;
 const summary = pickLocale(entry.data.summary, locale);
 const statusKey = `projects.status.${entry.data.status}` as const;
+const hasExternalDemo = /^https?:\/\//i.test(entry.data.demoUrl.trim());
 ---
 
-<article class="mx-auto max-w-3xl space-y-8">
+<article class="mx-auto max-w-4xl space-y-8">
   <a
     href={backHref}
     class="sticker-btn bg-paper-2 text-ink rounded-sm px-3.5 py-1.5 font-mono text-xs"
@@ -61,9 +64,11 @@ const statusKey = `projects.status.${entry.data.status}` as const;
           entry.data.demoUrl && (
             <a
               href={entry.data.demoUrl}
+              target={hasExternalDemo ? '_blank' : undefined}
+              rel={hasExternalDemo ? 'noopener noreferrer' : undefined}
               class="sticker-btn bg-mustard text-ink rounded-sm px-3.5 py-1.5 font-mono text-xs"
             >
-              {t('projects.demo')}
+              {t('projects.demo')}{hasExternalDemo ? ' ↗' : ''}
             </a>
           )
         }
@@ -83,8 +88,32 @@ const statusKey = `projects.status.${entry.data.status}` as const;
     </div>
   </header>
 
+  {
+    hasExternalDemo ? (
+      <LiveSitePreview
+        client:visible
+        url={entry.data.demoUrl}
+        title={entry.data.title}
+        variant="full"
+        locale={locale}
+      />
+    ) : (
+      entry.data.cover && (
+        <div class="sticker-card overflow-hidden rounded-md bg-paper-2 p-2">
+          <Image
+            src={entry.data.cover}
+            alt={entry.data.title}
+            width={1100}
+            height={680}
+            class="w-full rounded-sm border-2 border-ink object-cover"
+          />
+        </div>
+      )
+    )
+  }
+
   <div
-    class="sticker-card space-y-4 rounded-md bg-paper p-6 leading-relaxed text-ink sm:p-8 [&_h2]:mt-6 [&_h2]:mb-2 [&_h2]:border-b-2 [&_h2]:border-ink [&_h2]:pb-1 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-bold [&_h2:first-child]:mt-0 [&_p]:text-ink-soft [&_p]:leading-relaxed"
+    class="sticker-card space-y-4 rounded-md bg-paper p-6 leading-relaxed text-ink sm:p-8 [&_blockquote]:rounded-sm [&_blockquote]:border-l-4 [&_blockquote]:border-mustard [&_blockquote]:bg-paper-2 [&_blockquote]:px-4 [&_blockquote]:py-3 [&_blockquote]:text-sm [&_code]:rounded-sm [&_code]:border [&_code]:border-ink/25 [&_code]:bg-paper-2 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.85em] [&_h2]:mt-6 [&_h2]:mb-2 [&_h2]:border-b-2 [&_h2]:border-ink [&_h2]:pb-1 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-bold [&_h2:first-child]:mt-0 [&_li]:text-ink-soft [&_ol]:ml-5 [&_ol]:list-decimal [&_ol]:space-y-2 [&_p]:leading-relaxed [&_p]:text-ink-soft [&_strong]:font-semibold [&_strong]:text-ink [&_ul]:ml-5 [&_ul]:list-disc [&_ul]:space-y-1.5"
   >
     <Content />
   </div>

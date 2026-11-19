@@ -1,11 +1,15 @@
 ---
+import { Image } from 'astro:assets';
 import Tape from '../ui/Tape.astro';
+import LiveSitePreview from '../islands/LiveSitePreview';
 import { getLocaleFromUrl, getLocalizedPath, useTranslations } from '../../i18n/utils';
 import { getProjectsData, pickLocale } from '../../lib/content';
 
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 const projects = await getProjectsData(false);
+
+const isExternalUrl = (url: string) => /^https?:\/\//i.test(url.trim());
 
 const categoryColors: Record<string, string> = {
   web: 'bg-tomato text-paper',
@@ -69,6 +73,7 @@ const categoryColors: Record<string, string> = {
         const summary = pickLocale(entry.data.summary, locale);
         const statusKey = `projects.status.${entry.data.status}` as const;
         const detailHref = getLocalizedPath(`/projects/${entry.id}`, locale);
+        const hasExternalDemo = isExternalUrl(entry.data.demoUrl);
 
         return (
           <article
@@ -96,6 +101,31 @@ const categoryColors: Record<string, string> = {
                   {t(statusKey)}
                 </span>
               </div>
+
+              {hasExternalDemo ? (
+                <LiveSitePreview
+                  client:visible
+                  url={entry.data.demoUrl}
+                  title={entry.data.title}
+                  variant="card"
+                  locale={locale}
+                />
+              ) : (
+                entry.data.cover && (
+                  <a
+                    href={detailHref}
+                    class="block overflow-hidden rounded-sm border-2 border-ink bg-paper-2 shadow-[3px_3px_0_var(--ink)]"
+                  >
+                    <Image
+                      src={entry.data.cover}
+                      alt={entry.data.title}
+                      width={720}
+                      height={450}
+                      class="aspect-[16/10] w-full object-cover"
+                    />
+                  </a>
+                )
+              )}
 
               <h3 class="font-display text-2xl font-extrabold leading-snug">
                 <a href={detailHref} class="hover:text-tomato underline-offset-4 hover:underline">
@@ -127,9 +157,11 @@ const categoryColors: Record<string, string> = {
                 {entry.data.demoUrl && (
                   <a
                     href={entry.data.demoUrl}
-                     class="sticker-btn bg-paper text-ink rounded-sm px-3 py-1.5 font-mono text-xs"
+                    target={hasExternalDemo ? '_blank' : undefined}
+                    rel={hasExternalDemo ? 'noopener noreferrer' : undefined}
+                    class="sticker-btn bg-paper text-ink rounded-sm px-3 py-1.5 font-mono text-xs"
                   >
-                    {t('projects.demo')}
+                    {t('projects.demo')}{hasExternalDemo ? ' ↗' : ''}
                   </a>
                 )}
 

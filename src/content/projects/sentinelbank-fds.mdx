@@ -1,0 +1,58 @@
+---
+title: SentinelBank FDS — Sistem Deteksi Kecurangan Transaksi Perbankan Hibrida
+summary:
+  id: "Prototipe Fraud Detection System (FDS) perbankan multi-kanal dengan mesin deteksi 3 lapis (Rule Engine, Isolation Forest 48 pohon, & Calibrated Logistic Regression) untuk mendeteksi transaksi mencurigakan secara real-time maupun batch CSV."
+  en: "Hybrid banking Fraud Detection Workbench combining a 3-layer engine (9 banking rules, 48-tree Isolation Forest, and calibrated Logistic Regression with Explainable AI) for real-time scoring, batch CSV screening, and IDR cost-sensitive threshold tuning."
+stack:
+  - Next.js
+  - TypeScript
+  - Tailwind CSS
+  - Apache ECharts
+  - Python
+  - scikit-learn
+  - pandas
+  - Vercel
+category: ai
+demoUrl: "https://banking-fraud-detection-system-six.vercel.app/"
+repoUrl: "https://github.com/BaharudinAlamsyah27/banking-fraud-detection-system"
+featured: true
+draft: false
+order: 0
+date: 2026-11-19
+status: selesai
+---
+
+> **Catatan:** Proyek ini adalah simulasi pembelajaran dan portfolio yang menggunakan 100% data transaksi sintetis serta tidak menggunakan data nasabah perbankan asli.
+
+## Masalah
+
+Operasional perbankan multi-kanal (*Mobile Banking, Kartu Debit/Kredit, QRIS, Internet Banking,* dan *ATM/Cabang*) menghadapi tantangan ganda: sistem berbasis aturan kaku sering melewatkan pola serangan baru, sementara model *machine learning* murni tanpa ambang biaya sering memicu *false positive* yang mengganggu transaksi sah nasabah (*customer insult*). Selain itu, menjalankan server Python terpisah di serverless sering menimbulkan *cold start* tinggi.
+
+## Arsitektur 3 Lapis (Cara Kerja)
+
+1. **Training Pipeline Offline (Python / `scikit-learn` & `pandas`)**
+   Skrip Python men-generate **6.000 transaksi perbankan sintetis** lintas kanal dengan 5 tipologi serangan nyata (*Account Takeover*, *Money Mule Fan-In*, *Reaktivasi Rekening Dorman*, *Structuring / Split Transaction*, dan *Velocity Attack*). Pipeline melatih *Isolation Forest* (48 pohon), *Logistic Regression* terkalibrasi, serta *Random Forest* pembanding, lalu mengekspor bobot dan struktur pohonnya ke artefak ringan (`model-artifact.json`).
+2. **Hybrid Detection Engine (*Real-Time Scoring* di Serverless API)**
+   Setiap transaksi masuk dinilai oleh 3 lapisan secara bersamaan langsung di serverless tanpa *cold start* Python:
+   - **Lapis 1 — Rule Engine Perbankan (25%):** 9 aturan deterministik (lonjakan frekuensi, deviasi nominal, pola rekening penampung, rekening dorman, nominal mendekati limit Rp25 Jt / Rp100 Jt, hingga pencocokan *Watchlist*).
+   - **Lapis 2 — Unsupervised Anomaly Detection (15%):** *Isolation Forest* untuk menangkap pola anomali baru yang belum berlabel.
+   - **Lapis 3 — Calibrated Risk Classifier (60%):** Menghitung skor probabilitas risiko (0–100) sekaligus kontribusi *log-odds* per fitur (*Explainable AI*).
+3. **Matriks Keputusan 4-Tier & Umpan Balik Analis**
+   Skor akhir dipetakan otomatis ke 4 tindakan: **Lolos Otomatis (0–39)**, **Step-Up Challenge / OTP (40–64)**, **Tinjauan Manual / Hold (65–84)**, dan **Blokir Otomatis (85–100)**. Keputusan analis di antrean investigasi langsung memperbarui **Watchlist** (blokir otomatis untuk percobaan berikutnya) atau **Whitelist**.
+
+## Hasil & Fitur Utama
+
+- **Evaluasi Berbasis Nilai Rupiah (*Cost-Sensitive Analytics*):** Dilengkapi *Threshold Optimizer* interaktif (Apache ECharts) untuk memantau *trade-off* antara **Value Detection Rate (`91,6%` pada ambang 65)**, **ROC-AUC (`0,988`)**, dan **Customer Insult Rate (`2,55%`)**.
+- **Dua Jalur Input Data:** Mendukung uji satuan *real-time* (**Simulator Transaksi** dengan 6 preset serangan + endpoint `POST /api/score`) maupun uji massal (**Unduh Template CSV & Import Batch CSV** langsung di browser).
+- **Explainable AI & Feedback Loop:** Menampilkan alasan aturan yang terpicu, grafik pendorong risiko per fitur, perbandingan visual nominal terhadap kebiasaan nasabah, serta kontrol *Watchlist/Whitelist* tertutup.
+- **Antarmuka Operasional Bilingual:** Mendukung pergantian bahasa instan (**ID | EN**) dan mode **Light / Dark** dengan latensi inferensi rendah di Vercel.
+
+## Cara Mencoba (Langsung di Preview Atas)
+
+1. Buka **Dashboard** untuk melihat tren alert harian dan distribusi keputusan 4-tier.
+2. Klik **Tinjau** pada alert prioritas di **Antrean Risiko**, lalu klik **Konfirmasi Fraud** untuk menguji *Watchlist Feedback Loop*.
+3. Coba **Import CSV** (unduh *Template CSV* lebih dulu) atau geser slider ambang batas di menu **Analitik & Threshold**.
+
+## Pelajaran
+
+Mengekspor model *Isolation Forest* dan *Logistic Regression* terkalibrasi dari Python ke artefak JSON ringan membuat inferensi *real-time* di Next.js Serverless tetap instan tanpa biaya infrastruktur tambahan. Dalam domain risiko perbankan, keterjelasan alasan (*Explainable AI*) dan kalibrasi ambang berbasis nilai Rupiah jauh lebih berguna bagi analis dibanding sekadar angka akurasi mentah.
