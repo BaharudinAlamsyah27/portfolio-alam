@@ -1,10 +1,11 @@
 ---
 interface Props {
-  variant: 'batik-ribbon' | 'gunungan';
+  variant: 'batik-ribbon' | 'megamendung-ribbon' | 'parang-divider' | 'gunungan';
   class?: string;
 }
 
 const { variant, class: className = '' } = Astro.props;
+const uid = Math.random().toString(36).slice(2, 8);
 ---
 
 {
@@ -16,7 +17,7 @@ const { variant, class: className = '' } = Astro.props;
     >
       <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <pattern id="kawung-tile" width="24" height="14" patternUnits="userSpaceOnUse">
+          <pattern id={`kawung-${uid}`} width="24" height="14" patternUnits="userSpaceOnUse">
             <ellipse cx="6" cy="3.5" rx="4.5" ry="2.4" fill="var(--mustard)" fill-opacity="0.55" stroke="var(--ink)" stroke-width="0.9" />
             <ellipse cx="18" cy="3.5" rx="4.5" ry="2.4" fill="var(--slime)" fill-opacity="0.45" stroke="var(--ink)" stroke-width="0.9" />
             <ellipse cx="6" cy="10.5" rx="4.5" ry="2.4" fill="var(--slime)" fill-opacity="0.45" stroke="var(--ink)" stroke-width="0.9" />
@@ -26,8 +27,96 @@ const { variant, class: className = '' } = Astro.props;
             <circle cx="24" cy="7" r="1.3" fill="var(--ink)" />
           </pattern>
         </defs>
-        <rect width="100%" height="100%" fill="url(#kawung-tile)" />
+        <rect width="100%" height="100%" fill={`url(#kawung-${uid})`} />
       </svg>
+    </div>
+  )
+}
+
+{
+  variant === 'megamendung-ribbon' && (
+    <div
+      class={`h-3 w-full overflow-hidden border-b-2 border-ink bg-slime-soft ${className}`}
+      aria-hidden="true"
+      title="Corak Batik Mega Mendung · Rimuru Blue"
+    >
+      <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id={`megamendung-${uid}`} width="48" height="12" patternUnits="userSpaceOnUse">
+            {/* Lapisan awan Mega Mendung bernuansa biru Rimuru */}
+            <path
+              d="M0 12C4 6 10 4 16 7C20 9 22 4 28 3C34 2 38 7 42 7C45 7 47 9 48 12Z"
+              fill="var(--slime)"
+              fill-opacity="0.7"
+              stroke="var(--ink)"
+              stroke-width="0.9"
+            />
+            <path
+              d="M4 12C8 8 13 7 18 9C22 10 25 6 30 6C35 6 38 9 44 12Z"
+              fill="var(--slime-deep)"
+              fill-opacity="0.55"
+            />
+            <circle cx="28" cy="4.8" r="1.1" fill="var(--paper)" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill={`url(#megamendung-${uid})`} />
+      </svg>
+    </div>
+  )
+}
+
+{
+  variant === 'parang-divider' && (
+    <div
+      class={`flex items-center justify-center gap-3 py-2 select-none ${className}`}
+      aria-hidden="true"
+    >
+      <div class="h-3 flex-1 overflow-hidden rounded-sm border border-ink/40 bg-paper-2">
+        <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id={`parang-l-${uid}`} width="18" height="12" patternUnits="userSpaceOnUse">
+              <path
+                d="M-2 12L10 0M6 12L18 0M14 12L24 2"
+                stroke="var(--slime-deep)"
+                stroke-width="2"
+                stroke-opacity="0.45"
+              />
+              <circle cx="9" cy="6" r="1.4" fill="var(--mustard)" stroke="var(--ink)" stroke-width="0.7" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill={`url(#parang-l-${uid})`} />
+        </svg>
+      </div>
+
+      <svg viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-8 w-7 shrink-0">
+        <path
+          d="M18 2C24 10 30 18 31 30C31.3 33.5 29.5 36.5 26 37.5H10C6.5 36.5 4.7 33.5 5 30C6 18 12 10 18 2Z"
+          fill="var(--mustard)"
+          fill-opacity="0.55"
+          stroke="var(--ink)"
+          stroke-width="2"
+          stroke-linejoin="round"
+        />
+        <path d="M18 9V42" stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round" />
+        <path d="M18 18L12 24M18 18L24 24M18 27L11 33M18 27L25 33" stroke="var(--ink)" stroke-width="1.4" stroke-linecap="round" />
+      </svg>
+
+      <div class="h-3 flex-1 overflow-hidden rounded-sm border border-ink/40 bg-paper-2">
+        <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id={`parang-r-${uid}`} width="18" height="12" patternUnits="userSpaceOnUse">
+              <path
+                d="M-2 0L10 12M6 0L18 12M14 0L24 10"
+                stroke="var(--slime-deep)"
+                stroke-width="2"
+                stroke-opacity="0.45"
+              />
+              <circle cx="9" cy="6" r="1.4" fill="var(--mustard)" stroke="var(--ink)" stroke-width="0.7" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill={`url(#parang-r-${uid})`} />
+        </svg>
+      </div>
     </div>
   )
 }
