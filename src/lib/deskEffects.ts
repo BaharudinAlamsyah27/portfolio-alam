@@ -32,7 +32,6 @@ function splitHeadingWords(el: HTMLElement): HTMLElement[] {
 
 async function runPageEffects() {
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReduced) return;
 
   if (cleanupScrollTriggers) {
     cleanupScrollTriggers();
@@ -67,20 +66,22 @@ async function runPageEffects() {
   ]);
   gsap.registerPlugin(ScrollTrigger);
 
-  // 3. Lenis smooth scroll disinkronkan dengan ScrollTrigger
+  // 3. Lenis smooth scroll (hanya aktif jika tidak meminta reduced-motion)
   if (activeLenis) {
     activeLenis.destroy();
     activeLenis = null;
   }
-  const { default: Lenis } = await import('lenis');
-  const lenis = new Lenis({
-    autoRaf: true,
-    duration: 1.05,
-  });
-  lenis.on('scroll', () => {
-    ScrollTrigger.update();
-  });
-  activeLenis = lenis;
+  if (!prefersReduced) {
+    const { default: Lenis } = await import('lenis');
+    const lenis = new Lenis({
+      autoRaf: true,
+      duration: 1.05,
+    });
+    lenis.on('scroll', () => {
+      ScrollTrigger.update();
+    });
+    activeLenis = lenis;
+  }
 
   const triggers: ReturnType<typeof ScrollTrigger.create>[] = [];
 
@@ -231,4 +232,8 @@ export function initDeskEffects() {
   document.addEventListener('astro:page-load', () => {
     void runPageEffects();
   });
+
+  if (document.readyState !== 'loading') {
+    void runPageEffects();
+  }
 }
