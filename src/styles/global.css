@@ -411,10 +411,20 @@
     -webkit-backface-visibility: hidden;
   }
 
+  .flip-face.sticker-card:hover {
+    transform: none;
+    box-shadow: var(--shadow-hard);
+  }
+
   .flip-back {
     position: absolute;
     inset: 0;
     transform: rotateY(180deg);
+  }
+
+  .flip-back.sticker-card:hover {
+    transform: rotateY(180deg);
+    box-shadow: var(--shadow-hard);
   }
 
   h1,

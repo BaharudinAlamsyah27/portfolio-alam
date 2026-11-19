@@ -40,7 +40,11 @@ export default function LuminousCard({
     <div class="flip-scene mx-auto w-full max-w-[300px] pt-1 lg:mr-0 lg:ml-auto">
       <div class={`flip-inner ${flipped ? 'is-flipped' : ''}`}>
         {/* ==================== SISI DEPAN: Arch Gotik Ruberios + Balon Dialog ==================== */}
-        <div class="flip-face sticker-card relative rotate-[0.8deg] rounded-md bg-paper p-3.5">
+        <div
+          class={`flip-face sticker-card relative rounded-md bg-paper p-3.5 ${
+            flipped ? 'pointer-events-none' : 'pointer-events-auto'
+          }`}
+        >
           {/* Selotip heterokromia kecil di atas */}
           <span
             aria-hidden="true"
@@ -113,7 +117,11 @@ export default function LuminousCard({
         </div>
 
         {/* ==================== SISI BELAKANG: Quick Stats Fungsional ==================== */}
-        <div class="flip-face flip-back sticker-card flex flex-col justify-between rounded-md bg-paper-2 p-4">
+        <div
+          class={`flip-face flip-back sticker-card flex flex-col justify-between rounded-md bg-paper-2 p-4 ${
+            flipped ? 'pointer-events-auto' : 'pointer-events-none'
+          }`}
+        >
           <div class="flex items-center justify-between border-b-2 border-ink pb-2 font-mono text-[10px]">
             <span class="inline-flex items-center gap-1.5 font-bold uppercase text-ink">
               <span class="h-2 w-2 rounded-full border border-ink bg-tomato" aria-hidden="true" />

@@ -38,14 +38,6 @@ export default function SkillPlayground({ skills, locale, labels }: Props) {
   useEffect(() => {
     if (!physicsMode) return;
 
-    const prefersReduced =
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) {
-      setPhysicsMode(false);
-      return;
-    }
-
     let cancelled = false;
     let rafId = 0;
     let cleanupMatter: (() => void) | null = null;
