@@ -150,21 +150,48 @@ const terminalContext: TerminalContext = {
 
     <header class="border-b-2 border-ink bg-paper/95 sticky top-0 z-40">
       <CultureOrnaments variant="megamendung-ribbon" />
-      <div class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 py-3">
-        <a
-          href={homeHref}
-          class="font-display inline-flex items-center gap-2 text-lg font-bold tracking-tight"
+      <div class="flex items-stretch">
+        {/* Sayap Kiri Header (Desktop lebar, sejajar dinding SIDE · A) */}
+        <div
+          class="hidden w-[112px] shrink-0 items-center justify-center gap-1.5 border-r-2 border-ink bg-[var(--wall-bg)] px-2 font-mono text-[9.5px] font-bold text-ink-soft xl:flex"
+          aria-hidden="true"
         >
-          <span
-            class="bg-tomato text-paper inline-flex h-7 w-7 items-center justify-center rounded-sm border-2 border-ink text-sm font-bold shadow-[2px_2px_0_var(--ink)]"
-            aria-hidden="true"
-          >
-            A
-          </span>
-          <span>alam.</span>
-        </a>
+          <span class="h-2 w-2 rounded-full border border-ink bg-tomato"></span>
+          <span class="h-2 w-2 rounded-full border border-ink bg-mustard"></span>
+          <span class="h-2 w-2 rounded-full border border-ink bg-leaf"></span>
+          <span class="ml-0.5 truncate">&lt;/&gt;</span>
+        </div>
 
-        <nav aria-label="Navigasi utama" class="flex items-center gap-2 sm:gap-3">
+        <div class="mx-auto flex w-full max-w-5xl flex-1 items-center justify-between gap-3 px-4 py-2.5 sm:px-5">
+          <div class="flex items-center gap-2.5">
+            <a
+              href={homeHref}
+              class="font-display inline-flex items-center gap-2 text-lg font-bold tracking-tight"
+            >
+              <span
+                class="bg-tomato text-paper inline-flex h-7 w-7 items-center justify-center rounded-sm border-2 border-ink text-sm font-bold shadow-[2px_2px_0_var(--ink)]"
+                aria-hidden="true"
+              >
+                A
+              </span>
+              <span>alam.</span>
+            </a>
+
+            {/* Badge IDE / Git di sebelah logo */}
+            <button
+              type="button"
+              data-open-terminal
+              title={locale === 'id' ? 'Klik untuk buka Terminal (Ctrl+K)' : 'Click to open Terminal (Ctrl+K)'}
+              class="hidden items-center gap-1.5 rounded-sm border border-ink/40 bg-paper-2 px-2 py-0.5 font-mono text-[11px] text-ink-soft transition-colors hover:border-ink hover:text-ink sm:inline-flex"
+            >
+              <span class="h-1.5 w-1.5 rounded-full bg-leaf" aria-hidden="true"></span>
+              <span>~/alam</span>
+              <span class="text-cobalt font-semibold">⎇ main</span>
+              <span class="cursor-blink bg-tomato inline-block h-3 w-1.5" aria-hidden="true"></span>
+            </button>
+          </div>
+
+          <nav aria-label="Navigasi utama" class="flex items-center gap-2 sm:gap-3">
           <div class="hidden items-center gap-4 pr-2 text-sm font-semibold text-ink md:flex">
             <a href={projectsHref} class="hover:text-tomato transition-colors">
               {t('nav.projects')}
@@ -228,6 +255,60 @@ const terminalContext: TerminalContext = {
             <span class="hidden opacity-85 sm:inline">Ctrl+K</span>
           </button>
         </nav>
+        </div>
+
+        {/* Sayap Kanan Header (Desktop lebar, sejajar dinding SIDE · B) */}
+        <div
+          class="hidden w-[112px] shrink-0 items-center justify-center gap-1 border-l-2 border-ink bg-[var(--wall-bg)] px-2 font-mono text-[9.5px] font-bold text-ink-soft xl:flex"
+          aria-hidden="true"
+        >
+          <span class="h-2 w-2 rounded-full border border-ink bg-slime"></span>
+          <span>&#123; code: ok &#125;</span>
+        </div>
+      </div>
+
+      {/* Status Bar Tipis ala VS Code + Ticker Kodingan */}
+      <div
+        class="flex h-[22px] items-center justify-between gap-3 overflow-hidden border-t border-ink/25 bg-paper-2/95 px-3 font-mono text-[10px] text-ink-soft sm:px-5"
+        aria-hidden="true"
+      >
+        <div class="flex shrink-0 items-center gap-2.5">
+          <span class="inline-flex items-center gap-1 font-bold text-ink">
+            <span class="h-1.5 w-1.5 rounded-full bg-leaf"></span>
+            0 errors
+          </span>
+          <span class="hidden sm:inline">·</span>
+          <span class="hidden text-cobalt font-semibold sm:inline">TypeScript strict</span>
+          <span class="hidden md:inline">·</span>
+          <span class="hidden md:inline">Astro + Preact</span>
+        </div>
+
+        <div class="min-w-0 flex-1 overflow-hidden">
+          <div class="header-code-marquee gap-6 text-[10px] opacity-80">
+            <span>const desk = &quot;alam&quot;;</span>
+            <span>·</span>
+            <span>git push origin main</span>
+            <span>·</span>
+            <span>astro check // 0 errors</span>
+            <span>·</span>
+            <span>rimuru.slurp()</span>
+            <span>·</span>
+            <span>ynwa(&quot;LFC&quot;)</span>
+            <span>·</span>
+            <span>const desk = &quot;alam&quot;;</span>
+            <span>·</span>
+            <span>git push origin main</span>
+            <span>·</span>
+            <span>astro check // 0 errors</span>
+            <span>·</span>
+            <span>rimuru.slurp()</span>
+            <span>·</span>
+            <span>ynwa(&quot;LFC&quot;)</span>
+            <span>·</span>
+          </div>
+        </div>
+
+        <span class="hidden shrink-0 text-[9.5px] sm:inline">UTF-8 · LF</span>
       </div>
     </header>
 
