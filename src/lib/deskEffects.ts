@@ -2,7 +2,7 @@ import type { RoughAnnotationType } from 'rough-notation/lib/model';
 
 let activeLenis: { destroy: () => void } | null = null;
 let listenersBound = false;
-let cleanupScrollTriggers: (() => void) | null = null;
+let activeObserver: IntersectionObserver | null = null;
 
 function splitHeadingWords(el: HTMLElement): HTMLElement[] {
   if (el.dataset.wordsSplit === '1') {
@@ -33,9 +33,9 @@ function splitHeadingWords(el: HTMLElement): HTMLElement[] {
 async function runPageEffects() {
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (cleanupScrollTriggers) {
-    cleanupScrollTriggers();
-    cleanupScrollTriggers = null;
+  if (activeObserver) {
+    activeObserver.disconnect();
+    activeObserver = null;
   }
 
   // 1. Rough Notation: coretan spidol pada elemen bertanda [data-rough]
@@ -59,154 +59,144 @@ async function runPageEffects() {
     });
   }
 
-  // 2. GSAP + ScrollTrigger
-  const [{ gsap }, { ScrollTrigger }] = await Promise.all([
-    import('gsap'),
-    import('gsap/ScrollTrigger'),
-  ]);
-  gsap.registerPlugin(ScrollTrigger);
-
-  // 3. Lenis smooth scroll (hanya aktif jika tidak meminta reduced-motion)
+  // 2. Lenis smooth scroll (hanya aktif jika tidak meminta reduced-motion)
   if (activeLenis) {
     activeLenis.destroy();
     activeLenis = null;
   }
   if (!prefersReduced) {
     const { default: Lenis } = await import('lenis');
-    const lenis = new Lenis({
+    activeLenis = new Lenis({
       autoRaf: true,
       duration: 1.05,
     });
-    lenis.on('scroll', () => {
-      ScrollTrigger.update();
-    });
-    activeLenis = lenis;
   }
 
-  const triggers: ReturnType<typeof ScrollTrigger.create>[] = [];
+  // 3. GSAP animasi kata-per-kata dari kiri ke kanan via IntersectionObserver (tidak pernah menyembunyikan teks!)
+  const { gsap } = await import('gsap');
 
-  // Hero heading: animasi kata muncul dari kiri ke kanan saat pertama tampil
-  const heroHeading = document.querySelector<HTMLElement>('#hero-heading');
-  if (heroHeading && heroHeading.dataset.tensuraInit !== '1') {
-    heroHeading.dataset.tensuraInit = '1';
-    const heroWords = splitHeadingWords(heroHeading);
-    if (heroWords.length > 0) {
-      gsap.from(heroWords, {
-        x: -24,
-        opacity: 0,
-        clipPath: 'inset(0 100% 0 0)',
-        duration: 0.45,
-        stagger: 0.08,
-        ease: 'power3.out',
-        clearProps: 'clipPath,transform,opacity',
-      });
-    }
-  }
+  const animateHeadingBlock = (heading: HTMLElement) => {
+    if (heading.dataset.tensuraAnimated === '1') return;
+    heading.dataset.tensuraAnimated = '1';
 
-  // 4. Reveal kata-per-kata dari kiri ke kanan saat tiap section discroll ke layar
-  const sections = Array.from(document.querySelectorAll<HTMLElement>('main section'));
-  sections.forEach((sec) => {
-    if (sec.querySelector('#hero-heading')) return;
+    const headerBlock = heading.parentElement;
+    const badge = headerBlock?.querySelector<HTMLElement>('span');
+    const sub = headerBlock?.querySelector<HTMLElement>('p');
+    const words = splitHeadingWords(heading);
 
-    const heading = sec.querySelector<HTMLElement>('h2');
-    if (heading && heading.dataset.tensuraInit !== '1') {
-      heading.dataset.tensuraInit = '1';
-      const headerBlock = heading.parentElement;
-      const badge = headerBlock?.querySelector<HTMLElement>('span');
-      const sub = headerBlock?.querySelector<HTMLElement>('p');
-      const words = splitHeadingWords(heading);
+    const tl = gsap.timeline();
 
-      const isAlreadyVisible =
-        heading.getBoundingClientRect().top < window.innerHeight * 0.96;
-
-      const tl = gsap.timeline(
-        isAlreadyVisible
-          ? undefined
-          : {
-              scrollTrigger: {
-                trigger: heading,
-                start: 'top 98%',
-                once: true,
-              },
-            },
-      );
-
-      if (badge) {
-        tl.from(badge, {
-          x: -22,
-          scale: 0.82,
-          opacity: 0,
+    if (badge) {
+      tl.fromTo(
+        badge,
+        { x: -24, scale: 0.85, opacity: 0.2 },
+        {
+          x: 0,
+          scale: 1,
+          opacity: 1,
           duration: 0.34,
           ease: 'back.out(2)',
-          clearProps: 'opacity,transform',
-        });
-      }
-
-      if (words.length > 0) {
-        tl.from(
-          words,
-          {
-            x: -20,
-            opacity: 0,
-            clipPath: 'inset(0 100% 0 0)',
-            duration: 0.4,
-            stagger: 0.07,
-            ease: 'power3.out',
-            clearProps: 'clipPath,transform,opacity',
-          },
-          badge ? '-=0.2' : 0,
-        );
-      }
-
-      if (sub) {
-        tl.from(
-          sub,
-          {
-            x: -14,
-            opacity: 0,
-            duration: 0.36,
-            ease: 'power2.out',
-            clearProps: 'transform,opacity',
-          },
-          '-=0.22',
-        );
-      }
-
-      if (tl.scrollTrigger) {
-        triggers.push(tl.scrollTrigger);
-      }
+          clearProps: 'transform,opacity',
+        },
+      );
     }
 
-    // 5. Reveal kartu (.sticker-card) per kartu tanpa pernah menyembunyikan konten (no blank gaps!)
-    const secCards = Array.from(sec.querySelectorAll<HTMLElement>('.sticker-card')).filter(
-      (c) => c.dataset.gsapInit !== '1',
-    );
-    secCards.forEach((card) => {
-      card.dataset.gsapInit = '1';
-      const tween = gsap.from(card, {
-        y: 18,
-        duration: 0.45,
-        ease: 'power2.out',
-        clearProps: 'transform',
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 96%',
-          once: true,
+    if (words.length > 0) {
+      tl.fromTo(
+        words,
+        { x: -22, opacity: 0.15, clipPath: 'inset(0 100% 0 0)' },
+        {
+          x: 0,
+          opacity: 1,
+          clipPath: 'inset(0 0% 0 0)',
+          duration: 0.4,
+          stagger: 0.075,
+          ease: 'power3.out',
+          clearProps: 'clipPath,transform,opacity',
         },
+        badge ? '-=0.2' : 0,
+      );
+    }
+
+    if (sub) {
+      tl.fromTo(
+        sub,
+        { x: -16, opacity: 0.2 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.36,
+          ease: 'power2.out',
+          clearProps: 'transform,opacity',
+        },
+        '-=0.22',
+      );
+    }
+  };
+
+  // Hero heading langsung jalan saat tampil
+  const heroHeading = document.querySelector<HTMLElement>('#hero-heading');
+  if (heroHeading && heroHeading.dataset.tensuraAnimated !== '1') {
+    heroHeading.dataset.tensuraAnimated = '1';
+    const heroWords = splitHeadingWords(heroHeading);
+    if (heroWords.length > 0) {
+      gsap.fromTo(
+        heroWords,
+        { x: -22, opacity: 0.15, clipPath: 'inset(0 100% 0 0)' },
+        {
+          x: 0,
+          opacity: 1,
+          clipPath: 'inset(0 0% 0 0)',
+          duration: 0.42,
+          stagger: 0.075,
+          ease: 'power3.out',
+          clearProps: 'clipPath,transform,opacity',
+        },
+      );
+    }
+  }
+
+  // Observer untuk semua judul section & kartu saat masuk layar
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        observer.unobserve(entry.target);
+
+        const el = entry.target as HTMLElement;
+        if (el.matches('h2')) {
+          animateHeadingBlock(el);
+        } else if (el.classList.contains('sticker-card')) {
+          gsap.fromTo(
+            el,
+            { y: 16 },
+            {
+              y: 0,
+              duration: 0.42,
+              ease: 'power2.out',
+              clearProps: 'transform',
+            },
+          );
+        }
       });
-      if (tween.scrollTrigger) {
-        triggers.push(tween.scrollTrigger);
-      }
-    });
+    },
+    { threshold: 0.05 },
+  );
+
+  activeObserver = observer;
+
+  document.querySelectorAll<HTMLElement>('main section h2').forEach((h2) => {
+    if (h2.dataset.tensuraAnimated !== '1') {
+      observer.observe(h2);
+    }
   });
 
-  window.setTimeout(() => {
-    ScrollTrigger.refresh();
-  }, 400);
-
-  cleanupScrollTriggers = () => {
-    triggers.forEach((st) => st.kill());
-  };
+  document.querySelectorAll<HTMLElement>('.sticker-card').forEach((card) => {
+    if (card.dataset.gsapInit !== '1') {
+      card.dataset.gsapInit = '1';
+      observer.observe(card);
+    }
+  });
 }
 
 export function initDeskEffects() {
@@ -226,9 +216,9 @@ export function initDeskEffects() {
   });
 
   document.addEventListener('astro:before-preparation', () => {
-    if (cleanupScrollTriggers) {
-      cleanupScrollTriggers();
-      cleanupScrollTriggers = null;
+    if (activeObserver) {
+      activeObserver.disconnect();
+      activeObserver = null;
     }
     if (activeLenis) {
       activeLenis.destroy();
