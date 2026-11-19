@@ -194,14 +194,22 @@ export default config({
       entryLayout: 'content',
       schema: {
         title: fields.slug({ name: { label: 'Judul project' } }),
-        summary: localizedText('Ringkasan 1 kalimat (suara Alam)'),
+        tagline: fields.text({ label: 'Tagline singkat (maks. 12 kata)' }),
+        summary: localizedText('Ringkasan singkat (2-3 kalimat, maks. 280 karakter)', true),
         cover: fields.image({
           label: 'Gambar sampul',
           directory: 'src/assets/projects',
           publicPath: '../../assets/projects/',
         }),
+        role: fields.text({ label: 'Peran (contoh: Full-Stack Developer, Solo Project)' }),
+        context: fields.text({ label: 'Konteks (contoh: Program MagangHub di BPRS Sragen)' }),
+        duration: fields.text({ label: 'Durasi pengerjaan (contoh: 2 minggu)' }),
         stack: fields.array(fields.text({ label: 'Teknologi' }), {
           label: 'Tech stack',
+          itemLabel: (props) => props.value,
+        }),
+        tags: fields.array(fields.text({ label: 'Tag / Keyword' }), {
+          label: 'Tags / Keywords (untuk pencarian & filter)',
           itemLabel: (props) => props.value,
         }),
         category: fields.select({

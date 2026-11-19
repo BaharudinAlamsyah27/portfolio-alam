@@ -31,11 +31,18 @@ const projects = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      tagline: z.string().default(''),
       summary: localized,
       cover: image().optional(),
+      role: z.string().default(''),
+      context: z.string().default(''),
+      duration: z.string().default(''),
       stack: z.array(z.string()).default([]),
+      tags: z.array(z.string()).default([]),
       category: category.default('web'),
       demoUrl: z.string().default(''),
+      previewImage: z.string().default(''),
+      embedPreview: z.boolean().default(true),
       repoUrl: z.string().default(''),
       featured: z.boolean().default(false),
       draft: z.boolean().default(false),

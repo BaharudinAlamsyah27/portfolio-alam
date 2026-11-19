@@ -187,10 +187,14 @@ const INITIAL_VISIBLE = 6;
         const catLabel = categoryLabels[entry.data.category]?.[locale] ?? entry.data.category;
         const searchableText = [
           entry.data.title,
+          entry.data.tagline,
           summary,
           catLabel,
           entry.data.category,
+          entry.data.role,
+          entry.data.context,
           ...entry.data.stack,
+          ...entry.data.tags,
         ]
           .join(' ')
           .toLowerCase();
@@ -236,6 +240,8 @@ const INITIAL_VISIBLE = 6;
                   title={entry.data.title}
                   variant="card"
                   locale={locale}
+                  embed={entry.data.embedPreview}
+                  previewImage={entry.data.previewImage}
                 />
               ) : (
                 entry.data.cover && (

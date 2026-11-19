@@ -1,0 +1,73 @@
+---
+title: PERISAI OPSEC — Sistem Penangkalan Kebocoran Informasi Operasional
+tagline: "Periksa Sebelum Unggah — Deteksi Kebocoran OPSEC 100% Client-Side Tanpa Upload"
+summary:
+  id: "Aplikasi web zero-upload untuk mendeteksi kebocoran informasi operasional (OPSEC) dari foto, metadata EXIF/GPS, teks gambar (OCR), dan pola rutinitas sebelum diunggah ke media sosial. Seluruh pemrosesan berjalan 100% lokal di browser via WebAssembly."
+  en: "Zero-upload client-side web app detecting OPSEC leaks across photos, EXIF/GPS metadata, in-image text (WASM OCR), and multi-photo pattern-of-life routines—100% locally in the browser with zero bytes sent to any server."
+role: "Lead Developer — Full-Stack & Security Web App"
+context: "Tim Raphael Protocol · Kartika Cyber Hackathon 2026"
+duration: ""
+stack:
+  - React 18
+  - TypeScript
+  - Vite
+  - Tailwind CSS
+  - Zustand
+  - Tesseract.js (WASM)
+  - exifr
+  - Leaflet
+  - Cobe (WebGL)
+  - Vitest
+  - Vercel
+tags:
+  - Cybersecurity
+  - OPSEC
+  - Zero-Upload
+  - WebAssembly
+  - OCR
+  - EXIF
+  - Privacy
+  - Client-Side
+  - Hackathon
+  - Pattern-of-Life
+category: web
+demoUrl: "https://perisai-opsec.vercel.app/"
+previewImage: "https://perisai-opsec.vercel.app/og-image.png"
+embedPreview: false
+repoUrl: "https://github.com/BaharudinAlamsyah27/perisai-opsec-"
+featured: true
+draft: false
+order: 0
+date: 2026-11-19
+status: selesai
+---
+
+## Gambaran Umum & Latar Belakang
+
+Kebocoran informasi operasional (*Operational Security / OPSEC*) di era digital sering kali bukan disebabkan oleh peretasan canggih, melainkan kelalaian saat membagikan foto atau unggahan ke media sosial. Metadata EXIF dapat mengungkap koordinat GPS presisi, teks di latar belakang foto dapat membocorkan identitas satuan atau dokumen rahasia, dan kumpulan foto yang diunggah berkala dapat dimanfaatkan pihak luar untuk merekonstruksi rutinitas serta rute pergerakan (*pattern of life*).
+
+**PERISAI OPSEC** dirancang sebagai alat bantu pencegahan (*penangkalan*) mandiri yang berjalan langsung di peramban sebelum konten dipublikasikan. Dengan arsitektur **100% Client-Side (Zero-Upload Guarantee)**, foto dan teks pengguna tidak pernah meninggalkan perangkat—aman untuk data sensitif, bebas biaya server, dan tetap berfungsi di jaringan terbatas.
+
+## Cara Kerja Sistem
+
+1. **Input Lokal (Foto & Caption):** Pengguna memilih satu atau beberapa foto (atau mencoba 13 foto contoh sintetis bawaan) serta draf teks *caption* langsung di browser.
+2. **Ekstraksi Metadata EXIF/GPS:** Menggunakan `exifr`, sistem membaca koordinat GPS, stempel waktu, dan informasi perangkat langsung dari biner file, lalu memvisualisasikannya pada 3D WebGL Globe (`cobe`) dan peta opt-in (`Leaflet`).
+3. **Pemindaian OCR Luring (WebAssembly):** `Tesseract.js` berjalan di *Web Worker* dengan aset *traineddata* lokal (Bahasa Indonesia & Inggris) untuk mengekstrak teks di dalam gambar lengkap dengan koordinat *bounding box*.
+4. **Analisis Mesin Aturan Deterministik:** Teks hasil OCR, *caption*, dan metadata dicocokkan terhadap kamus istilah sensitif (nama satuan, NRP, penanda dokumen rahasia, kebocoran teknis seperti IP/kata sandi/token, petunjuk lokasi, serta Daftar Informasi Kritis kustom).
+5. **Skor Risiko Noisy-OR & Brief Intelijen:** Menghitung indeks risiko secara transparan pada 4 sumbu (*Lokasi, Identitas, Waktu, Teknis*), mendeteksi kombinasi risiko (*combo findings*), dan menyusun ringkasan intelijen beserta saran perbaikan *caption*.
+6. **Sanitasi & Sensor Otomatis 1-Klik:** Fitur *Buat Versi Aman* meng-encode ulang gambar melalui HTML5 Canvas untuk melucuti seluruh metadata EXIF/GPS sekaligus menyensor area teks sensitif yang terdeteksi, lalu menampilkan perbandingan skor sebelum dan sesudah.
+7. **Rekonstruksi Pola Hidup (Multi-Foto):** Mengelompokkan koordinat dan waktu dari kumpulan foto menjadi kluster lokasi, koridor rute pergerakan, serta estimasi jadwal rutin yang berpotensi dieksploitasi lawan.
+
+## Fitur Unggulan & Pencapaian Teknis
+
+- **Zero-Upload Privacy:** 0 byte data pengguna dikirim ke server eksternal, dilengkapi *Content Security Policy* (CSP) ketat dan `X-Frame-Options: DENY` anti-*clickjacking*.
+- **Mesin Deterministik & Teruji:** Dilengkapi **147 kasus uji otomatis** pada 39 berkas pengujian (*Vitest* & *Testing Library*) mencakup dataset sintetis 9 skenario.
+- **Performa & Code-Splitting:** Modul *Rekonstruksi Pola Hidup* dimuat secara *lazy-loading* sehingga *initial load* tetap ringan.
+- **Mode Demo Publik Tanpa Login:** Pengunjung dapat langsung menguji seluruh alur menggunakan tombol **"Coba foto contoh"** dan **"Muat contoh pola hidup"** di live demo.
+
+## Arsitektur & Tech Stack
+
+- **Frontend & State:** React 18, TypeScript, Vite, Tailwind CSS, Zustand
+- **Pemrosesan Lokal (Client-Side):** Tesseract.js (WebAssembly OCR di Web Worker), `exifr` (EXIF/GPS parser), HTML5 Canvas (sanitasi & redaksi)
+- **Visualisasi Spasial:** `cobe` (3D WebGL Globe), Leaflet (peta opt-in)
+- **Testing & Deployment:** Vitest, Testing Library (147 test cases), Vercel

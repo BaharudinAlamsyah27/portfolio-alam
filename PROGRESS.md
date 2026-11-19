@@ -427,3 +427,17 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
 
 **Berikutnya:**
 - Jalankan `git add . && git commit && git push` untuk deploy ke Vercel.
+
+---
+
+### Sesi 14 — 2026-11-19 11:28–13:31 WIB
+**Model:** Gemini 4 Neon (Medium)
+**Fase:** 7 — Lanjutan (Template Proyek 10 Bagian + Project PERISAI OPSEC)
+
+**Dikerjakan:**
+- Menambahkan dukungan penuh template deskripsi proyek standar (`tagline`, `role`, `context`, `duration`, `tags`, `previewImage`, `embedPreview`) di `src/content.config.ts`, `keystatic.config.ts`, `ProjectCaseStudy.astro`, `ProjectsSection.astro`, dan `docs/PROJECT_TEMPLATE.md`.
+- Memperbarui `LiveSitePreview.tsx` agar mendukung mode `embed={false}` + `previewImage` (tampilan browser frame rapi dengan thumbnail OG untuk aplikasi yang memasang `X-Frame-Options: DENY`).
+- Menambahkan project baru [`src/content/projects/perisai-opsec.mdx`](src/content/projects/perisai-opsec.mdx) (**PERISAI OPSEC** — Kartika Cyber Hackathon 2026, `order: 0`, Live Demo `https://perisai-opsec.vercel.app/`, preview OG image `https://perisai-opsec.vercel.app/og-image.png`).
+
+**Berikutnya:**
+- Jalankan `git add .`, `git commit`, dan `git push` untuk deploy ke Vercel.

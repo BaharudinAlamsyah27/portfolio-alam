@@ -5,6 +5,8 @@ interface Props {
   title: string;
   variant?: 'card' | 'full';
   locale?: 'id' | 'en';
+  embed?: boolean;
+  previewImage?: string;
 }
 
 function getHostname(rawUrl: string): string {
@@ -20,6 +22,8 @@ export default function LiveSitePreview({
   title,
   variant = 'full',
   locale = 'id',
+  embed = true,
+  previewImage = '',
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0.45);
@@ -80,64 +84,90 @@ export default function LiveSitePreview({
           </span>
         </div>
 
-        {/* Scaled Live Preview Frame */}
-        <div
-          ref={containerRef}
-          class="relative aspect-[16/10] w-full overflow-hidden bg-paper"
-        >
-          {!loaded && (
-            <div class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-paper-2/90 p-4 text-center">
-              <span class="font-mono text-xs font-bold text-ink">
-                {locale === 'id' ? 'Memuat tampilan live website...' : 'Loading live website preview...'}
-              </span>
-              <span class="font-mono text-[11px] text-ink-soft">{host}</span>
-            </div>
-          )}
+        {/* Scaled Live Preview Frame or Static OG Preview (when X-Frame-Options: DENY) */}
+        {!embed ? (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group relative block aspect-[16/10] w-full overflow-hidden bg-paper"
+          >
+            {previewImage ? (
+              <img
+                src={previewImage}
+                alt={`Preview ${title}`}
+                loading="lazy"
+                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+              />
+            ) : (
+              <div class="flex h-full w-full flex-col items-center justify-center gap-1.5 bg-paper-2 p-4 text-center font-mono text-xs text-ink-soft">
+                <span class="font-bold text-ink">{host}</span>
+                <span>{locale === 'id' ? 'Klik untuk membuka live demo ↗' : 'Click to open live demo ↗'}</span>
+              </div>
+            )}
+            <span class="absolute right-2 bottom-2 rounded-sm border-2 border-ink bg-mustard px-2 py-1 font-mono text-[10px] font-bold text-ink shadow-[2px_2px_0_var(--ink)] group-hover:bg-tomato group-hover:text-paper">
+              {locale === 'id' ? 'Buka Live ↗' : 'Open Live ↗'}
+            </span>
+          </a>
+        ) : (
+          <div
+            ref={containerRef}
+            class="relative aspect-[16/10] w-full overflow-hidden bg-paper"
+          >
+            {!loaded && (
+              <div class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-paper-2/90 p-4 text-center">
+                <span class="font-mono text-xs font-bold text-ink">
+                  {locale === 'id' ? 'Memuat tampilan live website...' : 'Loading live website preview...'}
+                </span>
+                <span class="font-mono text-[11px] text-ink-soft">{host}</span>
+              </div>
+            )}
 
-          <iframe
-            key={reloadKey}
-            src={url}
-            title={`Preview ${title}`}
-            loading="lazy"
-            onLoad={() => setLoaded(true)}
-            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads"
-            referrerPolicy="no-referrer-when-downgrade"
-            class={`absolute top-0 left-0 h-[800px] w-[1280px] border-0 bg-paper ${
-              interactive ? 'pointer-events-auto' : 'pointer-events-none'
-            }`}
-            style={{
-              transform: `scale(${scale})`,
-              transformOrigin: 'top left',
-            }}
-          />
-
-          {/* Interactive Toggle Overlay */}
-          <div class="pointer-events-none absolute right-2 bottom-2 z-20 flex items-center gap-1.5">
-            <button
-              type="button"
-              onClick={() => setInteractive((v) => !v)}
-              class={`pointer-events-auto rounded-sm border-2 border-ink px-2 py-1 font-mono text-[10px] font-bold shadow-[2px_2px_0_var(--ink)] transition-transform active:translate-y-0.5 ${
-                interactive ? 'bg-tomato text-paper' : 'bg-paper text-ink hover:bg-mustard'
+            <iframe
+              key={reloadKey}
+              src={url}
+              title={`Preview ${title}`}
+              loading="lazy"
+              onLoad={() => setLoaded(true)}
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads"
+              referrerPolicy="no-referrer-when-downgrade"
+              class={`absolute top-0 left-0 h-[800px] w-[1280px] border-0 bg-paper ${
+                interactive ? 'pointer-events-auto' : 'pointer-events-none'
               }`}
-            >
-              {interactive
-                ? locale === 'id'
-                  ? 'Kunci Scroll'
-                  : 'Lock Scroll'
-                : locale === 'id'
-                  ? 'Coba Klik'
-                  : 'Interact'}
-            </button>
-            <a
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="pointer-events-auto rounded-sm border-2 border-ink bg-mustard px-2 py-1 font-mono text-[10px] font-bold text-ink shadow-[2px_2px_0_var(--ink)] hover:bg-tomato hover:text-paper"
-            >
-              {locale === 'id' ? 'Buka ↗' : 'Open ↗'}
-            </a>
+              style={{
+                transform: `scale(${scale})`,
+                transformOrigin: 'top left',
+              }}
+            />
+
+            {/* Interactive Toggle Overlay */}
+            <div class="pointer-events-none absolute right-2 bottom-2 z-20 flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => setInteractive((v) => !v)}
+                class={`pointer-events-auto rounded-sm border-2 border-ink px-2 py-1 font-mono text-[10px] font-bold shadow-[2px_2px_0_var(--ink)] transition-transform active:translate-y-0.5 ${
+                  interactive ? 'bg-tomato text-paper' : 'bg-paper text-ink hover:bg-mustard'
+                }`}
+              >
+                {interactive
+                  ? locale === 'id'
+                    ? 'Kunci Scroll'
+                    : 'Lock Scroll'
+                  : locale === 'id'
+                    ? 'Coba Klik'
+                    : 'Interact'}
+              </button>
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="pointer-events-auto rounded-sm border-2 border-ink bg-mustard px-2 py-1 font-mono text-[10px] font-bold text-ink shadow-[2px_2px_0_var(--ink)] hover:bg-tomato hover:text-paper"
+              >
+                {locale === 'id' ? 'Buka ↗' : 'Open ↗'}
+              </a>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }
@@ -219,45 +249,81 @@ export default function LiveSitePreview({
         </div>
       </div>
 
-      {/* Live Iframe Stage */}
-      <div class="relative flex justify-center bg-paper-2/60">
-        {!loaded && (
-          <div class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-paper-2/95 p-6 text-center">
-            <span class="font-mono text-sm font-bold text-ink">
-              {locale === 'id'
-                ? `Memuat aplikasi langsung dari ${host}...`
-                : `Loading live app from ${host}...`}
-            </span>
-            <p class="max-w-md text-xs text-ink-soft">
-              {locale === 'id'
-                ? 'Anda bisa langsung mengklik menu, simulator, dan grafik di dalam jendela ini setelah selesai dimuat.'
-                : 'You can interact directly with menus, simulators, and charts right inside this window once loaded.'}
-            </p>
-          </div>
-        )}
+      {/* Live Iframe Stage or Static OG Preview (when X-Frame-Options: DENY) */}
+      {!embed ? (
+        <div class="relative bg-paper-2/60">
+          {previewImage ? (
+            <a href={url} target="_blank" rel="noopener noreferrer" class="group relative block">
+              <img
+                src={previewImage}
+                alt={`Preview ${title}`}
+                loading="lazy"
+                class="aspect-[1200/630] w-full object-cover"
+              />
+              <div class="absolute inset-0 flex items-end justify-end bg-ink/0 p-4 transition-colors group-hover:bg-ink/10">
+                <span class="sticker-btn bg-mustard text-ink rounded-sm px-4 py-2 font-mono text-xs font-bold">
+                  {locale === 'id' ? 'Buka Aplikasi Live ↗' : 'Launch Live App ↗'}
+                </span>
+              </div>
+            </a>
+          ) : (
+            <div class="flex flex-col items-center justify-center gap-3 p-10 text-center">
+              <p class="font-mono text-sm font-bold text-ink">{host}</p>
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="sticker-btn bg-mustard text-ink rounded-sm px-4 py-2 font-mono text-xs font-bold"
+              >
+                {locale === 'id' ? 'Buka Aplikasi Live ↗' : 'Launch Live App ↗'}
+              </a>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div class="relative flex justify-center bg-paper-2/60">
+          {!loaded && (
+            <div class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-paper-2/95 p-6 text-center">
+              <span class="font-mono text-sm font-bold text-ink">
+                {locale === 'id'
+                  ? `Memuat aplikasi langsung dari ${host}...`
+                  : `Loading live app from ${host}...`}
+              </span>
+              <p class="max-w-md text-xs text-ink-soft">
+                {locale === 'id'
+                  ? 'Anda bisa langsung mengklik menu, simulator, dan grafik di dalam jendela ini setelah selesai dimuat.'
+                  : 'You can interact directly with menus, simulators, and charts right inside this window once loaded.'}
+              </p>
+            </div>
+          )}
 
-        <iframe
-          key={reloadKey}
-          src={url}
-          title={`Live demo ${title}`}
-          loading="lazy"
-          onLoad={() => setLoaded(true)}
-          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads"
-          referrerPolicy="no-referrer-when-downgrade"
-          class={`h-[560px] border-0 bg-paper transition-all duration-300 sm:h-[620px] ${
-            viewport === 'mobile'
-              ? 'w-[390px] max-w-full border-x-2 border-ink shadow-[0_0_0_2px_var(--ink)]'
-              : 'w-full'
-          }`}
-        />
-      </div>
+          <iframe
+            key={reloadKey}
+            src={url}
+            title={`Live demo ${title}`}
+            loading="lazy"
+            onLoad={() => setLoaded(true)}
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads"
+            referrerPolicy="no-referrer-when-downgrade"
+            class={`h-[560px] border-0 bg-paper transition-all duration-300 sm:h-[620px] ${
+              viewport === 'mobile'
+                ? 'w-[390px] max-w-full border-x-2 border-ink shadow-[0_0_0_2px_var(--ink)]'
+                : 'w-full'
+            }`}
+          />
+        </div>
+      )}
 
       {/* Footer Hint */}
       <div class="flex flex-wrap items-center justify-between gap-2 border-t-2 border-ink bg-paper-2 px-3 py-2 font-mono text-[11px] text-ink-soft sm:px-4">
         <span>
-          {locale === 'id'
-            ? 'Pratinjau interaktif langsung — Anda bisa klik & coba fitur sistem di atas.'
-            : 'Interactive live preview — feel free to click and test the system above.'}
+          {!embed
+            ? locale === 'id'
+              ? 'Aplikasi memasang proteksi anti-clickjacking (X-Frame-Options: DENY) — klik untuk mencoba langsung.'
+              : 'App enforces anti-clickjacking (X-Frame-Options: DENY) — click to launch live demo.'
+            : locale === 'id'
+              ? 'Pratinjau interaktif langsung — Anda bisa klik & coba fitur sistem di atas.'
+              : 'Interactive live preview — feel free to click and test the system above.'}
         </span>
         <a
           href={url}
