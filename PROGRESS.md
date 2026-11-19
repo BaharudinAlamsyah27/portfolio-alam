@@ -439,6 +439,7 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
 - Memperbarui `LiveSitePreview.tsx` agar mendukung mode `embed={false}` + `previewImage` (tampilan browser frame rapi dengan thumbnail OG untuk aplikasi yang memasang `X-Frame-Options: DENY`).
 - Menambahkan project baru [`src/content/projects/perisai-opsec.mdx`](src/content/projects/perisai-opsec.mdx) (**PERISAI OPSEC** — Kartika Cyber Hackathon 2026, `order: 0`, Live Demo `https://perisai-opsec.vercel.app/`, preview OG image `https://perisai-opsec.vercel.app/og-image.png`).
 - Membatasi tampilan proyek di beranda (`ProjectsSection.astro` mode `home`) maksimal **4 proyek teratas** + banner *"Lihat Semua Proyek"*, serta memindahkan daftar lengkap & panel filter ke halaman khusus `/projects` dan `/en/projects` (`src/pages/projects/index.astro`, `src/pages/en/projects/index.astro`, navbar `BaseLayout.astro`, dan `sitemap.xml.ts`). Memperbaiki `object-contain` pada OG preview agar teks banner tidak terpotong.
+- Menambahkan project baru [`src/content/projects/cmms-asset-management.mdx`](src/content/projects/cmms-asset-management.mdx) (**CMMS Enterprise — Sistem Manajemen Aset & Maintenance Multi-Kantor**, `order: 0`, `category: enterprise`, live iframe demo `https://cmms-asset-management.vercel.app/login`).
 
 **Berikutnya:**
 - Jalankan `git add .`, `git commit`, dan `git push` untuk deploy ke Vercel.

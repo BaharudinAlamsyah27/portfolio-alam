@@ -1,0 +1,80 @@
+---
+title: CMMS Enterprise — Sistem Manajemen Aset & Maintenance Multi-Kantor
+tagline: "Pendataan Aset IT, Scan QR Instan, Preventif Otomatis & MTTR Multi-Cabang"
+summary:
+  id: "Sistem CMMS berbasis web mobile-first untuk mendata aset IT lintas kantor cabang, scan QR Code instan ke kartu aset, penjadwalan pemeliharaan preventif otomatis, alur Work Order hingga approval, serta pemantauan metrik MTTR secara real-time."
+  en: "Mobile-first multi-branch CMMS web app for IT asset tracking, instant QR Code asset cards, automated preventive maintenance schedules, end-to-end Work Order approval workflows, and real-time MTTR analytics."
+role: "Full-Stack Developer"
+context: "Program MagangHub — Diadaptasi ke Demo Portofolio (Data Fiktif)"
+duration: ""
+stack:
+  - Laravel 12
+  - PHP 8.3
+  - Tailwind CSS
+  - Alpine.js
+  - Chart.js
+  - FullCalendar
+  - Laravel Sanctum
+  - MySQL / SQLite
+  - Vercel
+tags:
+  - CMMS
+  - Enterprise
+  - Asset Management
+  - QR Code
+  - Laravel 12
+  - Multi-Branch
+  - Work Order
+  - MTTR
+  - Mobile-First
+  - Full-Stack
+category: enterprise
+demoUrl: "https://cmms-asset-management.vercel.app/login"
+embedPreview: true
+repoUrl: "https://github.com/BaharudinAlamsyah27/cmms-asset-management"
+featured: true
+draft: false
+order: 0
+date: 2026-11-19
+status: selesai
+---
+
+> **Catatan Demo:** Live demo di atas berjalan menggunakan database SQLite fiktif (*seeded demo*) dan tidak menggunakan data riil instansi mana pun.
+
+## Masalah Awal
+
+Di lingkungan kantor dengan banyak cabang (kantor pusat & cabang operasional), pendataan perangkat IT (PC, laptop, printer, UPS, jaringan, AC) sering tersebar di spreadsheet manual. Dampaknya:
+- Sulit melacak spesifikasi perangkat, pemakai saat ini, maupun riwayat mutasi antar kantor.
+- Riwayat kerusakan dan penggantian suku cadang tidak terdokumentasi rapi per perangkat.
+- Perawatan rutin (preventif) sering terlewat hingga perangkat keburu rusak.
+- Tidak ada metrik objektif untuk mengukur kecepatan perbaikan (**MTTR**) maupun biaya *maintenance* per periode.
+
+## Solusi & Cara Kerja Sistem
+
+Dibangun sebagai aplikasi **CMMS (Computerized Maintenance Management System)** terpusat dengan pendekatan **mobile-first** agar praktis bagi teknisi lapangan maupun staf kantor:
+
+1. **Registrasi & Label QR Aset:** Setiap perangkat didaftarkan beserta spesifikasi teknis, lokasi, pemakai, dan garansi, lalu otomatis mendapat kode unik yang dicetak menjadi stiker **QR Code**.
+2. **Scan QR → Kartu Aset Instan:** Staf atau teknisi cukup memindai QR langsung dari kamera browser (`html5-qrcode`) atau pemindai barcode USB untuk membuka *Kartu Aset* berisi spesifikasi lengkap, status garansi, riwayat mutasi, hingga linimasa perbaikan.
+3. **Alur Work Order Korektif:** Staf melapor kerusakan dari Kartu Aset → Work Order (WO) dibuat → status aset otomatis berubah (`rusak` → `dalam_perbaikan` → `aktif`) → teknisi mengerjakan & mencatat penyebab/tindakan/suku cadang → diajukan ke *Approver* → selesai dan masuk riwayat permanen.
+4. **Penjadwalan Preventif Otomatis:** Admin membuat jadwal berkala (harian/mingguan/bulanan/tahunan) per aset atau per kategori lengkap dengan *template checklist*; sistem otomatis membuat WO mendekati jatuh tempo.
+5. **Dashboard & Laporan:** Menampilkan ringkasan jadwal terlambat, tugas aktif, aset rusak, rata-rata waktu perbaikan (**MTTR**), grafik tren pemeliharaan 6 bulan, aset paling sering rusak, serta ekspor laporan ke Excel dan halaman siap cetak.
+
+## Tantangan Teknis & Solusi
+
+1. **Konsistensi Periode Jadwal Preventif & Anti-Duplikasi:** Memastikan scheduler tidak membuat Work Order ganda saat dijalankan berulang kali, sekaligus menjaga hitungan jadwal terlambat di dashboard web dan API mobile tetap sinkron meski ada pekerjaan dibatalkan atau aset baru masuk ke kategori. Diselesaikan dengan logika periode idempoten di *service layer* (`ScheduledPerformanceService`).
+2. **Isolasi Data Multi-Kantor (*Multi-Branch Scoping*):** Memastikan pengguna cabang hanya melihat aset dan WO milik kantornya sementara admin pusat memantau semua cabang—diterapkan konsisten lewat *Global Scope* (`BelongsToKantor`) agar tidak bocor di query laporan maupun halaman scan QR.
+3. **Deploy Laravel Full-Stack di Serverless (Vercel):** Karena filesystem serverless bersifat *read-only*, database demo SQLite disiapkan *pre-seeded* lalu disalin otomatis ke `/tmp` saat *cold start*, disertai konfigurasi cookie `SameSite=None` dan header `frame-ancestors` agar demo bisa langsung dicoba login dari dalam pratinjau portofolio.
+
+## Arsitektur & Tech Stack
+
+- **Backend:** PHP 8.3, Laravel 12, Laravel Breeze, Spatie Laravel Permission (RBAC 4 peran), Spatie Activitylog (Audit Trail), Laravel Sanctum (REST API Mobile)
+- **Frontend:** Blade, Tailwind CSS, Alpine.js, Vite, Chart.js, FullCalendar, `html5-qrcode`
+- **Utilitas:** `simple-qrcode` (SVG), Maatwebsite Excel (Import/Export), Intervention Image
+- **Database & Deployment:** MySQL/MariaDB (Produksi), SQLite Serverless (Live Demo), Vercel
+
+## Cara Mencoba Live Demo
+
+Gunakan jendela pratinjau di atas atau klik **Tab Baru ↗**, lalu pakai tombol **1-Klik Demo Quick-Login** untuk mencoba 3 perspektif peran:
+- **Admin** (`admin@cmms.local` / `password`) — Akses penuh seluruh kantor, dashboard MTTR, jadwal rutin, master data, dan approval.
+- **Teknisi** (`teknisi1@cmms.local` / `password`) — Mengerjakan WO, mengisi checklist inspeksi, dan mencatat solusi perbaikan.
+- **Pelapor** (`pelapor@cmms.local` / `password`) — Melaporkan kerusakan perangkat dan memantau progres tiket.
