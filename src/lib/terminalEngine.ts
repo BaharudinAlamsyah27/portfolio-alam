@@ -203,6 +203,29 @@ export function executeCommand(rawInput: string, ctx: TerminalContext): CommandR
     return { lines };
   }
 
+  if (cmd === 'rimuru' || cmd === 'slime') {
+    return {
+      lines: [
+        { kind: 'accent', text: '       .---.       ' },
+        { kind: 'accent', text: '     /  o   \\      ' },
+        { kind: 'accent', text: '    (  - ᴗ - )  ~  ' },
+        { kind: 'accent', text: '     `-------´     ' },
+        {
+          kind: 'info',
+          text: isId
+            ? 'Rimuru Tempest: "Tenang, aku bukan slime jahat kok!"'
+            : 'Rimuru Tempest: "Don’t worry, I’m not a bad slime, slurp!"',
+        },
+        {
+          kind: 'muted',
+          text: isId
+            ? '[Great Sage]: Mode meja kerja Jura Tempest aktif.'
+            : '[Great Sage]: Jura Tempest desk mode active.',
+        },
+      ],
+    };
+  }
+
   if (cmd === 'cat') {
     if (!arg) {
       return {

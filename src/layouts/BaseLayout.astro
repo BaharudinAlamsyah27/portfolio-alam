@@ -14,6 +14,7 @@ import '../styles/global.css';
 import TerminalModal from '../components/islands/TerminalModal';
 import CatCompanion from '../components/islands/CatCompanion';
 import DeskAudio from '../components/islands/DeskAudio';
+import RimuruDoodle from '../components/doodles/RimuruDoodle.astro';
 import { getLocaleFromUrl, getLocalizedPath, useTranslations } from '../i18n/utils';
 import {
   getProfileData,
@@ -204,7 +205,13 @@ const terminalContext: TerminalContext = {
       <div
         class="mx-auto flex max-w-5xl flex-col gap-3 px-5 py-6 text-sm text-ink-soft sm:flex-row sm:items-center sm:justify-between"
       >
-        <p>{t('footer.note')}</p>
+        <div class="flex items-center gap-2.5">
+          <RimuruDoodle
+            variant="slime-crown"
+            class="h-8 w-10 shrink-0 transition-transform duration-200 hover:-translate-y-1"
+          />
+          <p>{t('footer.note')}</p>
+        </div>
         <div class="flex flex-wrap items-center gap-4 font-mono text-xs">
           <a href={tokoHref} class="text-ink hover:text-tomato underline underline-offset-4">
             /toko

@@ -12,6 +12,9 @@
   --mustard: #f5b700;
   --leaf: #2ba84a;
   --blush: #ff8fb1;
+  --slime: #4cc3f7;
+  --slime-soft: #dff4ff;
+  --slime-deep: #1b7fd6;
 
   /* Bayangan hard-shadow ala stiker */
   --shadow-hard: 4px 4px 0 var(--ink);
@@ -38,6 +41,9 @@
   --color-mustard: var(--mustard);
   --color-leaf: var(--leaf);
   --color-blush: var(--blush);
+  --color-slime: var(--slime);
+  --color-slime-soft: var(--slime-soft);
+  --color-slime-deep: var(--slime-deep);
 
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
