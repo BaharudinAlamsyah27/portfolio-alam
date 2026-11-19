@@ -203,6 +203,54 @@ export function executeCommand(rawInput: string, ctx: TerminalContext): CommandR
     return { lines };
   }
 
+  if (cmd === 'ynwa' || cmd === 'liverpool' || cmd === 'lfc') {
+    return {
+      lines: [
+        { kind: 'accent', text: '   ⚽  YOU’LL NEVER WALK ALONE!  ⚽   ' },
+        {
+          kind: 'info',
+          text: isId
+            ? 'Anfield spirit — dukung Liverpool sambil ngoding & nunggu jadwal tanding.'
+            : 'Anfield spirit — supporting Liverpool FC between coding sessions.',
+        },
+        { kind: 'muted', text: '#YNWA · #LFC' },
+      ],
+    };
+  }
+
+  if (cmd === 'gowes' || cmd === 'sepeda') {
+    return {
+      lines: [
+        { kind: 'ascii', text: '      __o     ' },
+        { kind: 'ascii', text: '    _`\\<,_   kring-kring!' },
+        { kind: 'ascii', text: '   (*)/ (*)   ' },
+        {
+          kind: 'muted',
+          text: isId
+            ? 'Gowes santai keliling Sragen/Brebes buat refresh otak dari bug.'
+            : 'Casual cycling to refresh the brain from debugging.',
+        },
+      ],
+    };
+  }
+
+  if (cmd === 'wayang' || cmd === 'batik') {
+    return {
+      lines: [
+        { kind: 'accent', text: '       /\\       ' },
+        { kind: 'accent', text: '      /||\\      Gunungan Wayang' },
+        { kind: 'accent', text: '     /_||_\\     Batik Kawung · Jawa Tengah' },
+        { kind: 'accent', text: '       ||       ' },
+        {
+          kind: 'muted',
+          text: isId
+            ? 'Asal Brebes, berkarya di Sragen — tradisi tetap jalan bareng teknologi.'
+            : 'Born in Brebes, building in Sragen — heritage alongside technology.',
+        },
+      ],
+    };
+  }
+
   if (cmd === 'rimuru' || cmd === 'slime') {
     return {
       lines: [

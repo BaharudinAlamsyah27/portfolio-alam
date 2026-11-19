@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import AudienceSwitcher from '../islands/AudienceSwitcher';
 import HandDrawn from '../doodles/HandDrawn.astro';
-import RimuruDoodle from '../doodles/RimuruDoodle.astro';
+import RimuruSticker from '../islands/RimuruSticker';
 import Tape from '../ui/Tape.astro';
 import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
 import { getProfileData, pickLocale } from '../../lib/content';
@@ -125,20 +125,9 @@ const tagline = pickLocale(profile?.tagline, locale) || t('home.title');
         </dl>
       </div>
 
-      <!-- Sticky Note kecil (Mustard) + Stiker Rimuru Slime (Biru) -->
+      <!-- Sticky Note kecil (Mustard) + Stiker Rimuru Slime Interaktif (Biru) -->
       <div class="flex flex-wrap items-end justify-end gap-3">
-        <div
-          class="bg-slime-soft text-ink group inline-flex rotate-2 items-center gap-2 rounded-md border-2 border-ink px-3 py-2 shadow-[3px_3px_0_var(--ink)] transition-transform duration-200 hover:-translate-y-0.5"
-          title="Tensura · Rimuru Tempest"
-        >
-          <RimuruDoodle
-            variant="slime"
-            class="h-8 w-11 shrink-0 transition-transform duration-200 group-hover:scale-105"
-          />
-          <span class="font-hand text-sm leading-tight text-slime-deep">
-            {locale === 'id' ? 'bukan slime jahat kok.' : 'not a bad slime!'}
-          </span>
-        </div>
+        <RimuruSticker client:idle locale={locale} />
 
         <div
           class="bg-mustard text-ink relative max-w-xs -rotate-1 rounded-none border-2 border-ink p-3.5 shadow-[4px_4px_0_var(--ink)]"
