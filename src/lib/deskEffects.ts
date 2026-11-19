@@ -4,11 +4,36 @@ let activeLenis: { destroy: () => void } | null = null;
 let listenersBound = false;
 let cleanupScrollTriggers: (() => void) | null = null;
 
+function splitHeadingWords(el: HTMLElement): HTMLElement[] {
+  if (el.dataset.wordsSplit === '1') {
+    return Array.from(el.querySelectorAll<HTMLElement>('.word-reveal'));
+  }
+  const raw = el.textContent?.trim() ?? '';
+  if (!raw) return [];
+  el.dataset.wordsSplit = '1';
+  el.textContent = '';
+
+  const words = raw.split(/\s+/);
+  const spans: HTMLElement[] = [];
+
+  words.forEach((word, i) => {
+    const span = document.createElement('span');
+    span.className = 'word-reveal';
+    span.textContent = word;
+    el.appendChild(span);
+    spans.push(span);
+    if (i < words.length - 1) {
+      el.appendChild(document.createTextNode(' '));
+    }
+  });
+
+  return spans;
+}
+
 async function runPageEffects() {
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReduced) return;
 
-  // Bersihkan ScrollTrigger halaman sebelumnya sebelum inisialisasi ulang
   if (cleanupScrollTriggers) {
     cleanupScrollTriggers();
     cleanupScrollTriggers = null;
@@ -35,7 +60,7 @@ async function runPageEffects() {
     });
   }
 
-  // 2. GSAP + ScrollTrigger (ala reveal dinamis web Tensura saat scroll ke bawah)
+  // 2. GSAP + ScrollTrigger
   const [{ gsap }, { ScrollTrigger }] = await Promise.all([
     import('gsap'),
     import('gsap/ScrollTrigger'),
@@ -59,10 +84,27 @@ async function runPageEffects() {
 
   const triggers: ReturnType<typeof ScrollTrigger.create>[] = [];
 
-  // 4. Reveal judul section saat discroll ke bawah (seperti "NEWS 新着情報" di web Tensura)
+  // Hero heading: animasi kata muncul dari kiri ke kanan saat pertama tampil
+  const heroHeading = document.querySelector<HTMLElement>('#hero-heading');
+  if (heroHeading && heroHeading.dataset.tensuraInit !== '1') {
+    heroHeading.dataset.tensuraInit = '1';
+    const heroWords = splitHeadingWords(heroHeading);
+    if (heroWords.length > 0) {
+      gsap.from(heroWords, {
+        x: -24,
+        opacity: 0,
+        clipPath: 'inset(0 100% 0 0)',
+        duration: 0.45,
+        stagger: 0.08,
+        ease: 'power3.out',
+        clearProps: 'clipPath,transform,opacity',
+      });
+    }
+  }
+
+  // 4. Reveal kata-per-kata dari kiri ke kanan saat tiap section discroll ke layar
   const sections = Array.from(document.querySelectorAll<HTMLElement>('main section'));
   sections.forEach((sec) => {
-    // Lewati hero paling atas agar LCP tetap instan
     if (sec.querySelector('#hero-heading')) return;
 
     const heading = sec.querySelector<HTMLElement>('h2');
@@ -71,6 +113,7 @@ async function runPageEffects() {
       const headerBlock = heading.parentElement;
       const badge = headerBlock?.querySelector<HTMLElement>('span');
       const sub = headerBlock?.querySelector<HTMLElement>('p');
+      const words = splitHeadingWords(heading);
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -82,37 +125,39 @@ async function runPageEffects() {
 
       if (badge) {
         tl.from(badge, {
-          x: -28,
-          scale: 0.72,
-          rotate: -6,
+          x: -26,
+          scale: 0.78,
           opacity: 0,
-          duration: 0.45,
-          ease: 'back.out(2.1)',
+          duration: 0.36,
+          ease: 'back.out(2)',
         });
       }
 
-      tl.from(
-        heading,
-        {
-          y: 26,
-          x: -34,
-          opacity: 0,
-          duration: 0.56,
-          ease: 'power3.out',
-        },
-        badge ? '-=0.28' : 0,
-      );
+      if (words.length > 0) {
+        tl.from(
+          words,
+          {
+            x: -22,
+            opacity: 0,
+            clipPath: 'inset(0 100% 0 0)',
+            duration: 0.42,
+            stagger: 0.075,
+            ease: 'power3.out',
+          },
+          badge ? '-=0.22' : 0,
+        );
+      }
 
       if (sub) {
         tl.from(
           sub,
           {
-            y: 16,
+            x: -16,
             opacity: 0,
-            duration: 0.44,
+            duration: 0.38,
             ease: 'power2.out',
           },
-          '-=0.32',
+          '-=0.25',
         );
       }
 
@@ -121,7 +166,7 @@ async function runPageEffects() {
       }
     }
 
-    // 5. Reveal kartu (.sticker-card) secara bertahap saat masuk viewport scroll
+    // 5. Reveal kartu (.sticker-card) secara bertahap saat masuk viewport
     const secCards = Array.from(sec.querySelectorAll<HTMLElement>('.sticker-card')).filter(
       (c) => c.dataset.gsapInit !== '1',
     );
@@ -130,10 +175,10 @@ async function runPageEffects() {
         c.dataset.gsapInit = '1';
       });
       const tween = gsap.from(secCards, {
-        y: 34,
+        y: 30,
         opacity: 0,
-        duration: 0.58,
-        stagger: 0.1,
+        duration: 0.52,
+        stagger: 0.09,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: secCards[0],
@@ -147,28 +192,9 @@ async function runPageEffects() {
     }
   });
 
-  // Refresh ScrollTrigger setelah layout/island/font selesai dimuat agar posisi pemicu akurat
   window.setTimeout(() => {
     ScrollTrigger.refresh();
   }, 400);
-
-  // Kartu hero paling atas (langsung tampil halus tanpa menunggu scroll)
-  const heroCards = Array.from(document.querySelectorAll<HTMLElement>('.sticker-card')).filter(
-    (c) => c.dataset.gsapInit !== '1',
-  );
-  if (heroCards.length > 0) {
-    heroCards.forEach((c) => {
-      c.dataset.gsapInit = '1';
-    });
-    gsap.from(heroCards, {
-      y: 14,
-      opacity: 0,
-      duration: 0.45,
-      stagger: 0.06,
-      ease: 'power2.out',
-      clearProps: 'opacity,transform',
-    });
-  }
 
   cleanupScrollTriggers = () => {
     triggers.forEach((st) => st.kill());
@@ -179,7 +205,6 @@ export function initDeskEffects() {
   if (listenersBound) return;
   listenersBound = true;
 
-  // Delegated click handler untuk semua tombol pemicu Terminal Mode
   document.addEventListener('click', (e) => {
     const target = e.target as HTMLElement | null;
     const trigger = target?.closest<HTMLElement>('[data-open-terminal], [data-open-terminal-cmd]');

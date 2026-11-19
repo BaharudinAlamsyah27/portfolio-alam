@@ -80,7 +80,7 @@ const groups = [
         const tilt = groupIdx === 1 ? 'rotate-[0.5deg]' : groupIdx === 2 ? '-rotate-[0.5deg]' : '';
 
         return (
-          <div class={`sticker-card relative flex flex-col justify-between rounded-md ${group.cardBg} ${tilt}`}>
+          <div class={`sticker-card relative flex flex-col rounded-md ${group.cardBg} ${tilt}`}>
             {groupIdx === 0 && <Tape color="mustard" rotate="-rotate-2" class="absolute -top-3 left-8 z-10" />}
             {groupIdx === 1 && (
               <RimuruDoodle
