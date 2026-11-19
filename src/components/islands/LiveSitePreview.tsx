@@ -90,14 +90,14 @@ export default function LiveSitePreview({
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            class="group relative block aspect-[16/10] w-full overflow-hidden bg-paper"
+            class="group relative block aspect-[16/10] w-full overflow-hidden bg-ink"
           >
             {previewImage ? (
               <img
                 src={previewImage}
                 alt={`Preview ${title}`}
                 loading="lazy"
-                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                class="h-full w-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
               />
             ) : (
               <div class="flex h-full w-full flex-col items-center justify-center gap-1.5 bg-paper-2 p-4 text-center font-mono text-xs text-ink-soft">

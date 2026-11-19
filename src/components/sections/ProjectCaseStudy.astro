@@ -15,7 +15,7 @@ const { Content } = await render(entry);
 
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
-const backHref = `${getLocalizedPath('/', locale)}#projects`;
+const backHref = getLocalizedPath('/projects', locale);
 const summary = pickLocale(entry.data.summary, locale);
 const statusKey = `projects.status.${entry.data.status}` as const;
 const hasExternalDemo = /^https?:\/\//i.test(entry.data.demoUrl.trim());

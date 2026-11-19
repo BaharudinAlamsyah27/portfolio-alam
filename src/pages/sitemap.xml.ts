@@ -12,6 +12,8 @@ export const GET: APIRoute = async ({ site }) => {
   const staticPaths = [
     '/',
     '/en/',
+    '/projects',
+    '/en/projects',
     '/toko',
     '/en/toko',
     '/notes',
