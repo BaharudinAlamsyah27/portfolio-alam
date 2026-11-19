@@ -414,3 +414,16 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
 
 **Berikutnya:**
 - Jalankan `git push` di terminal agar project SentinelBank FDS dan pratinjau live website-nya langsung tampil di Vercel.
+
+---
+
+### Sesi 13 — 2026-11-19 11:08–11:12 WIB
+**Model:** Gemini 4 Neon (Medium)
+**Fase:** 7 — Lanjutan (Update Project FleetFlow ERP + Live Demo Preview)
+
+**Dikerjakan:**
+- Memperbarui [`src/content/projects/manajemen-armada-transportasi.mdx`](src/content/projects/manajemen-armada-transportasi.mdx) menjadi **FleetFlow ERP — Sistem Manajemen Armada, Logistik & Akuntansi Multi-Cabang** (`order: 1`, `category: enterprise`, `demoUrl: "https://manajemen-armada-transportasi-8v88.vercel.app/"`) lengkap dengan alur end-to-end, spesifikasi teknis (Laravel 12, PHP 8, SAK EMKM double-entry, maker-checker, enkripsi, 12 tes PHPUnit / 84 asersi), dan panduan Demo Quick Login (`FFDEMO000001`).
+- Otomatis mengaktifkan **Live Interactive Website Preview** di kartu beranda & halaman studi kasus, serta menyelaraskan urutan tampil (`order: 0` SentinelBank FDS, `order: 1` FleetFlow ERP, `order: 2` eSurat, `order: 3` Kredit Elektronik).
+
+**Berikutnya:**
+- Jalankan `git add . && git commit && git push` untuk deploy ke Vercel.

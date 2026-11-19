@@ -1,35 +1,50 @@
 ---
-title: Sistem Manajemen Armada Transportasi
+title: FleetFlow ERP — Sistem Manajemen Armada, Logistik & Akuntansi Multi-Cabang
 summary:
-  id: "Aplikasi pengelolaan operasional kendaraan, penjadwalan pemeliharaan rutin, monitoring penggunaan armada, dan pencatatan konsumsi bahan bakar."
-  en: "Fleet management system for vehicle scheduling, routine maintenance tracking, usage monitoring, and fuel consumption logging."
+  id: "Aplikasi full-stack Laravel 12 & PHP 8 untuk operasional ekspedisi kargo multi-cabang: pelacakan resi & ongkir publik, ERP armada + akuntansi berpasangan SAK EMKM, hingga Portal Sopir mobile-first dengan pelacakan GPS."
+  en: "Full-stack Laravel 12 & PHP 8 multi-branch cargo ERP unifying public waybill tracking & shipping calculator, fleet operations with SAK EMKM double-entry accounting, and a mobile-first Driver Portal with live GPS tracking."
 stack:
-  - Web Programming
-  - PHP / MySQL
-  - Responsive UI
-  - Data Export
+  - Laravel 12
+  - PHP 8
+  - MySQL
+  - Leaflet.js
+  - OpenStreetMap
+  - PHPUnit
+  - PDF / CSV Export
+  - Vercel
 category: enterprise
-demoUrl: ""
+demoUrl: "https://manajemen-armada-transportasi-8v88.vercel.app/"
 repoUrl: "https://github.com/BaharudinAlamsyah27/manajemen_armada_transportasi"
 featured: true
 draft: false
-order: 3
-date: 2026-07-15
+order: 1
+date: 2026-11-19
 status: selesai
 ---
 
 ## Masalah
 
-Pengelolaan armada kendaraan dinas atau operasional yang tidak terdata rapi sering berujung pada jadwal servis yang terlewat, biaya perawatan yang membengkak, dan ketidaktahuan posisi ketersediaan kendaraan saat ada kebutuhan mendadak.
+Perusahaan ekspedisi kargo multi-cabang sering menjalankan operasional secara terpisah-pisah: pencatatan resi di satu sistem, jadwal armada & masa berlaku surat kendaraan (STNK/KIR/SIM) di spreadsheet, laporan biaya jalan sopir lewat chat, dan pembukuan keuangan diulang secara manual. Akibatnya rawan terjadi bentrok jadwal armada, kebocoran biaya operasional, serta selisih laporan antar cabang.
 
-## Proses
+## Alur Kerja Sistem (End-to-End)
 
-Membangun modul pencatatan aset kendaraan, riwayat jarak tempuh (odometer), pengingat servis rutin/ganti oli, jadwal penugasan pengemudi, serta pencatatan biaya operasional harian seperti bahan bakar dan tol.
+1. **Layanan Publik (`/`):** Pelanggan dapat mengecek estimasi ongkir antar kota dan melacak status resi secara *real-time* (contoh resi: `FFDEMO000001`) tanpa perlu login, dengan data pribadi pengirim dan penerima tetap disamarkan.
+2. **Pembuatan Resi & Penjadwalan (Admin Cabang):** Input pesanan otomatis menghasilkan kode resi acak (`FF...`), lalu dijadwalkan ke manifest pengiriman. Sistem otomatis memvalidasi kapasitas muatan, masa berlaku STNK/KIR/Pajak/SIM, kesesuaian golongan SIM, serta mencegah bentrok jadwal multi-rit.
+3. **Eksekusi Lapangan & GPS (Portal Sopir `/portal`):** Sopir login dari ponsel untuk memulai perjalanan, mengirim titik koordinat GPS aktif ke Peta Armada (*Leaflet + OpenStreetMap*), mengunggah foto bukti serah-terima (*e-POD*) ke penyimpanan privat, serta mencatat BBM dan biaya jalan.
+4. **Verifikasi, Penagihan & Akuntansi Otomatis (Keuangan & Admin Pusat):** Catatan BBM/biaya sopir diverifikasi admin cabang sebelum masuk laporan. Pesanan terkirim langsung diterbitkan menjadi Invoice PDF, dan setiap transaksi (invoice, pembayaran, BBM, servis, penyusutan aset, serta penggajian berbasis absensi & ritase) otomatis membentuk jurnal akuntansi berpasangan (*double-entry*) yang seimbang.
 
-## Hasil
+## Keunggulan & Nilai Teknis
 
-Jadwal penggunaan kendaraan terhindar dari tabrakan waktu (*double booking*), riwayat perawatan setiap armada transparan untuk audit pembiayaan kantor, dan kondisi kelaikan armada selalu terpantau.
+- **Isolasi Data Multi-Cabang Ketat:** Menggunakan *Global Scope* (`BelongsToCabang`) dan middleware pemisah peran (`admin_pusat`, `keuangan`, `admin_cabang`, `sopir`) agar tiap cabang hanya melihat datanya sendiri, sementara pusat memantau laporan konsolidasi.
+- **Keamanan & Enkripsi Data Sensitif:** Nomor HP, NPWP, nomor SIM, dan nomor rekening karyawan disimpan terenkripsi (`encrypted` cast), foto bukti disimpan di disk privat (`local`), serta seluruh aksi kritis dilindungi *rate limit* dan *activity log* baca-saja.
+- **Akuntansi Berpasangan (SAK EMKM) & Maker-Checker:** Validasi keseimbangan Debit = Kredit, penguncian periode akuntansi, jurnal balik, dan pemisahan pembuat-penyetuju (*maker-checker*) untuk jurnal manual dan penggajian.
+- **Teruji Otomatis & Siap Produksi:** Dilengkapi **12 skenario pengujian otomatis PHPUnit (84 asersi lulus)**, ekspor laporan operasional CSV, serta cetak dokumen PDF (*Label Resi, Surat Jalan, Invoice,* dan *Paket Laporan Keuangan*).
+
+## Akses Uji Coba (Langsung di Preview Atas)
+
+- **Layanan Publik:** Coba lacak resi contoh `FFDEMO000001` atau gunakan kalkulator ongkir di halaman depan.
+- **Demo Quick Login (1-Klik):** Buka `/login` lalu klik salah satu tombol peran (**Admin Pusat**, **Staf Keuangan**, **Admin Cabang JKT**, atau **Portal Sopir**) tanpa perlu mengetik manual (password default: `password`).
 
 ## Pelajaran
 
-Menyatukan data operasional fisik ke dalam dasbor digital membuktikan bahwa UI yang sederhana dan informatif jauh lebih diminati oleh operator lapangan daripada desain yang rumit.
+Menyatukan operasional lapangan (armada, GPS, e-POD) dengan akuntansi berpasangan (*double-entry*) dalam satu aplikasi menuntut disiplin desain domain yang kuat—terutama pada isolasi data multi-cabang, pemisahan wewenang *maker-checker*, dan pengujian otomatis agar angka keuangan tidak pernah meleset ketika fitur berkembang.
