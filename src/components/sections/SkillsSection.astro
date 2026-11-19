@@ -1,5 +1,8 @@
 ---
 import SkillPlayground from '../islands/SkillPlayground';
+import CultureOrnaments from '../doodles/CultureOrnaments.astro';
+import RimuruDoodle from '../doodles/RimuruDoodle.astro';
+import Tape from '../ui/Tape.astro';
 import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
 import { getSkillsData, pickLocale } from '../../lib/content';
 
@@ -77,8 +80,22 @@ const groups = [
         const tilt = groupIdx === 1 ? 'rotate-[0.5deg]' : groupIdx === 2 ? '-rotate-[0.5deg]' : '';
 
         return (
-          <div class={`sticker-card flex flex-col justify-between rounded-md p-5 sm:p-6 ${group.cardBg} ${tilt}`}>
-            <div>
+          <div class={`sticker-card relative flex flex-col justify-between rounded-md ${group.cardBg} ${tilt}`}>
+            {groupIdx === 0 && <Tape color="mustard" rotate="-rotate-2" class="absolute -top-3 left-8 z-10" />}
+            {groupIdx === 1 && (
+              <RimuruDoodle
+                variant="slime"
+                class="pointer-events-none absolute -top-5 right-4 z-10 h-9 w-12"
+              />
+            )}
+            {groupIdx === 2 && <Tape color="blush" rotate="rotate-2" class="absolute -top-3 right-8 z-10" />}
+
+            <CultureOrnaments
+              variant={groupIdx === 1 ? 'batik-ribbon' : 'megamendung-ribbon'}
+              class="rounded-t-[4px]"
+            />
+
+            <div class="p-5 sm:p-6">
               <div class="mb-3 flex items-center justify-between gap-2">
                 <span
                   class={`rounded-sm border-2 border-ink px-2.5 py-0.5 font-mono text-xs font-bold uppercase ${group.badgeBg}`}

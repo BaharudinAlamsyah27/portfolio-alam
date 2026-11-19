@@ -75,46 +75,44 @@ async function runPageEffects() {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: heading,
-          start: 'top 88%',
-          once: true,
+          start: 'top 86%',
+          toggleActions: 'play none none reset',
         },
       });
 
       if (badge) {
         tl.from(badge, {
-          x: -20,
-          scale: 0.85,
+          x: -28,
+          scale: 0.72,
+          rotate: -6,
           opacity: 0,
-          duration: 0.42,
-          ease: 'back.out(1.8)',
-          clearProps: 'opacity,transform',
+          duration: 0.45,
+          ease: 'back.out(2.1)',
         });
       }
 
       tl.from(
         heading,
         {
-          y: 22,
-          x: -14,
+          y: 26,
+          x: -34,
           opacity: 0,
-          duration: 0.52,
+          duration: 0.56,
           ease: 'power3.out',
-          clearProps: 'opacity,transform',
         },
-        badge ? '-=0.25' : 0,
+        badge ? '-=0.28' : 0,
       );
 
       if (sub) {
         tl.from(
           sub,
           {
-            y: 12,
+            y: 16,
             opacity: 0,
-            duration: 0.42,
+            duration: 0.44,
             ease: 'power2.out',
-            clearProps: 'opacity,transform',
           },
-          '-=0.3',
+          '-=0.32',
         );
       }
 
@@ -132,16 +130,15 @@ async function runPageEffects() {
         c.dataset.gsapInit = '1';
       });
       const tween = gsap.from(secCards, {
-        y: 26,
+        y: 34,
         opacity: 0,
-        duration: 0.55,
-        stagger: 0.09,
+        duration: 0.58,
+        stagger: 0.1,
         ease: 'power2.out',
-        clearProps: 'opacity,transform',
         scrollTrigger: {
           trigger: secCards[0],
-          start: 'top 90%',
-          once: true,
+          start: 'top 88%',
+          toggleActions: 'play none none reset',
         },
       });
       if (tween.scrollTrigger) {
@@ -149,6 +146,11 @@ async function runPageEffects() {
       }
     }
   });
+
+  // Refresh ScrollTrigger setelah layout/island/font selesai dimuat agar posisi pemicu akurat
+  window.setTimeout(() => {
+    ScrollTrigger.refresh();
+  }, 400);
 
   // Kartu hero paling atas (langsung tampil halus tanpa menunggu scroll)
   const heroCards = Array.from(document.querySelectorAll<HTMLElement>('.sticker-card')).filter(

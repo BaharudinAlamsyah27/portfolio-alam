@@ -1,5 +1,8 @@
 ---
 import GuestbookWall from '../islands/GuestbookWall';
+import CultureOrnaments from '../doodles/CultureOrnaments.astro';
+import RimuruDoodle from '../doodles/RimuruDoodle.astro';
+import Tape from '../ui/Tape.astro';
 import { getLocaleFromUrl } from '../../i18n/utils';
 import { getGuestbookData } from '../../lib/content';
 
@@ -13,19 +16,39 @@ const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
   aria-labelledby="guestbook-heading"
   class="desk-section-guestbook scroll-mt-20"
 >
-  <div class="mb-8 max-w-2xl space-y-2 border-b-2 border-ink pb-4">
-    <span class="bg-mustard text-ink inline-block rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold uppercase shadow-[2px_2px_0_var(--ink)]">
-      03.8 · GUESTBOOK
-    </span>
-    <h2 id="guestbook-heading" class="font-display text-3xl font-extrabold sm:text-4xl">
-      {locale === 'id' ? 'Papan Catatan Tamu' : 'Desk Guestbook Wall'}
-    </h2>
-    <p class="text-ink-soft text-sm leading-relaxed sm:text-base">
-      {locale === 'id'
-        ? 'Sudah mampir ke meja kerja saya? Tinggalkan catatan tempel singkat — salam kenal, kesan, atau pesan untuk Alam.'
-        : 'Dropped by my digital desk? Pin a sticky note — say hello, share feedback, or leave a note for Alam.'}
-    </p>
+  <div class="mb-8 flex flex-col justify-between gap-3 border-b-2 border-ink pb-4 sm:flex-row sm:items-end">
+    <div class="max-w-2xl space-y-2">
+      <span class="bg-mustard text-ink inline-block rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold uppercase shadow-[2px_2px_0_var(--ink)]">
+        03.8 · GUESTBOOK
+      </span>
+      <h2 id="guestbook-heading" class="font-display text-3xl font-extrabold sm:text-4xl">
+        {locale === 'id' ? 'Papan Catatan Tamu' : 'Desk Guestbook Wall'}
+      </h2>
+      <p class="text-ink-soft text-sm leading-relaxed sm:text-base">
+        {locale === 'id'
+          ? 'Sudah mampir ke meja kerja saya? Tinggalkan catatan tempel singkat — salam kenal, kesan, atau pesan untuk Alam.'
+          : 'Dropped by my digital desk? Pin a sticky note — say hello, share feedback, or leave a note for Alam.'}
+      </p>
+    </div>
+
+    <div class="flex items-center gap-2 self-start sm:self-end">
+      <RimuruDoodle variant="slime" class="h-8 w-11 shrink-0" />
+      <span class="font-hand text-cobalt -rotate-1 text-base">
+        ✎ {locale === 'id' ? 'tempel pesanmu di sini!' : 'pin your note here!'}
+      </span>
+    </div>
   </div>
 
-  <GuestbookWall client:visible initialEntries={entries} locale={locale} web3formsKey={web3formsKey} />
+  <div class="sticker-card relative rounded-md bg-paper-2/60">
+    <Tape color="mustard" rotate="-rotate-2" class="absolute -top-3 left-10 z-10" />
+    <CultureOrnaments variant="batik-ribbon" />
+    <div class="p-4 sm:p-6">
+      <GuestbookWall
+        client:visible
+        initialEntries={entries}
+        locale={locale}
+        web3formsKey={web3formsKey}
+      />
+    </div>
+  </div>
 </section>

@@ -231,11 +231,11 @@ const terminalContext: TerminalContext = {
       </div>
     </header>
 
-    <main id="main-content" class="mx-auto w-full max-w-5xl flex-1 px-5 py-10 sm:py-14">
+    <main id="main-content" class="relative z-10 mx-auto w-full max-w-5xl flex-1 px-5 py-10 sm:py-14">
       <slot />
     </main>
 
-    <footer class="border-t-2 border-ink bg-paper-2">
+    <footer class="relative z-10 border-t-2 border-ink bg-paper-2">
       <CultureOrnaments variant="batik-ribbon" class="rounded-none border-b border-ink/30" />
       <div
         class="mx-auto flex max-w-5xl flex-col gap-3 px-5 py-6 text-sm text-ink-soft sm:flex-row sm:items-center sm:justify-between"

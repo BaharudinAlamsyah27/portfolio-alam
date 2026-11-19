@@ -51,7 +51,7 @@ const shapes: FloatItem[] = [
 ---
 
 <div
-  class="pointer-events-none fixed inset-0 -z-10 overflow-hidden select-none"
+  class="pointer-events-none fixed inset-0 z-[1] overflow-hidden select-none"
   aria-hidden="true"
 >
   {
@@ -62,7 +62,7 @@ const shapes: FloatItem[] = [
         return (
           <span
             class={`tensura-shape tensura-${s.anim} absolute rounded-[1px]`}
-            style={`${styleBase}width:${s.size}px;height:${s.size}px;background:${s.color};opacity:0.55;`}
+            style={`${styleBase}width:${(s.size ?? 8) + 2}px;height:${(s.size ?? 8) + 2}px;background:${s.color};opacity:0.75;`}
           />
         );
       }
@@ -70,26 +70,26 @@ const shapes: FloatItem[] = [
       if (s.kind === 'outline') {
         return (
           <span
-            class={`tensura-shape tensura-${s.anim} absolute rounded-[2px] border-[1.5px]`}
-            style={`${styleBase}width:${s.w}px;height:${s.h}px;border-color:${s.color};opacity:0.32;`}
+            class={`tensura-shape tensura-${s.anim} absolute rounded-[2px] border-2`}
+            style={`${styleBase}width:${s.w}px;height:${s.h}px;border-color:${s.color};opacity:0.48;`}
           />
         );
       }
 
       if (s.kind === 'cluster') {
         return (
-          <span class={`tensura-shape tensura-${s.anim} absolute block h-6 w-6`} style={styleBase}>
+          <span class={`tensura-shape tensura-${s.anim} absolute block h-7 w-7`} style={styleBase}>
             <span
-              class="absolute top-0 left-2.5 h-2 w-2 rounded-[1px]"
-              style={`background:${s.color};opacity:0.65;`}
+              class="absolute top-0 left-3 h-2.5 w-2.5 rounded-[1px]"
+              style={`background:${s.color};opacity:0.82;`}
             />
             <span
-              class="absolute top-2.5 left-0 h-2 w-2 rounded-[1px]"
-              style={`background:${s.color};opacity:0.42;`}
+              class="absolute top-3 left-0 h-2.5 w-2.5 rounded-[1px]"
+              style={`background:${s.color};opacity:0.58;`}
             />
             <span
-              class="absolute top-3 left-3.5 h-1.5 w-1.5 rounded-[1px]"
-              style={`background:var(--mustard);opacity:0.55;`}
+              class="absolute top-3.5 left-4 h-2 w-2 rounded-[1px]"
+              style={`background:var(--mustard);opacity:0.75;`}
             />
           </span>
         );
@@ -97,8 +97,8 @@ const shapes: FloatItem[] = [
 
       return (
         <span
-          class={`tensura-shape tensura-${s.anim} absolute font-mono text-xs font-bold leading-none`}
-          style={`${styleBase}color:${s.color};opacity:0.28;`}
+          class={`tensura-shape tensura-${s.anim} absolute font-mono text-sm font-bold leading-none`}
+          style={`${styleBase}color:${s.color};opacity:0.45;`}
         >
           +
         </span>
