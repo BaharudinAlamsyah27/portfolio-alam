@@ -18,6 +18,7 @@ import RimuruDoodle from '../components/doodles/RimuruDoodle.astro';
 import CultureOrnaments from '../components/doodles/CultureOrnaments.astro';
 import MidnightAtmosphere from '../components/doodles/MidnightAtmosphere.astro';
 import SideMarginOrnaments from '../components/doodles/SideMarginOrnaments.astro';
+import TensuraAmbientSquares from '../components/doodles/TensuraAmbientSquares.astro';
 import { getLocaleFromUrl, getLocalizedPath, useTranslations } from '../i18n/utils';
 import {
   getProfileData,
@@ -268,6 +269,7 @@ const terminalContext: TerminalContext = {
     </footer>
 
     <MidnightAtmosphere />
+    <TensuraAmbientSquares />
     <SideMarginOrnaments />
 
     <TerminalModal client:idle context={terminalContext} />

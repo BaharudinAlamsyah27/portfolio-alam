@@ -1,0 +1,108 @@
+---
+/**
+ * Partikel Geometris Hidup ala Web Resmi Tensura (ten-sura.com):
+ * - Kotak piksel biru tunggal, gugusan 2-3 kotak diagonal, kotak outline tipis, & crosshair (+)
+ * - Terus melayang, mengapung, & berdenyut pelan walau layar sedang berhenti (idle)
+ * - 100% CSS GPU-composited (0 KB JS), otomatis berhenti saat prefers-reduced-motion: reduce.
+ */
+
+interface FloatItem {
+  kind: 'pixel' | 'cluster' | 'outline' | 'plus';
+  top: string;
+  left: string;
+  size?: number;
+  w?: number;
+  h?: number;
+  color?: string;
+  dur: string;
+  delay: string;
+  anim: 'float-a' | 'float-b' | 'float-c' | 'pulse-rot';
+}
+
+const shapes: FloatItem[] = [
+  // Gugusan kotak piksel diagonal (khas ten-sura.com)
+  { kind: 'cluster', top: '14%', left: '14%', color: 'var(--slime)', dur: '7.2s', delay: '0s', anim: 'float-a' },
+  { kind: 'cluster', top: '26%', left: '84%', color: 'var(--slime-deep)', dur: '8.5s', delay: '1.1s', anim: 'float-b' },
+  { kind: 'cluster', top: '58%', left: '12%', color: 'var(--slime-deep)', dur: '9.1s', delay: '0.6s', anim: 'float-c' },
+  { kind: 'cluster', top: '68%', left: '86%', color: 'var(--slime)', dur: '7.8s', delay: '2.0s', anim: 'float-a' },
+  { kind: 'cluster', top: '86%', left: '48%', color: 'var(--slime)', dur: '8.2s', delay: '1.5s', anim: 'float-b' },
+
+  // Kotak outline tipis berongga (persis kiri-bawah screenshot Tensura)
+  { kind: 'outline', top: '19%', left: '76%', w: 28, h: 18, color: 'var(--slime-deep)', dur: '10.5s', delay: '0.4s', anim: 'float-b' },
+  { kind: 'outline', top: '38%', left: '16%', w: 24, h: 16, color: 'var(--ink)', dur: '9.6s', delay: '1.8s', anim: 'float-c' },
+  { kind: 'outline', top: '48%', left: '82%', w: 22, h: 22, color: 'var(--slime)', dur: '11.0s', delay: '0.9s', anim: 'float-a' },
+  { kind: 'outline', top: '78%', left: '15%', w: 30, h: 18, color: 'var(--slime-deep)', dur: '10.2s', delay: '2.4s', anim: 'float-b' },
+  { kind: 'outline', top: '84%', left: '78%', w: 20, h: 14, color: 'var(--mustard)', dur: '9.2s', delay: '1.2s', anim: 'float-c' },
+
+  // Kotak piksel tunggal melayang
+  { kind: 'pixel', top: '11%', left: '42%', size: 8, color: 'var(--slime)', dur: '6.4s', delay: '0.3s', anim: 'float-c' },
+  { kind: 'pixel', top: '32%', left: '54%', size: 7, color: 'var(--mustard)', dur: '7.6s', delay: '1.7s', anim: 'float-a' },
+  { kind: 'pixel', top: '44%', left: '28%', size: 9, color: 'var(--slime)', dur: '8.0s', delay: '2.2s', anim: 'float-b' },
+  { kind: 'pixel', top: '62%', left: '66%', size: 8, color: 'var(--slime-deep)', dur: '6.9s', delay: '0.8s', anim: 'float-a' },
+  { kind: 'pixel', top: '74%', left: '36%', size: 7, color: 'var(--slime)', dur: '7.4s', delay: '1.4s', anim: 'float-c' },
+  { kind: 'pixel', top: '90%', left: '24%', size: 9, color: 'var(--mustard)', dur: '8.8s', delay: '0.5s', anim: 'float-b' },
+
+  // Tanda (+) grid teknis mungil yang bernapas pelan
+  { kind: 'plus', top: '22%', left: '30%', color: 'var(--slime-deep)', dur: '6.5s', delay: '0.2s', anim: 'pulse-rot' },
+  { kind: 'plus', top: '36%', left: '70%', color: 'var(--slime-deep)', dur: '7.5s', delay: '1.6s', anim: 'pulse-rot' },
+  { kind: 'plus', top: '64%', left: '24%', color: 'var(--slime-deep)', dur: '8.0s', delay: '0.9s', anim: 'pulse-rot' },
+  { kind: 'plus', top: '80%', left: '62%', color: 'var(--slime-deep)', dur: '7.0s', delay: '2.1s', anim: 'pulse-rot' },
+];
+---
+
+<div
+  class="pointer-events-none fixed inset-0 -z-10 overflow-hidden select-none"
+  aria-hidden="true"
+>
+  {
+    shapes.map((s) => {
+      const styleBase = `top:${s.top};left:${s.left};--t-dur:${s.dur};--t-delay:${s.delay};`;
+
+      if (s.kind === 'pixel') {
+        return (
+          <span
+            class={`tensura-shape tensura-${s.anim} absolute rounded-[1px]`}
+            style={`${styleBase}width:${s.size}px;height:${s.size}px;background:${s.color};opacity:0.55;`}
+          />
+        );
+      }
+
+      if (s.kind === 'outline') {
+        return (
+          <span
+            class={`tensura-shape tensura-${s.anim} absolute rounded-[2px] border-[1.5px]`}
+            style={`${styleBase}width:${s.w}px;height:${s.h}px;border-color:${s.color};opacity:0.32;`}
+          />
+        );
+      }
+
+      if (s.kind === 'cluster') {
+        return (
+          <span class={`tensura-shape tensura-${s.anim} absolute block h-6 w-6`} style={styleBase}>
+            <span
+              class="absolute top-0 left-2.5 h-2 w-2 rounded-[1px]"
+              style={`background:${s.color};opacity:0.65;`}
+            />
+            <span
+              class="absolute top-2.5 left-0 h-2 w-2 rounded-[1px]"
+              style={`background:${s.color};opacity:0.42;`}
+            />
+            <span
+              class="absolute top-3 left-3.5 h-1.5 w-1.5 rounded-[1px]"
+              style={`background:var(--mustard);opacity:0.55;`}
+            />
+          </span>
+        );
+      }
+
+      return (
+        <span
+          class={`tensura-shape tensura-${s.anim} absolute font-mono text-xs font-bold leading-none`}
+          style={`${styleBase}color:${s.color};opacity:0.28;`}
+        >
+          +
+        </span>
+      );
+    })
+  }
+</div>
