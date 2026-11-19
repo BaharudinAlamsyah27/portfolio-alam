@@ -451,6 +451,7 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
 - Memperbaiki bug ruang kosong besar antar-section (disebabkan `gsap.from(..., { opacity: 0 })` + `toggleActions: reset` yang menyembunyikan kartu/judul) dan overflow kanan di HP (`overflow-x: clip` di `global.css`, `min-w-0` di grid `HeroSection`/`ProjectsSection`, serta posisi badge `NEW!` aman di mobile).
 - Menambahkan kombinasi 3 ornamen bertema coding/IDE di header (`BaseLayout.astro`, `global.css`, `SideMarginOrnaments.astro`): sayap kiri-kanan window dots `● ● ● </>` & `{ code: ok }` sejajar dengan dinding samping, badge clickable `~/alam ⎇ main _` pembuka Terminal di samping logo, serta status bar tipis ala VS Code + ticker kodingan bergerak di bawah navbar.
 - Menambahkan 5 ornamen bergerak baru (`TechHobbyOrnaments.astro`, 100% SVG + CSS GPU): **Kereta Api Ekspres** melaju di rel di atas footer (`BaseLayout.astro`), **Bendera Merah Putih** berkibar di status badge Hero, **Roket** dengan api pendorong di header Projects, **Chip Semikonduktor** berdenyut di header Skills, dan **Kepala Gundam** bermata berpendar di header About.
+- Menambahkan kartu kolektor 3D Flip + Arch Gotik **Luminous Valentine** (`LuminousCard.tsx`, `public/images/luminous-valentine.jpg`) di ruang kosong kolom kanan Hero (`HeroSection.astro`), lengkap dengan balon dialog interaktif dan sisi belakang fungsional (statistik jumlah proyek, live demo, Rp0 stack + tombol arsip `/projects`).
 
 **Berikutnya:**
 - Jalankan `git add .`, `git commit`, dan `git push` untuk deploy ke Vercel.
