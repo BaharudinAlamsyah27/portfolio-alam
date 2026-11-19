@@ -16,6 +16,7 @@ import CatCompanion from '../components/islands/CatCompanion';
 import DeskAudio from '../components/islands/DeskAudio';
 import RimuruDoodle from '../components/doodles/RimuruDoodle.astro';
 import CultureOrnaments from '../components/doodles/CultureOrnaments.astro';
+import MidnightAtmosphere from '../components/doodles/MidnightAtmosphere.astro';
 import { getLocaleFromUrl, getLocalizedPath, useTranslations } from '../i18n/utils';
 import {
   getProfileData,
@@ -90,10 +91,17 @@ const terminalContext: TerminalContext = {
 ---
 
 <!doctype html>
-<html lang={locale} data-audience="semua">
+<html lang={locale} data-audience="semua" data-theme="midnight">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script is:inline>
+      (function () {
+        const saved = localStorage.getItem('alam-theme');
+        const theme = saved === 'day' || saved === 'midnight' ? saved : 'midnight';
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -178,6 +186,19 @@ const terminalContext: TerminalContext = {
             </a>
           </div>
 
+          <button
+            type="button"
+            data-theme-toggle
+            aria-label={locale === 'id' ? 'Ganti suasana Malam / Pagi' : 'Switch Midnight / Day mood'}
+            title={locale === 'id' ? 'Ganti suasana Malam / Pagi' : 'Switch Midnight / Day mood'}
+            class="sticker-btn bg-paper-2 text-ink rounded-sm px-2.5 py-1 font-mono text-xs"
+          >
+            <span data-theme-icon aria-hidden="true">🌙</span>
+            <span data-theme-label class="hidden sm:inline">
+              {locale === 'id' ? 'Malam' : 'Night'}
+            </span>
+          </button>
+
           <a
             href={switchHref}
             aria-label={t('nav.langLabel')}
@@ -236,6 +257,8 @@ const terminalContext: TerminalContext = {
       </div>
     </footer>
 
+    <MidnightAtmosphere />
+
     <TerminalModal client:idle context={terminalContext} />
     <CatCompanion client:idle locale={locale} />
     <DeskAudio client:idle locale={locale} />
@@ -243,6 +266,36 @@ const terminalContext: TerminalContext = {
     <script>
       import { initDeskEffects } from '../lib/deskEffects';
       initDeskEffects();
+
+      const applySavedTheme = () => {
+        const saved = localStorage.getItem('alam-theme');
+        const theme = saved === 'day' || saved === 'midnight' ? saved : 'midnight';
+        document.documentElement.dataset.theme = theme;
+        const isEn = document.documentElement.lang === 'en';
+        const icon = document.querySelector<HTMLElement>('[data-theme-icon]');
+        const label = document.querySelector<HTMLElement>('[data-theme-label]');
+        if (icon) icon.textContent = theme === 'midnight' ? '🌙' : '☀️';
+        if (label) {
+          label.textContent =
+            theme === 'midnight' ? (isEn ? 'Night' : 'Malam') : isEn ? 'Day' : 'Pagi';
+        }
+      };
+
+      const bindThemeToggle = () => {
+        applySavedTheme();
+        const btn = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+        if (!btn || btn.dataset.bound === 'true') return;
+        btn.dataset.bound = 'true';
+        btn.addEventListener('click', () => {
+          const next = document.documentElement.dataset.theme === 'midnight' ? 'day' : 'midnight';
+          localStorage.setItem('alam-theme', next);
+          applySavedTheme();
+        });
+      };
+
+      document.addEventListener('astro:after-swap', applySavedTheme);
+      document.addEventListener('astro:page-load', bindThemeToggle);
+      bindThemeToggle();
     </script>
   </body>
 </html>

@@ -1,0 +1,62 @@
+---
+/**
+ * Lapisan atmosfer malam halus (hanya tampak saat data-theme="midnight")
+ * Terinspirasi nuansa tenang, hangat & nostalgik "The Night We Met".
+ * 0 KB JS — CSS murni, otomatis diam saat prefers-reduced-motion.
+ */
+const stars = [
+  { top: '11%', left: '8%', size: 3, color: 'var(--mustard)', dur: '6.5s', delay: '0s' },
+  { top: '18%', left: '24%', size: 2, color: 'var(--ink)', dur: '7.8s', delay: '1.2s' },
+  { top: '14%', left: '72%', size: 3, color: 'var(--slime)', dur: '5.8s', delay: '0.7s' },
+  { top: '26%', left: '89%', size: 2.5, color: 'var(--mustard)', dur: '6.2s', delay: '2.1s' },
+  { top: '42%', left: '6%', size: 2.5, color: 'var(--slime)', dur: '8.4s', delay: '1.5s' },
+  { top: '53%', left: '93%', size: 3, color: 'var(--mustard)', dur: '7.1s', delay: '0.4s' },
+  { top: '68%', left: '12%', size: 2, color: 'var(--ink)', dur: '6.8s', delay: '2.6s' },
+  { top: '76%', left: '84%', size: 3, color: 'var(--slime)', dur: '7.5s', delay: '1.1s' },
+  { top: '86%', left: '34%', size: 2.5, color: 'var(--mustard)', dur: '6.4s', delay: '1.9s' },
+  { top: '31%', left: '52%', size: 2, color: 'var(--ink)', dur: '9.0s', delay: '0.9s' },
+];
+---
+
+<div
+  class="midnight-only pointer-events-none fixed inset-0 -z-10 overflow-hidden select-none"
+  aria-hidden="true"
+>
+  {/* Bulan sabit tipis bergaya sketsa di kanan atas */}
+  <svg
+    viewBox="0 0 80 80"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    class="absolute top-20 right-8 h-14 w-14 opacity-30 sm:right-14 sm:h-16 sm:w-16"
+  >
+    <path
+      d="M52 14C37 16 26 29 28 45C30 60 44 70 59 67C47 64 39 54 39 41C39 29 44 20 52 14Z"
+      fill="var(--mustard)"
+      fill-opacity="0.7"
+      stroke="var(--ink)"
+      stroke-width="1.6"
+      stroke-linejoin="round"
+    />
+    <circle cx="18" cy="24" r="1.5" fill="var(--mustard)" />
+    <circle cx="66" cy="30" r="1.2" fill="var(--slime)" />
+  </svg>
+
+  {/* Titik cahaya kunang-kunang & bintang malam yang berpendar pelan */}
+  {
+    stars.map((s) => (
+      <span
+        class="night-star absolute rounded-full"
+        style={`top:${s.top};left:${s.left};width:${s.size * 2}px;height:${s.size * 2}px;background:${s.color};box-shadow:0 0 ${s.size * 4}px ${s.color};--dur:${s.dur};--delay:${s.delay};`}
+      />
+    ))
+  }
+</div>
+
+<style is:global>
+  .midnight-only {
+    display: none;
+  }
+  html[data-theme='midnight'] .midnight-only {
+    display: block;
+  }
+</style>

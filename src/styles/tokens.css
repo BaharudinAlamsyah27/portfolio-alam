@@ -31,6 +31,28 @@
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 }
 
+/* Suasana "The Night We Met" — Meja Kerja Malam yang Hangat, Nostalgik & Hening */
+html[data-theme='midnight'] {
+  --paper: #121723;
+  --paper-2: #1a2132;
+  --ink: #efe6d5;
+  --ink-soft: #a4b1c6;
+
+  --tomato: #e37254;
+  --cobalt: #82aaff;
+  --mustard: #e6b85c;
+  --leaf: #4ec472;
+  --blush: #f0a1bc;
+  --slime: #5bc6f7;
+  --slime-soft: #1a3046;
+  --slime-deep: #8fdcff;
+
+  --shadow-hard: 4px 4px 0 #070a11;
+  --shadow-hard-sm: 2px 2px 0 #070a11;
+  --shadow-hard-lg: 6px 6px 0 #070a11;
+  --border-ink: 2px solid rgba(239, 230, 213, 0.28);
+}
+
 @theme {
   --color-paper: var(--paper);
   --color-paper-2: var(--paper-2);

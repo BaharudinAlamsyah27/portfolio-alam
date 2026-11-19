@@ -14,10 +14,63 @@
     min-height: 100dvh;
     background-color: var(--paper);
     color: var(--ink);
+    transition: background-color 280ms ease, color 280ms ease;
     /* Tekstur kertas halus + corak Kawung samar sangat tipis (opacity rendah, nyaman dibaca) */
     background-image:
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%231b7fd6' stroke-opacity='0.055' stroke-width='1'%3E%3Cellipse cx='32' cy='16' rx='7' ry='14'/%3E%3Cellipse cx='32' cy='48' rx='7' ry='14'/%3E%3Cellipse cx='16' cy='32' rx='14' ry='7'/%3E%3Cellipse cx='48' cy='32' rx='14' ry='7'/%3E%3Ccircle cx='32' cy='32' r='2' fill='%23f5b700' fill-opacity='0.09' stroke='none'/%3E%3C/g%3E%3C/svg%3E"),
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  }
+
+  /* Suasana "The Night We Met": cahaya lampu hangat temaram + pendaran bulan + film grain analog */
+  html[data-theme='midnight'] body {
+    background-image:
+      radial-gradient(circle at 16% 10%, rgba(230, 184, 92, 0.09) 0%, transparent 44%),
+      radial-gradient(circle at 86% 18%, rgba(130, 170, 255, 0.085) 0%, transparent 46%),
+      radial-gradient(circle at 50% 92%, rgba(91, 198, 247, 0.05) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23efe6d5' stroke-opacity='0.032' stroke-width='1'%3E%3Cellipse cx='32' cy='16' rx='7' ry='14'/%3E%3Cellipse cx='32' cy='48' rx='7' ry='14'/%3E%3Cellipse cx='16' cy='32' rx='14' ry='7'/%3E%3Cellipse cx='48' cy='32' rx='14' ry='7'/%3E%3Ccircle cx='32' cy='32' r='1.8' fill='%23e6b85c' fill-opacity='0.07' stroke='none'/%3E%3C/g%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  }
+
+  /* Jaga kontras teks di atas stiker warna cerah saat mode malam (WCAG AA) */
+  html[data-theme='midnight'] .bg-mustard,
+  html[data-theme='midnight'] .bg-slime,
+  html[data-theme='midnight'] .bg-blush {
+    color: #17130e;
+  }
+
+  html[data-theme='midnight'] .bg-tomato,
+  html[data-theme='midnight'] .bg-cobalt,
+  html[data-theme='midnight'] .bg-leaf {
+    color: #121723;
+  }
+
+  html[data-theme='midnight'] .border-ink {
+    border-color: rgba(239, 230, 213, 0.28);
+  }
+
+  html[data-theme='midnight'] .sticker-card {
+    box-shadow: 4px 4px 0 #070a11, 0 0 28px rgba(230, 184, 92, 0.04);
+  }
+
+  html[data-theme='midnight'] .sticker-card:hover {
+    box-shadow: 6px 6px 0 #070a11, 0 0 36px rgba(130, 170, 255, 0.08);
+  }
+
+  @keyframes night-twinkle {
+    0%,
+    100% {
+      opacity: 0.18;
+      transform: translateY(0px) scale(0.92);
+    }
+    50% {
+      opacity: 0.72;
+      transform: translateY(-4px) scale(1.1);
+    }
+  }
+
+  .night-star {
+    animation: night-twinkle var(--dur, 6s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
   }
 
   h1,
