@@ -255,6 +255,18 @@ const terminalContext: TerminalContext = {
             <span class="text-mustard font-bold">&gt;_</span>
             <span class="hidden opacity-85 sm:inline">Ctrl+K</span>
           </button>
+
+          {/* Tombol Menu Navigasi khusus HP */}
+          <button
+            type="button"
+            data-mobile-menu-toggle
+            aria-expanded="false"
+            aria-controls="mobile-nav-drawer"
+            aria-label={locale === 'id' ? 'Buka menu navigasi' : 'Open navigation menu'}
+            class="sticker-btn bg-mustard text-ink inline-flex items-center justify-center rounded-sm px-2.5 py-1 font-mono text-xs font-bold md:hidden"
+          >
+            <span data-mobile-menu-icon aria-hidden="true">☰</span>
+          </button>
         </nav>
         </div>
 
@@ -311,6 +323,49 @@ const terminalContext: TerminalContext = {
 
         <span class="hidden shrink-0 text-[9.5px] sm:inline">UTF-8 · LF</span>
       </div>
+
+      {/* Panel Menu Navigasi Khusus HP */}
+      <nav
+        id="mobile-nav-drawer"
+        data-mobile-menu
+        aria-label={locale === 'id' ? 'Menu navigasi seluler' : 'Mobile navigation'}
+        class="hidden border-t-2 border-ink bg-paper px-4 py-3 shadow-[0_6px_0_var(--ink)] md:hidden"
+      >
+        <div class="grid grid-cols-2 gap-2 font-mono text-xs font-bold">
+          <a href={projectsHref} class="rounded-sm border-2 border-ink bg-paper-2 px-3 py-2 text-ink hover:bg-mustard">
+            {t('nav.projects')}
+          </a>
+          <a href={tokoHref} class="rounded-sm border-2 border-ink bg-paper-2 px-3 py-2 text-ink hover:bg-mustard">
+            {t('nav.shop')}
+          </a>
+          <a href={notesHref} class="rounded-sm border-2 border-ink bg-paper-2 px-3 py-2 text-ink hover:bg-mustard">
+            {t('nav.notes')}
+          </a>
+          <a href={`${homeHref}#skills`} class="rounded-sm border-2 border-ink bg-paper-2 px-3 py-2 text-ink hover:bg-mustard">
+            {t('nav.skills')}
+          </a>
+          <a href={`${homeHref}#about`} class="rounded-sm border-2 border-ink bg-paper-2 px-3 py-2 text-ink hover:bg-mustard">
+            {t('nav.about')}
+          </a>
+          <a href={`${homeHref}#passport`} class="rounded-sm border-2 border-ink bg-paper-2 px-3 py-2 text-ink hover:bg-mustard">
+            {t('nav.passport')}
+          </a>
+          <a href={`${homeHref}#contact`} class="rounded-sm border-2 border-ink bg-tomato px-3 py-2 text-paper">
+            {t('nav.contact')}
+          </a>
+          <a href={nowHref} class="rounded-sm border-2 border-ink bg-slime-soft px-3 py-2 text-ink">
+            /now · /log
+          </a>
+        </div>
+      </nav>
+
+      {/* Garis Progres Baca (Biru Rimuru) */}
+      <div class="h-[3px] w-full bg-transparent" aria-hidden="true">
+        <div
+          data-scroll-progress
+          class="h-full w-0 bg-slime-deep transition-[width] duration-75"
+        ></div>
+      </div>
     </header>
 
     <main id="main-content" class="relative z-10 mx-auto w-full max-w-5xl flex-1 px-5 py-10 sm:py-14">
@@ -359,6 +414,18 @@ const terminalContext: TerminalContext = {
     <CatCompanion client:idle locale={locale} />
     <DeskAudio client:idle locale={locale} transition:persist="desk-audio" />
 
+    {/* Tombol Kembali ke Atas (Roket) */}
+    <button
+      type="button"
+      data-scroll-top
+      aria-label={locale === 'id' ? 'Kembali ke atas' : 'Back to top'}
+      title={locale === 'id' ? 'Kembali ke atas' : 'Back to top'}
+      class="sticker-btn bg-slime text-ink pointer-events-none fixed right-4 bottom-16 z-40 translate-y-2 rounded-sm px-2.5 py-1.5 font-mono text-xs font-bold opacity-0 transition-all duration-200"
+    >
+      <span aria-hidden="true">🚀</span>
+      <span class="hidden sm:inline">{locale === 'id' ? 'Atas' : 'Top'}</span>
+    </button>
+
     <script>
       import { initDeskEffects } from '../lib/deskEffects';
       initDeskEffects();
@@ -396,9 +463,66 @@ const terminalContext: TerminalContext = {
         });
       };
 
+      const bindHeaderUtilities = () => {
+        // Mobile menu drawer
+        const toggle = document.querySelector<HTMLButtonElement>('[data-mobile-menu-toggle]');
+        const drawer = document.querySelector<HTMLElement>('[data-mobile-menu]');
+        const icon = document.querySelector<HTMLElement>('[data-mobile-menu-icon]');
+        if (toggle && drawer && toggle.dataset.bound !== 'true') {
+          toggle.dataset.bound = 'true';
+          const setMenu = (open: boolean) => {
+            drawer.classList.toggle('hidden', !open);
+            toggle.setAttribute('aria-expanded', String(open));
+            if (icon) icon.textContent = open ? '✕' : '☰';
+          };
+          toggle.addEventListener('click', () => {
+            setMenu(drawer.classList.contains('hidden'));
+          });
+          drawer.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', () => setMenu(false));
+          });
+        }
+
+        // Back-to-top button
+        const topBtn = document.querySelector<HTMLButtonElement>('[data-scroll-top]');
+        if (topBtn && topBtn.dataset.bound !== 'true') {
+          topBtn.dataset.bound = 'true';
+          topBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+        }
+
+        // Scroll progress bar + back-to-top visibility
+        const updateScrollUI = () => {
+          const bar = document.querySelector<HTMLElement>('[data-scroll-progress]');
+          const btn = document.querySelector<HTMLElement>('[data-scroll-top]');
+          const scrollTop = window.scrollY || document.documentElement.scrollTop;
+          const docHeight =
+            document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          const pct = docHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / docHeight) * 100)) : 0;
+          if (bar) bar.style.width = `${pct.toFixed(1)}%`;
+          if (btn) {
+            const show = scrollTop > 350;
+            btn.classList.toggle('opacity-0', !show);
+            btn.classList.toggle('pointer-events-none', !show);
+            btn.classList.toggle('translate-y-2', !show);
+          }
+        };
+
+        if (!(window as unknown as { __alamScrollBound?: boolean }).__alamScrollBound) {
+          (window as unknown as { __alamScrollBound?: boolean }).__alamScrollBound = true;
+          window.addEventListener('scroll', updateScrollUI, { passive: true });
+        }
+        updateScrollUI();
+      };
+
       document.addEventListener('astro:after-swap', applySavedTheme);
-      document.addEventListener('astro:page-load', bindThemeToggle);
+      document.addEventListener('astro:page-load', () => {
+        bindThemeToggle();
+        bindHeaderUtilities();
+      });
       bindThemeToggle();
+      bindHeaderUtilities();
     </script>
   </body>
 </html>

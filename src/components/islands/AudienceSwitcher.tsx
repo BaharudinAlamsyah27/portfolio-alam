@@ -11,42 +11,42 @@ const STORAGE_KEY = 'alam_audience_mode';
 
 const copy = {
   id: {
-    prompt: 'Saya mampir sebagai:',
+    prompt: 'Saya berkunjung sebagai:',
     modes: {
       semua: {
         label: 'Tamu Umum',
         tag: 'URUTAN STANDAR',
         pitch:
-          'Silakan keliling meja. Urutan halaman saat ini seimbang: Project pilihan → Peta Skill → Cerita & MagangHub → Kontak.',
-        primaryCta: { text: 'Lihat Project', href: '#projects' },
-        secondaryCta: { text: 'Kenalan Singkat', href: '#about' },
+          'Urutan tampilan standar: Proyek pilihan, Daftar Skill, Tentang & Pengalaman, lalu Kontak.',
+        primaryCta: { text: 'Lihat Proyek', href: '#projects' },
+        secondaryCta: { text: 'Tentang Saya', href: '#about' },
       },
       recruiter: {
         label: 'Recruiter / HR',
-        tag: 'MODE RECRUITER AKTIF',
+        tag: 'MODE RECRUITER',
         pitch:
-          'Waktu Anda berharga — bagian Peta Skill (Dikuasai vs Didalami) dan Riwayat MagangHub otomatis saya naikkan ke urutan paling atas.',
-        primaryCta: { text: 'Cek Skill & Riwayat', href: '#skills' },
-        secondaryCta: { text: 'Lihat Bukti Project', href: '#projects' },
+          'Bagian Skill dan Riwayat Pengalaman ditampilkan paling atas agar lebih cepat ditinjau.',
+        primaryCta: { text: 'Lihat Skill & Pengalaman', href: '#skills' },
+        secondaryCta: { text: 'Lihat Proyek', href: '#projects' },
       },
       klien: {
         label: 'Calon Klien',
-        tag: 'MODE KLIEN AKTIF',
+        tag: 'MODE KLIEN',
         pitch:
-          'Fokus pada hasil nyata — bagian Project dan Form Diskusi saya geser ke atas supaya Anda bisa langsung menilai kualitas kerja & menghubungi saya.',
+          'Bagian Proyek dan Form Kontak dinaikkan ke atas agar Anda bisa langsung melihat hasil kerja dan berdiskusi.',
         primaryCta: { text: 'Lihat Hasil Kerja', href: '#projects' },
-        secondaryCta: { text: 'Diskusi Kebutuhan', href: '#contact' },
+        secondaryCta: { text: 'Hubungi Saya', href: '#contact' },
       },
       dev: {
         label: 'Sesama Developer',
-        tag: 'MODE DEV AKTIF',
+        tag: 'MODE DEVELOPER',
         pitch:
-          'Suka bedah isi dapur? Bagian Project (lengkap dengan masalah teknis & repo) dan Eksplorasi Skill naik ke atas. Terminal Mode (Ctrl+K) menyusul di Fase 4.',
-        primaryCta: { text: 'Bedah Studi Kasus', href: '#projects' },
-        secondaryCta: { text: 'Intip Stack & Eksplorasi', href: '#skills' },
+          'Urutan difokuskan ke studi kasus proyek, repository GitHub, dan tech stack. Tersedia juga Terminal Mode (Ctrl+K).',
+        primaryCta: { text: 'Lihat Studi Kasus', href: '#projects' },
+        secondaryCta: { text: 'Lihat Tech Stack', href: '#skills' },
       },
     },
-    reorderHint: 'Urutan section di bawah otomatis menyesuaikan pilihanmu.',
+    reorderHint: 'Urutan bagian di bawah otomatis menyesuaikan pilihan Anda.',
   },
   en: {
     prompt: 'I am visiting as:',
@@ -55,36 +55,36 @@ const copy = {
         label: 'General Visitor',
         tag: 'DEFAULT ORDER',
         pitch:
-          'Feel free to look around the desk. Sections are in balanced order: Selected Projects → Tech Map → Story & MagangHub → Contact.',
+          'Standard layout order: Selected Projects, Skills, About & Experience, and Contact.',
         primaryCta: { text: 'View Projects', href: '#projects' },
-        secondaryCta: { text: 'Short Story', href: '#about' },
+        secondaryCta: { text: 'About Me', href: '#about' },
       },
       recruiter: {
         label: 'Recruiter / HR',
-        tag: 'RECRUITER MODE ACTIVE',
+        tag: 'RECRUITER MODE',
         pitch:
-          'Your time is short — the Tech Map (Proficient vs Deepening) and MagangHub Experience have been moved right to the top of the desk.',
-        primaryCta: { text: 'Check Skills & Timeline', href: '#skills' },
-        secondaryCta: { text: 'See Shipped Projects', href: '#projects' },
+          'Skills and Experience are moved to the top for a quicker overview.',
+        primaryCta: { text: 'Skills & Experience', href: '#skills' },
+        secondaryCta: { text: 'View Projects', href: '#projects' },
       },
       klien: {
         label: 'Potential Client',
-        tag: 'CLIENT MODE ACTIVE',
+        tag: 'CLIENT MODE',
         pitch:
-          'Focused on deliverables — Projects and the Contact Desk are moved up so you can review shipped work and discuss your project right away.',
-        primaryCta: { text: 'See Shipped Work', href: '#projects' },
-        secondaryCta: { text: 'Discuss a Project', href: '#contact' },
+          'Projects and the Contact form are moved up so you can review past work and reach out directly.',
+        primaryCta: { text: 'View Work', href: '#projects' },
+        secondaryCta: { text: 'Contact Me', href: '#contact' },
       },
       dev: {
         label: 'Fellow Developer',
-        tag: 'DEV MODE ACTIVE',
+        tag: 'DEV MODE',
         pitch:
-          'Here for the internals? Projects (with technical notes & repos) and Tech Exploration are prioritized. Terminal Mode (Ctrl+K) arrives in Phase 4.',
-        primaryCta: { text: 'Read Case Studies', href: '#projects' },
-        secondaryCta: { text: 'Inspect Tech Stack', href: '#skills' },
+          'Prioritizes project case studies, GitHub repos, and tech stack. Terminal Mode (Ctrl+K) is also available.',
+        primaryCta: { text: 'Case Studies', href: '#projects' },
+        secondaryCta: { text: 'Tech Stack', href: '#skills' },
       },
     },
-    reorderHint: 'Sections below automatically reorder based on your role.',
+    reorderHint: 'Sections below automatically reorder based on your selection.',
   },
 } as const;
 
