@@ -1,36 +1,117 @@
 ---
-title: Meja Kerja Digital (Portfolio Hybrid Ini)
+title: Meja Kerja Digital — Portofolio Hybrid & Arsitektur Meja Kerja Rp0
+tagline: "Konsep Meja Kerja Kertas Krem, 3 Lapisan Pengunjung, dan Nol Biaya Operasional"
 summary:
-  id: "Website portfolio Rp0 dengan konsep meja kerja, CMS lokal Keystatic, dan pemilih tujuan pengunjung."
-  en: "A zero-cost portfolio built around a tactile desk metaphor, local Keystatic CMS, and an Audience Switcher."
+  id: "Website portofolio berkarakter meja kerja kertas krem hangat tanpa biaya operasional (Rp0), dilengkapi Audience Switcher untuk 3 profil pengunjung, Terminal Mode interaktif, Skill Playground berfisika Matter.js, serta audio ambience persisten."
+  en: "A zero-cost tactile paper-desk portfolio featuring an Audience Switcher for three visitor profiles, an interactive keyboard-driven Terminal, Matter.js physics-based skill badges, and persistent background audio ambience."
+role: "Creator & Full-Stack Developer"
+context: "Portofolio Pribadi Baharudin Alamsyah (Versi Produksi & Open Showcase)"
+duration: "Berkelanjutan"
 stack:
   - Astro 7
   - TypeScript
   - Tailwind CSS v4
   - Preact
-  - Keystatic
+  - GSAP
+  - Matter.js
+  - Keystatic Local CMS
+  - Web Audio API
+tags:
+  - Portofolio
+  - Astro 7
+  - Preact
+  - Meja Kerja
+  - Terminal Mode
+  - Matter.js
+  - GSAP
+  - Rp0 Stack
+  - Vercel
 category: web
-demoUrl: "/"
-repoUrl: ""
+demoUrl: "https://alam-portfolio.vercel.app/"
+previewImage: "/images/meja-kerja-desk.svg"
+embedPreview: false
+repoUrl: "https://github.com/BaharudinAlamsyah27"
 featured: true
 draft: false
 order: 1
-date: 2026-11-16
+date: 2026-11-20
 status: berjalan
 ---
 
-## Masalah
+> **Tentang Proyek Ini:** Ini adalah website portofolio yang sedang Anda jelajahi saat ini. Seluruh kode sumber, arsitektur tata letak, dan interaksi dirancang dari nol dengan pendekatan jujur, bersuara manusiawi, dan tanpa template buatan pabrik.
 
-Kebanyakan template portfolio developer terasa seragam: latar hitam-ungu neon, kalimat klise hasil generator, dan membingungkan pengunjung non-teknis (seperti HR atau klien) ketika dicampur dengan elemen khas programmer.
+## Latar Belakang & Masalah
 
-## Proses
+Sebagian besar portofolio programmer di internet hari ini terjebak pada cetakan yang seragam: latar belakang hitam gelap pekat dengan gradien ungu neon, teks klise hasil generator AI yang tidak punya jiwa, serta tumpukan kartu identik yang membingungkan pengunjung non-teknis seperti recruiter atau calon klien.
 
-Dirancang dari nol dengan konsep **Hybrid 3 Lapisan**: tampilan utamanya hangat seperti meja kerja kertas krem agar nyaman dibaca recruiter dan klien, dilengkapi **Audience Switcher** yang menggeser urutan halaman secara otomatis, serta panel admin lokal **Keystatic** supaya tambah data project tidak perlu bongkar kode.
+Tantangan utamanya adalah: **bagaimana satu website bisa menyapa 3 audiens yang sangat berbeda tanpa kehilangan kepribadian pemiliknya?**
+1. **Recruiter / HR:** Membutuhkan akses cepat ke profil ringkas, keahlian utama, pengalaman magang, dan tombol unduh CV PDF.
+2. **Klien Bisnis / Freelance:** Ingin langsung melihat portofolio aplikasi nyata, solusi bisnis yang bisa diterapkan, estimasi biaya transparan, serta jalur kontak langsung.
+3. **Sesama Developer:** Ingin menguji kebersihan kode, arsitektur teknis, mencoba mode terminal, hingga menemukan kejutan interaktif (*easter egg*).
 
-## Hasil
+---
 
-Skor build statis super ringan, mendukung dua bahasa (ID/EN), dan seluruh biaya operasional Rp0 di Vercel.
+## Solusi: Konsep Hybrid 3 Lapisan
 
-## Pelajaran
+Alih-alih membuat tiga website terpisah, website ini dibangun dengan **Konsep Meja Kerja (Desk Metaphor)** berlapis tiga:
 
-Menjaga website tetap sederhana dan jujur ternyata lebih menantang daripada menumpuk efek animasi berat.
+```
+┌───────────────────────────────────────────────────────────┐
+│  LAPISAN 1 — PROFESIONAL (Default)                        │
+│  Layout editorial bento kertas krem hangat untuk recruiter│
+├───────────────────────────────────────────────────────────┤
+│  LAPISAN 2 — KHAS PROGRAMMER                              │
+│  Terminal Mode (Ctrl+K / tombol >_ / tombol `)            │
+├───────────────────────────────────────────────────────────┤
+│  LAPISAN 3 — UNIK & MENYENANGKAN                          │
+│  Kucing pengikut kursor, skill berfisika, audio ambience  │
+└───────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Fitur Utama yang Dibangun
+
+### 1. Audience Switcher Cerdas
+Di bagian atas halaman, pengunjung dapat memilih peran kedatangan (*Recruiter · Klien Bisnis · Developer*). Pemilihan ini secara dinamis menata ulang urutan section yang paling relevan bagi mereka, mengubah fokus CTA, dan menyimpan preferensi ke `localStorage` tanpa perlu me-reload halaman.
+
+### 2. Terminal Mode Berbasis Keyboard (`Ctrl+K`)
+Bisa dibuka lewat pintasan tombol `Ctrl+K`, tombol `>_`, atau tombol backtick (\`). Terminal ini bukan sekadar pajangan statis, melainkan memiliki *command interpreter* mandiri:
+- `whoami`, `skills`, `projects`, `contact`, `clear`, `exit`
+- `cat` (tanpa argumen) → memunculkan ASCII art kucing lucu (*pun* untuk pecinta kucing)
+- `jog` → menampilkan catatan rute lari dan total kilometer
+- Riwayat perintah (panah atas/bawah) dan pelengkapan otomatis (*Tab completion*).
+
+### 3. Skill Playground Berfisika (Matter.js 2D)
+Pengunjung bisa beralih dari tampilan daftar skill rapi ke **Mode Fisika 2D** menggunakan mesin **Matter.js**. Setiap lencana keahlian (*badge*) dijatuhkan ke lantai meja kerja virtual, memiliki gravitasi dan elastisitas, serta bisa diseret atau dilempar dengan kursor tetikus maupun sentuhan layar sentuh.
+
+### 4. Audio Ambience Meja Kerja Persisten (Web Audio API)
+Menghadirkan suara latar alami untuk menemani membaca: *Gamelan Slendro*, *Jura Tempest Rain*, *Dengkur Kucing (Cat Purr)*, dan *Lo-fi Focus*. Dilengkapi arsitektur `transition:persist` pada Astro View Transitions sehingga audio tetap mengalun mulus tanpa jeda ketika pengunjung berpindah antar halaman studi kasus.
+
+### 5. Kartu 3D Interaktif "Luminous Valentine"
+Kartu bento interaktif dengan aksen lengkungan gotik (*gothic arch*) yang merespons posisi kursor dengan rotasi perspektif 3D halus, lengkap dengan statistik cepat meja kerja dan kutipan inspiratif.
+
+### 6. Paspor Jelajah & Catatan Nyata (/now & /log)
+Merekam jejak nyata pemilik: cap paspor kota-kota yang pernah dijelajahi di Jawa Tengah, halaman `/now` tentang apa yang sedang dipelajari dan dibangun saat ini, serta `/log` berupa changelog transparan pengembangan website.
+
+### 7. Panel Kelola Konten Lokal (Keystatic CMS)
+Seluruh data proyek, pengalaman, catatan, dan skill disimpan dalam file terstruktur (MDX & YAML) dengan validasi skema **Zod** ketat, serta dapat dikelola melalui UI form visual lokal Keystatic (`/keystatic`) tanpa perlu menyewa database berbayar.
+
+---
+
+## Arsitektur & Prinsip Biaya Rp0
+
+Website ini dirancang dengan prinsip efisiensi ekstrem:
+- **Framework:** Astro 7 (Static Site Generation dengan Island Architecture)
+- **Komponen Interaktif:** Preact (~3KB) untuk komponen dinamis ringan
+- **Styling & Token:** Tailwind CSS v4 dengan variabel desain terpusat (`--paper`, `--ink`, `--tomato`, `--mustard`, `--cobalt`)
+- **Animasi:** GSAP, IntersectionObserver native, dan Astro View Transitions
+- **Hosting & Deploy:** Vercel Hobby Tier (Deploy otomatis dari push Git)
+- **Form Kontak:** Web3Forms tanpa server backend
+- **Total Biaya Bulanan:** **Rp0,00**
+
+---
+
+## Pelajaran Teknis
+
+Membangun website portofolio yang interaktif tanpa menjadikannya lambat menuntut disiplin tinggi. Pustaka berat seperti Matter.js dan sound synthesizers hanya diinisialisasi secara malas (*lazy-loaded*) ketika pengunjung benar-benar mengaktifkannya. Dengan demikian, halaman awal tetap memuat instan dengan skor performa Lighthouse 95+ di perangkat seluler maupun laptop.

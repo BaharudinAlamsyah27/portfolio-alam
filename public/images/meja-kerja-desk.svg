@@ -1,0 +1,200 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750">
+  <defs>
+    <!-- Filter Hard Shadow Khas Stiker -->
+    <filter id="sticker-shadow" x="-5%" y="-5%" width="115%" height="115%">
+      <feDropShadow dx="5" dy="5" stdDeviation="0" flood-color="#1F1B16" flood-opacity="1" />
+    </filter>
+    <filter id="soft-shadow" x="-5%" y="-5%" width="115%" height="115%">
+      <feDropShadow dx="3" dy="3" stdDeviation="0" flood-color="#1F1B16" flood-opacity="0.8" />
+    </filter>
+    <!-- Pattern Grid Meja Kertas -->
+    <pattern id="desk-grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#EFE4CF" stroke-width="1" />
+      <circle cx="0" cy="0" r="1.5" fill="#E2D4BC" />
+    </pattern>
+  </defs>
+
+  <!-- Latar Meja Kertas Krem Hangat -->
+  <rect width="1200" height="750" fill="#FFF8EC" />
+  <rect width="1200" height="750" fill="url(#desk-grid)" opacity="0.75" />
+
+  <!-- Frame Browser Meja Kerja -->
+  <g transform="translate(40, 30)">
+    <!-- Main Window Background -->
+    <rect width="1120" height="690" rx="14" fill="#FBF3E4" stroke="#1F1B16" stroke-width="5" filter="url(#sticker-shadow)" />
+
+    <!-- Window Chrome Bar -->
+    <rect width="1120" height="54" rx="12" fill="#EFE3CC" stroke="#1F1B16" stroke-width="5" />
+    <!-- Traffic lights -->
+    <circle cx="34" cy="27" r="7" fill="#F2542D" stroke="#1F1B16" stroke-width="2.5" />
+    <circle cx="58" cy="27" r="7" fill="#F5B700" stroke="#1F1B16" stroke-width="2.5" />
+    <circle cx="82" cy="27" r="7" fill="#2BA84A" stroke="#1F1B16" stroke-width="2.5" />
+
+    <!-- URL Bar -->
+    <rect x="130" y="11" width="540" height="32" rx="6" fill="#FFF8EC" stroke="#1F1B16" stroke-width="2" />
+    <circle cx="150" cy="27" r="4" fill="#2BA84A" />
+    <text x="166" y="33" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="700" fill="#5B5248">https://alam-portfolio.vercel.app (Rp0 Vercel Hobby)</text>
+
+    <!-- Chrome Badge -->
+    <rect x="940" y="12" width="150" height="30" rx="5" fill="#1F1B16" />
+    <text x="1015" y="32" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="800" fill="#FFF8EC">MEJA KERJA ALAM</text>
+
+    <!-- CONTENT CANVAS -->
+    <!-- Hero Banner Bento -->
+    <g transform="translate(40, 80)">
+      <!-- Card Kiri: Headline & Intro -->
+      <rect width="660" height="340" rx="10" fill="#FFF8EC" stroke="#1F1B16" stroke-width="4" filter="url(#soft-shadow)" />
+      
+      <!-- Selotip Mustard -->
+      <rect x="240" y="-14" width="120" height="28" fill="#F5B700" opacity="0.9" stroke="#1F1B16" stroke-width="2" transform="rotate(-2 300 0)" />
+
+      <!-- Status Online Badge -->
+      <rect x="30" y="30" width="160" height="26" rx="4" fill="#2BA84A" opacity="0.15" stroke="#2BA84A" stroke-width="2" />
+      <circle cx="45" cy="43" r="4.5" fill="#2BA84A" />
+      <text x="58" y="48" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700" fill="#1F1B16">SEDANG MAGANGHUB</text>
+
+      <!-- Headline -->
+      <text x="30" y="105" font-family="'Bricolage Grotesque', 'Trebuchet MS', sans-serif" font-size="44" font-weight="900" fill="#1F1B16">Baharudin Alamsyah</text>
+      <text x="30" y="150" font-family="'Bricolage Grotesque', 'Trebuchet MS', sans-serif" font-size="34" font-weight="800" fill="#F2542D">"Lebih banyak kode daripada kata."</text>
+      
+      <text x="30" y="195" font-family="'Instrument Sans', sans-serif" font-size="16" fill="#5B5248">Web Programming · Mobile &amp; AI · Game Dev · Brebes &amp; Sragen</text>
+
+      <!-- Audience Switcher Mockup -->
+      <g transform="translate(30, 235)">
+        <rect width="590" height="65" rx="8" fill="#F6EBD6" stroke="#1F1B16" stroke-width="2.5" />
+        <text x="20" y="25" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#5B5248">SAYA DATANG SEBAGAI:</text>
+        
+        <rect x="20" y="33" width="130" height="24" rx="4" fill="#1F1B16" />
+        <text x="85" y="49" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#FFF8EC">🏢 Recruiter</text>
+        
+        <rect x="160" y="33" width="130" height="24" rx="4" fill="#FFF8EC" stroke="#1F1B16" stroke-width="1.5" />
+        <text x="225" y="49" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#1F1B16">💼 Klien Bisnis</text>
+        
+        <rect x="300" y="33" width="130" height="24" rx="4" fill="#FFF8EC" stroke="#1F1B16" stroke-width="1.5" />
+        <text x="365" y="49" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#1F1B16">💻 Developer</text>
+        
+        <text x="445" y="49" font-family="'Kalam', cursive, sans-serif" font-size="13" fill="#2D5BFF">← Urutan section berubah!</text>
+      </g>
+    </g>
+
+    <!-- Card Kanan Atas: Luminous & Sound Widget -->
+    <g transform="translate(730, 80)">
+      <!-- Luminous 3D Flip Card Miniature -->
+      <rect width="350" height="200" rx="10" fill="#1F1B16" stroke="#1F1B16" stroke-width="4" filter="url(#soft-shadow)" />
+      
+      <!-- Gothic Arch Frame inside -->
+      <path d="M 40 180 L 40 90 Q 175 20 310 90 L 310 180 Z" fill="#2D261E" stroke="#F5B700" stroke-width="2" />
+      <circle cx="175" cy="75" r="28" fill="#F2542D" opacity="0.8" />
+      <text x="175" y="82" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="20" fill="#FFF8EC">✦</text>
+      
+      <text x="175" y="130" text-anchor="middle" font-family="'Bricolage Grotesque', sans-serif" font-size="18" font-weight="800" fill="#FFF8EC">Luminous Valentine</text>
+      <text x="175" y="155" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#F5B700">3D Interactive Tilt Card (Desk Stats)</text>
+
+      <!-- Tape Pink -->
+      <rect x="250" y="-12" width="80" height="24" fill="#FF8FB1" opacity="0.9" stroke="#1F1B16" stroke-width="2" transform="rotate(5 290 0)" />
+
+      <!-- Audio Ambience Widget -->
+      <g transform="translate(0, 220)">
+        <rect width="350" height="105" rx="8" fill="#FFF8EC" stroke="#1F1B16" stroke-width="3" filter="url(#soft-shadow)" />
+        <circle cx="35" cy="35" r="14" fill="#F5B700" stroke="#1F1B16" stroke-width="2" />
+        <path d="M 32 28 L 42 35 L 32 42 Z" fill="#1F1B16" />
+        <text x="60" y="32" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="800" fill="#1F1B16">DESK AUDIO AMBIENCE</text>
+        <text x="60" y="48" font-family="'Instrument Sans', sans-serif" font-size="11" fill="#5B5248">Gamelan Slendro · Jura Tempest · Cat Purr</text>
+
+        <!-- Waveform lines -->
+        <g stroke="#2BA84A" stroke-width="3" stroke-linecap="round">
+          <line x1="60" y1="75" x2="60" y2="85" />
+          <line x1="72" y1="65" x2="72" y2="95" />
+          <line x1="84" y1="70" x2="84" y2="90" />
+          <line x1="96" y1="60" x2="96" y2="100" />
+          <line x1="108" y1="73" x2="108" y2="87" />
+          <line x1="120" y1="63" x2="120" y2="97" />
+          <line x1="132" y1="76" x2="132" y2="84" />
+        </g>
+        <rect x="160" y="68" width="170" height="22" rx="4" fill="#2BA84A" opacity="0.2" stroke="#2BA84A" stroke-width="1.5" />
+        <text x="245" y="83" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700" fill="#1F1B16">Persisten Pindah Halaman</text>
+      </g>
+    </g>
+
+    <!-- ROW BAWAH: Bento Tech Stack, Terminal, Kucing & Fisika -->
+    <g transform="translate(40, 440)">
+      <!-- Kotak 1: Terminal Mode Snippet -->
+      <g transform="translate(0, 0)">
+        <rect width="360" height="190" rx="8" fill="#1F1B16" stroke="#1F1B16" stroke-width="3" filter="url(#soft-shadow)" />
+        <rect width="360" height="26" rx="6" fill="#2D261E" />
+        <text x="15" y="18" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#F5B700">&gt;_ TERMINAL MODE (Ctrl+K)</text>
+        <text x="15" y="52" font-family="'JetBrains Mono', monospace" font-size="12" fill="#2BA84A">alam@portfolio:~$</text>
+        <text x="155" y="52" font-family="'JetBrains Mono', monospace" font-size="12" fill="#FFF8EC">skills --physics</text>
+        <text x="15" y="78" font-family="'JetBrains Mono', monospace" font-size="11" fill="#F5B700">[Matter.js 2D Engine Initialized]</text>
+        <text x="15" y="100" font-family="'JetBrains Mono', monospace" font-size="11" fill="#E2D4BC">Dragging badges with realistic gravity</text>
+        <text x="15" y="122" font-family="'JetBrains Mono', monospace" font-size="11" fill="#2D5BFF">alam@portfolio:~$</text>
+        <text x="155" y="122" font-family="'JetBrains Mono', monospace" font-size="11" fill="#FFF8EC">cat /whoami.md</text>
+        <text x="15" y="146" font-family="'JetBrains Mono', monospace" font-size="11" fill="#FFF8EC">"Lebih banyak kode daripada kata."</text>
+        <rect x="15" y="160" width="10" height="15" fill="#2BA84A" />
+      </g>
+
+      <!-- Kotak 2: Tech Badges Meja Kerja -->
+      <g transform="translate(390, 0)">
+        <rect width="420" height="190" rx="8" fill="#FFF8EC" stroke="#1F1B16" stroke-width="3" filter="url(#soft-shadow)" />
+        <text x="20" y="30" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="800" fill="#1F1B16">FONDASI &amp; ARSITEKTUR KODE</text>
+        <text x="20" y="50" font-family="'Instrument Sans', sans-serif" font-size="12" fill="#5B5248">Statis ultra-ringan, tanpa dependensi server berat.</text>
+
+        <!-- Badge Pills -->
+        <g transform="translate(20, 68)">
+          <rect x="0" y="0" width="90" height="26" rx="4" fill="#F2542D" stroke="#1F1B16" stroke-width="1.5" />
+          <text x="45" y="17" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#FFF8EC">Astro 7</text>
+
+          <rect x="100" y="0" width="115" height="26" rx="4" fill="#2D5BFF" stroke="#1F1B16" stroke-width="1.5" />
+          <text x="157" y="17" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#FFF8EC">TypeScript</text>
+
+          <rect x="225" y="0" width="145" height="26" rx="4" fill="#F6EBD6" stroke="#1F1B16" stroke-width="1.5" />
+          <text x="297" y="17" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#1F1B16">Tailwind CSS v4</text>
+
+          <rect x="0" y="36" width="115" height="26" rx="4" fill="#FF8FB1" stroke="#1F1B16" stroke-width="1.5" />
+          <text x="57" y="53" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#1F1B16">Preact (3KB)</text>
+
+          <rect x="125" y="36" width="115" height="26" rx="4" fill="#2BA84A" stroke="#1F1B16" stroke-width="1.5" />
+          <text x="182" y="53" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#FFF8EC">GSAP Motion</text>
+
+          <rect x="250" y="36" width="120" height="26" rx="4" fill="#F5B700" stroke="#1F1B16" stroke-width="1.5" />
+          <text x="310" y="53" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#1F1B16">Matter.js</text>
+
+          <rect x="0" y="72" width="150" height="26" rx="4" fill="#F6EBD6" stroke="#1F1B16" stroke-width="1.5" />
+          <text x="75" y="89" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#1F1B16">Keystatic Local CMS</text>
+
+          <rect x="160" y="72" width="210" height="26" rx="4" fill="#2BA84A" opacity="0.2" stroke="#2BA84A" stroke-width="1.5" />
+          <text x="265" y="89" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="800" fill="#2BA84A">Lighthouse 98-100</text>
+        </g>
+      </g>
+
+      <!-- Kotak 3: Maskot Kucing & Stiker Rimuru -->
+      <g transform="translate(840, 0)">
+        <rect width="200" height="190" rx="8" fill="#F6EBD6" stroke="#1F1B16" stroke-width="3" filter="url(#soft-shadow)" />
+        
+        <!-- Doodle Kucing Tidur di Pojok Meja -->
+        <g transform="translate(45, 30)">
+          <!-- Tubuh kucing melingkar -->
+          <ellipse cx="55" cy="55" rx="45" ry="32" fill="#E8985E" stroke="#1F1B16" stroke-width="3" />
+          <!-- Kepala -->
+          <circle cx="85" cy="45" r="22" fill="#E8985E" stroke="#1F1B16" stroke-width="3" />
+          <!-- Telinga -->
+          <polygon points="75,25 85,35 70,38" fill="#D36B34" stroke="#1F1B16" stroke-width="2" />
+          <polygon points="92,26 102,36 88,38" fill="#D36B34" stroke="#1F1B16" stroke-width="2" />
+          <!-- Mata tidur (garis lengkung) -->
+          <path d="M 82 45 Q 87 49 92 45" fill="none" stroke="#1F1B16" stroke-width="2.5" stroke-linecap="round" />
+          <!-- Hidung & mulut -->
+          <circle cx="95" cy="49" r="1.5" fill="#1F1B16" />
+          <!-- Ekor -->
+          <path d="M 12 55 Q 0 45 10 32" fill="none" stroke="#E8985E" stroke-width="10" stroke-linecap="round" />
+          <path d="M 12 55 Q 0 45 10 32" fill="none" stroke="#1F1B16" stroke-width="3" stroke-linecap="round" />
+          <!-- Huruf 'Zzz' -->
+          <text x="95" y="20" font-family="'Kalam', cursive, sans-serif" font-size="14" font-weight="700" fill="#5B5248">Zzz...</text>
+        </g>
+
+        <!-- Label Kucing -->
+        <text x="100" y="145" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="800" fill="#1F1B16">CAT COMPANION</text>
+        <text x="100" y="165" text-anchor="middle" font-family="'Instrument Sans', sans-serif" font-size="10" fill="#5B5248">Mengikuti kursor / tidur</text>
+      </g>
+    </g>
+  </g>
+</svg>

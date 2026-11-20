@@ -455,5 +455,22 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
 - Merapikan seluruh copywriting website (`src/i18n/ui.ts`, `AudienceSwitcher.tsx`, `profile.yaml`, `GuestbookSection.astro`, `ContactSection.astro`) agar 100% natural, lugas, dan manusiawi tanpa kalimat klise/meta buatan AI, serta menambahkan **Menu Navigasi HP (`☰` drawer)**, **Garis Progres Baca**, dan **Tombol 🚀 Kembali ke Atas** di `BaseLayout.astro`.
 - Memperbarui [`src/content/projects/esurat-bprs.mdx`](src/content/projects/esurat-bprs.mdx) dengan **Live Demo Iframe Vercel** (`https://esurat-bprs-portfolio-gh5w.vercel.app/`), repo portofolio (`esurat-bprs-portfolio`), stack Laravel 12 + Filament 3 + Livewire + DomPDF + Excel, dan panduan 1-Klik Login 3 peran (`order: 0`).
 
+### Sesi 15 — 2026-11-20 14:48–14:52 WIB
+**Model:** Gemini 4 Argon / Claude Opus 5.5
+**Fase:** 7 — Lanjutan (Update NexaERP & Meja Kerja Digital + Live Preview & Gambar Meja Kerja)
+
+**Dikerjakan:**
+- Memperbarui [`src/content/projects/sistem-pembiayaan-kredit.mdx`](src/content/projects/sistem-pembiayaan-kredit.mdx) menjadi **NexaERP — Sistem Penjualan & Pembiayaan Kredit Elektronik Multi-Cabang** (`order: 2`, `category: enterprise`, `demoUrl: "https://sistem-penjualan-pembiayaan-kredit-elektronik-k6wl2m5bh.vercel.app/dashboard"`, `repoUrl: "https://github.com/BaharudinAlamsyah27/Sistem-Penjualan-Pembiayaan-Kredit-Elektronik"`):
+  - Stack lengkap: PHP 8.2+, Laravel 12, Laravel Breeze, Blade, Tailwind CSS, Alpine.js, Vite, MySQL / SQLite, Spatie Permission, Spatie Activitylog, Barryvdh DomPDF, PHPUnit 11 (50 feature/unit tests), Vercel.
+  - Alur bisnis & fitur teknis: isolasi data multi-cabang (`BelongsToCabang` global scope), wizard sales order & kalkulator kredit real-time (Alpine.js + validasi server pembulatan sen), jadwal angsuran & penguncian stok atomik (`DB::transaction` + `lockForUpdate` + `addMonthsNoOverflow`), dashboard analitik real-time & cetak nota koordinat milimeter (DomPDF), serta enkripsi data NIK pelanggan (`encrypted` cast) dan audit trail (Activitylog).
+  - Mengaktifkan **Live Interactive Iframe Preview** (`embedPreview: true`) langsung di kartu beranda dan halaman studi kasus.
+- Memperbarui [`src/content/projects/meja-kerja-portfolio.mdx`](src/content/projects/meja-kerja-portfolio.mdx) menjadi **Meja Kerja Digital — Portofolio Hybrid & Arsitektur Meja Kerja Rp0** (`order: 1`, `category: web`):
+  - Membuat ilustrasi visual preview cover meja kerja resolusi tinggi (`public/images/meja-kerja-desk.svg`, aspect ratio 16:10) yang menampilkan jendela browser meja kerja kertas krem, sticky notes, stiker Terminal `>_ Ctrl+K`, kartu Luminous Valentine, pemutar audio ambience, bento badge tech stack, dan maskot kucing tidur.
+  - Menetapkan `previewImage: "/images/meja-kerja-desk.svg"` dan `embedPreview: false` sehingga kartu beranda dan studi kasus menampilkan bingkai browser interaktif dengan tombol langsung membuka live portfolio tanpa membebani browser dengan pemuatan iframe rekursif.
+  - Menyusun studi kasus mendalam: latar belakang & masalah template portfolio seragam, konsep Hybrid 3 Lapisan (Profesional, Programmer, Menyenangkan), arsitektur zero-cost Rp0 di Vercel, dan disiplin performa tanpa AI slop.
+- **Verifikasi Build:**
+  - `npx astro check`: 0 errors, 0 warnings, 0 hints pada 68 files.
+  - `npm run build`: Berhasil mengompilasi 39 halaman statis dalam 3.28 detik tanpa kendala.
+
 **Berikutnya:**
-- Jalankan `git add .`, `git commit`, dan `git push` untuk deploy ke Vercel.
+- Jalankan `git add .`, `git commit`, dan `git push` untuk deploy pembaruan ke Vercel.

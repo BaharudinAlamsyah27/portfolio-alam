@@ -1,35 +1,110 @@
 ---
-title: Sistem Penjualan & Pembiayaan Kredit Elektronik
+title: NexaERP — Sistem Penjualan & Pembiayaan Kredit Elektronik Multi-Cabang
+tagline: "ERP Penjualan Kredit Elektronik, Multi-Cabang & Manajemen Angsuran"
 summary:
-  id: "Sistem web penjualan barang elektronik berbasis kredit dengan simulasi angsuran, verifikasi kelayakan debitur, dan manajemen pembayaran berkala."
-  en: "Web-based electronic goods sales and installment financing system featuring credit simulation, debtor verification, and billing management."
+  id: "Aplikasi web ERP multi-cabang untuk mengelola siklus penjualan kredit barang elektronik secara end-to-end: mulai dari Sales Order dan kalkulasi skema kredit (DP, tenor, bunga margin), survei kelayakan lapangan, penerbitan faktur & surat jalan, pembuatan jadwal angsuran otomatis, hingga penagihan kolektor dan pelaporan keuangan per cabang."
+  en: "Multi-branch ERP web application managing end-to-end electronic installment sales: from Sales Orders and real-time credit calculations (down payment, tenors, margins), field feasibility surveys, invoice issuance, automated installment schedules, collector billing, and branch-level financial analytics."
+role: "Full-Stack Developer"
+context: "Pengembangan Sistem Penjualan & Pembiayaan Kredit Multi-Cabang"
+duration: ""
 stack:
-  - Web Programming
-  - PHP / MySQL
+  - PHP 8.2+
+  - Laravel 12
+  - Laravel Breeze
+  - Blade
   - Tailwind CSS
-  - JavaScript
-category: web
-demoUrl: ""
+  - Alpine.js
+  - Vite
+  - MySQL / SQLite
+  - Spatie Permission
+  - Spatie Activitylog
+  - DomPDF
+  - PHPUnit 11
+  - Vercel
+tags:
+  - NexaERP
+  - Kredit Elektronik
+  - Multi-Cabang
+  - BelongsToCabang
+  - Laravel 12
+  - Alpine.js
+  - Kalkulator Kredit
+  - Angsuran
+  - DomPDF
+  - Full-Stack
+category: enterprise
+demoUrl: "https://sistem-penjualan-pembiayaan-kredit-elektronik-k6wl2m5bh.vercel.app/dashboard"
+embedPreview: true
 repoUrl: "https://github.com/BaharudinAlamsyah27/Sistem-Penjualan-Pembiayaan-Kredit-Elektronik"
 featured: true
 draft: false
-order: 3
-date: 2026-08-20
+order: 2
+date: 2026-11-20
 status: selesai
 ---
 
-## Masalah
+> **Catatan Demo Live:** Sistem ini berjalan di Vercel dengan database demo SQLite terisolasi, lengkap dengan data barang elektronik, simulasi kalkulator kredit, pencatatan angsuran, serta cetak nota kwitansi berformat milimeter.
 
-Toko barang elektronik yang menyediakan skema pembiayaan kredit sering kesulitan menghitung skema bunga, tenor angsuran, denda keterlambatan, dan pencatatan riwayat pembayaran pelanggan secara terpusat tanpa risiko human error.
+## Gambaran Umum & Masalah Bisnis
 
-## Proses
+Penjualan barang elektronik dengan skema pembiayaan kredit melibatkan rantai transaksi yang kompleks dan sensitif. Pada operasional multi-cabang tradisional, bisnis kerap menghadapi masalah mendasar:
 
-Merancang sistem komprehensif mulai dari katalog produk elektronik, kalkulator simulasi kredit otomatis sesuai tenor (bulan/tahun), formulir pengajuan kredit pelanggan, modul persetujuan (approval), hingga pencatatan tagihan dan kartu piutang setiap pelanggan.
+1. **Selisih Hitungan Finansial & Bunga:** Perhitungan uang muka (DP), pokok angsuran, bunga margin, dan pembulatan desimal pada tenor panjang sering menimbulkan selisih kas antara bagian sales, kasir, dan akuntansi.
+2. **Kebocoran Batas Cabang (Data Leakage):** Petugas cabang sering kali bisa melihat atau secara tidak sengaja memodifikasi data transaksi cabang lain jika aplikasi tidak mengisolasi data di level arsitektur database.
+3. **Kredit Macet Tanpa Riwayat Survei:** Ketiadaan tahapan survei debitur yang terekam rapi membuat persetujuan kredit rawan salah sasaran.
+4. **Penerbitan Faktur & Stok Tidak Atomik:** Saat faktur diterbitkan berbarengan, tanpa penguncian transaksi (*race condition*), stok barang di gudang bisa minus atau terpotong ganda.
 
-## Hasil
+**NexaERP** dirancang untuk menjawab seluruh tantangan tersebut dalam satu aplikasi web yang terintegrasi penuh dari *front-office* penjualan hingga *back-office* keuangan per cabang.
 
-Pengelola toko dapat langsung melihat jatuh tempo tagihan pelanggan, mengurangi tunggakan berkat pencatatan status angsuran yang jelas, dan transaksi penjualan tunai maupun kredit tercatat dalam satu dashboard terintegrasi.
+---
 
-## Pelajaran
+## Fitur Utama & Keunggulan Arsitektur
 
-Menangani perhitungan finansial dan logika angsuran menuntut ketelitian tinggi pada tipe data numerik dan pembulatan pecahan desimal agar laporan pembukuan selalu seimbang (*balance*).
+### 1. Isolasi Data Multi-Cabang (`BelongsToCabang`)
+Menggunakan arsitektur *single database multi-tenancy* berbasis trait global scope `BelongsToCabang`. Setiap query Eloquent secara otomatis memfilter data sesuai cabang petugas yang sedang login (`admin_cabang`), sementara pengguna dengan peran `admin_pusat` memiliki visibilitas lintas cabang untuk konsolidasi laporan.
+
+### 2. Wizard Sales Order & Kalkulator Kredit Real-Time
+- **Interaktivitas Sisi Klien:** Menghitung simulasi kredit secara instan saat pengguna mengubah harga barang, uang muka (DP), tenor bulan, atau suku bunga margin menggunakan **Alpine.js**.
+- **Validasi Sisi Server Presisi:** Server memvalidasi ulang seluruh perhitungan finansial menggunakan aritmetika sen (*integer math*) dan menerapkan penyesuaian selisih pembulatan (*rounding cents*) pada angsuran bulan terakhir agar total pelunasan presisi 100%.
+
+### 3. Jadwal Angsuran & Penguncian Stok Atomik
+- Penerbitan faktur dibungkus dalam `DB::transaction` lengkap dengan penguncian baris stok (`lockForUpdate`) untuk mencegah *overselling*.
+- Mutasi kartu stok tercatat otomatis saat barang keluar dari gudang.
+- Penanggalan jatuh tempo angsuran bulanan menggunakan metode kalender `addMonthsNoOverflow` agar tanggal jatuh tempo tidak melompat ketika menemui bulan dengan jumlah hari lebih pendek (seperti 28/29 Februari atau 30 hari).
+
+### 4. Pelaporan, Ekspor CSV & Cetak Presisi
+- Dashboard analitik real-time yang memantau total omset, tagihan aktif, sisa piutang, dan rasio kelancaran angsuran.
+- Laporan kinerja per sales dan penagihan per petugas kolektor lapangan.
+- Ekspor data rekapitulasi ke format CSV/Excel.
+- Cetak nota penjualan, surat jalan, dan kwitansi angsuran menggunakan **Barryvdh DomPDF** dengan penataan koordinat milimeter presisi untuk printer kasir dot matrix maupun thermal.
+
+### 5. Keamanan Data & Jejak Audit
+- **Enkripsi NIK Pelanggan:** Kolom sensitif seperti NIK KTP dilindungi di database menggunakan Eloquent `encrypted` cast untuk privasi data debitur.
+- **Role-Based Access Control (RBAC):** Pemisahan hak akses menggunakan **Spatie Laravel Permission** dan Policy.
+- **Audit Log Transaksi:** Setiap perubahan status kredit, penerbitan faktur, dan pembayaran dicatat menggunakan **Spatie Laravel Activitylog**.
+
+---
+
+## Arsitektur & Tech Stack
+
+- **Backend:** PHP 8.2+, Laravel 12, Laravel Breeze
+- **Frontend:** Blade Templates, Tailwind CSS, Alpine.js, Vite
+- **Database & State:** MySQL (Produksi), SQLite Serverless (Live Demo Vercel)
+- **Paket Utama:** Spatie Permission (RBAC), Spatie Activitylog (Audit Trail), Barryvdh DomPDF (Cetak Presisi)
+- **Pengujian & Kualitas:** PHPUnit 11 (50 feature & unit tests)
+- **Deployment:** Vercel via Serverless PHP Runtime
+
+---
+
+## Panduan Akses Live Demo
+
+Anda dapat langsung mencoba simulasi alur kerja pada pratinjau live di atas:
+1. Telusuri **Dashboard Penjualan** untuk melihat metrik omset dan status tagihan per cabang.
+2. Buka menu **Sales Order / Pembiayaan Kredit** untuk mencoba kalkulator simulasi angsuran.
+3. Periksa riwayat **Jadwal Angsuran** dan pratinjau cetak nota kwitansi pembayaran.
+
+---
+
+## Pelajaran Teknis
+
+Merancang aplikasi finansial dengan multi-cabang menegaskan pentingnya menempatkan isolasi data di lapisan paling bawah (model scope), bukan sekadar logika tampilan. Selain itu, penanganan perhitungan bunga angsuran mengajarkan pentingnya aturan pembulatan desimal yang konsisten agar pencatatan kartu piutang selalu seimbang hingga rupiah terakhir.
