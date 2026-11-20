@@ -1,35 +1,71 @@
 ---
-title: eSurat — Sistem Manajemen Persuratan & Disposisi Digital
+title: E-Surat BPRS Sragen — Sistem Manajemen Persuratan, Disposisi Digital & Arsip PKS
+tagline: "Pengelolaan Surat Masuk-Keluar, Disposisi Berjenjang, dan Arsip PKS Terpusat"
 summary:
-  id: "Aplikasi web manajemen persuratan internal instansi untuk pengelolaan surat masuk, surat keluar, penomoran otomatis, dan alur disposisi antar divisi."
-  en: "Internal corporate correspondence web app handling incoming/outgoing mail, automated numbering, and digital disposition workflows across divisions."
+  id: "Aplikasi web berbasis Laravel 12 & Filament 3 untuk mengelola surat masuk, surat keluar, disposisi digital antar divisi, penomoran otomatis, serta pengarsipan Perjanjian Kerja Sama (PKS) lengkap dengan ekspor PDF dan Excel."
+  en: "Laravel 12 & Filament 3 web application for incoming/outgoing correspondence, multi-level digital disposition workflows, automated numbering, and partnership contract (PKS) archiving with PDF/Excel export."
+role: "Full-Stack Developer"
+context: "Program MagangHub di BPRS Sukowati Sragen (Versi Demo Data Fiktif)"
+duration: ""
 stack:
-  - PHP / Laravel
-  - MySQL
-  - Bootstrap / Tailwind
-  - JavaScript
+  - Laravel 12
+  - Filament 3
+  - Livewire
+  - Tailwind CSS
+  - SQLite / MySQL
+  - DomPDF
+  - Maatwebsite Excel
+  - Vercel
+tags:
+  - E-Surat
+  - Enterprise
+  - Laravel 12
+  - Filament 3
+  - Livewire
+  - Disposisi Digital
+  - Arsip PKS
+  - DomPDF
+  - Full-Stack
+  - BPRS
 category: enterprise
-demoUrl: ""
-repoUrl: "https://github.com/BaharudinAlamsyah27/esurat-bprs"
+demoUrl: "https://esurat-bprs-portfolio-gh5w.vercel.app/"
+embedPreview: true
+repoUrl: "https://github.com/BaharudinAlamsyah27/esurat-bprs-portfolio"
 featured: true
 draft: false
-order: 2
-date: 2026-10-10
+order: 0
+date: 2026-11-20
 status: selesai
 ---
 
-## Masalah
+> **Catatan Demo:** Live demo di atas berjalan menggunakan database SQLite terisolasi (`/tmp/database.sqlite`) berisi data fiktif, kosong dari data asli kantor, bebas dicoba input/edit, dan otomatis kembali bersih saat reset.
 
-Di lingkungan instansi perbankan dan kantor, pencatatan surat masuk dan keluar yang masih manual atau berbasis buku agenda fisik sangat rentan mengalami keterlambatan disposisi, duplikasi nomor surat, dan dokumen arsip yang sulit dilacak ketika dibutuhkan audit kilat.
+## Gambaran Umum & Latar Belakang
 
-## Proses
+Di lingkungan instansi perbankan dan kantor, pencatatan surat masuk, surat keluar, dan Perjanjian Kerja Sama (PKS) yang masih mengandalkan buku agenda fisik sangat rentan mengalami keterlambatan disposisi, duplikasi nomor surat, serta kesulitan pencarian arsip saat dibutuhkan audit.
 
-Sistem dirancang dengan alur kerja nyata: surat masuk diunggah dan diverifikasi, kemudian pimpinan dapat memberikan instruksi disposisi secara digital kepada divisi terkait dengan notifikasi status yang jelas. Fitur penomoran surat keluar juga dibuat otomatis sesuai format baku instansi untuk mencegah kesalahan penomoran manual.
+**E-Surat BPRS Sragen** dibangun untuk memindahkan seluruh alur persuratan tersebut ke satu sistem web terpusat berbasis **Laravel 12** dan **Filament 3**, sehingga setiap surat tercatat rapi, disposisi antar divisi mudah dipantau, dan dokumen arsip dapat dicari dalam hitungan detik.
 
-## Hasil
+## Fitur Unggulan
 
-Alur disposisi surat antar divisi menjadi transparan dan bisa dilacak kapan saja (*tracking history*), pencarian arsip surat hanya memakan waktu beberapa detik, dan arsip dokumen digital tersimpan rapi dan aman.
+- **Manajemen Surat Masuk & Surat Keluar:** Pencatatan lengkap dengan unggah lampiran, pencarian cepat, serta penomoran surat otomatis sesuai format instansi.
+- **Disposisi Digital Berjenjang:** Pimpinan dapat meneruskan instruksi disposisi ke divisi atau pegawai terkait beserta catatan dan pemantauan status tindak lanjut.
+- **Arsip PKS (Perjanjian Kerja Sama):** Pengelolaan dokumen kontrak/PKS terstruktur agar masa berlaku dan arsip perjanjian mudah dilacak.
+- **Hak Akses 3 Peran:** Pemisahan kewenangan antara *Superadmin*, *Admin Persuratan*, dan *Pegawai*.
+- **Cetak & Ekspor Laporan:** Mendukung cetak dokumen PDF (*DomPDF*) dan ekspor rekapitulasi surat ke Excel (*Maatwebsite Excel*).
+- **Siap Integrasi Mobile:** Pada versi produksi kantor, sistem juga terhubung dengan aplikasi pendamping Android (*Flutter* + notifikasi *Firebase FCM*).
 
-## Pelajaran
+## Arsitektur & Tech Stack
 
-Membangun aplikasi operasional kantor membutuhkan pemahaman mendalam tentang birokrasi dan hak akses (role-based access control), karena setiap tingkatan staf memiliki wewenang persuratan yang berbeda.
+- **Backend & Admin Panel:** PHP, Laravel 12, Filament 3, Livewire
+- **Frontend:** Tailwind CSS, Blade / Livewire
+- **Dokumen & Laporan:** DomPDF (PDF), Maatwebsite Excel (Excel Export)
+- **Database & Deployment:** MySQL (Produksi), SQLite Serverless `/tmp` (Live Demo), Vercel (dengan `frame-ancestors *` & `SameSite=None; Secure`)
+- **Pendamping Mobile (Produksi):** Flutter & Firebase Cloud Messaging (FCM)
+
+## Cara Mencoba Live Demo
+
+Buka pratinjau langsung di atas atau klik **Tab Baru ↗**, lalu gunakan tombol **Masuk Cepat 1-Klik** di halaman login untuk mencoba 3 peran berbeda:
+- **Superadmin** — Akses penuh seluruh modul, manajemen pengguna, dan pengaturan sistem.
+- **Admin Persuratan** — Mengelola registrasi surat masuk/keluar, arsip PKS, dan cetak laporan.
+- **Pegawai** — Melihat disposisi yang masuk dan menindaklanjuti tugas persuratan.
