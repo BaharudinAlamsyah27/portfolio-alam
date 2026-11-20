@@ -1,0 +1,259 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
+  <defs>
+    <pattern id="bg-grid" width="28" height="28" patternUnits="userSpaceOnUse">
+      <path d="M 28 0 L 0 0 0 28" fill="none" stroke="#E8E0D5" stroke-width="0.8"/>
+    </pattern>
+    <filter id="card-shadow">
+      <feDropShadow dx="4" dy="4" stdDeviation="0" flood-color="#1F1B16" flood-opacity="1"/>
+    </filter>
+    <filter id="sm-shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="0" flood-color="#1F1B16" flood-opacity="0.9"/>
+    </filter>
+  </defs>
+
+  <!-- Background: Meja Kerja Kertas Krem -->
+  <rect width="1280" height="800" fill="#F6EBD6"/>
+  <rect width="1280" height="800" fill="url(#bg-grid)" opacity="0.6"/>
+
+  <!-- ═══════ NAVBAR APLIKASI ═══════ -->
+  <rect width="1280" height="56" fill="#1F1B16"/>
+  <!-- Logo -->
+  <rect x="20" y="12" width="34" height="34" rx="6" fill="#F2542D" stroke="#F5B700" stroke-width="2"/>
+  <text x="37" y="35" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="16" font-weight="900" fill="#FFF8EC">N</text>
+  <text x="66" y="34" font-family="'Bricolage Grotesque','Trebuchet MS',sans-serif" font-size="17" font-weight="800" fill="#FFF8EC">NexaERP</text>
+  <text x="145" y="34" font-family="'JetBrains Mono',monospace" font-size="11" fill="#F5B700">· Multi-Cabang</text>
+  <!-- Nav Links -->
+  <text x="400" y="34" font-family="'JetBrains Mono',monospace" font-size="12" fill="#FFF8EC">Dashboard</text>
+  <text x="490" y="34" font-family="'JetBrains Mono',monospace" font-size="12" fill="#D0C8BC">Penjualan</text>
+  <text x="570" y="34" font-family="'JetBrains Mono',monospace" font-size="12" fill="#D0C8BC">Angsuran</text>
+  <text x="650" y="34" font-family="'JetBrains Mono',monospace" font-size="12" fill="#D0C8BC">Stok</text>
+  <text x="710" y="34" font-family="'JetBrains Mono',monospace" font-size="12" fill="#D0C8BC">Laporan</text>
+  <!-- User Badge -->
+  <rect x="1140" y="12" width="120" height="30" rx="5" fill="#F2542D" opacity="0.9"/>
+  <text x="1200" y="31" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#FFF8EC">Admin Pusat ▼</text>
+  <!-- Cabang Selector -->
+  <rect x="980" y="12" width="150" height="30" rx="5" fill="#2D2620" stroke="#F5B700" stroke-width="1.5"/>
+  <text x="1055" y="31" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#F5B700">📍 Cabang Sragen</text>
+
+  <!-- ═══════ SIDEBAR ═══════ -->
+  <rect x="0" y="56" width="210" height="744" fill="#2D2620"/>
+  <!-- Sidebar Dividers -->
+  <line x1="0" y1="130" x2="210" y2="130" stroke="#3D3630" stroke-width="1"/>
+  <line x1="0" y1="380" x2="210" y2="380" stroke="#3D3630" stroke-width="1"/>
+
+  <!-- Sidebar Menu Items -->
+  <rect x="0" y="68" width="210" height="38" fill="#F2542D" opacity="0.15"/>
+  <rect x="0" y="68" width="4" height="38" fill="#F2542D"/>
+  <text x="45" y="93" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#FFF8EC">🏠  Dashboard</text>
+
+  <text x="45" y="140" font-family="'JetBrains Mono',monospace" font-size="11" fill="#D0C8BC">📋  Sales Order</text>
+  <text x="45" y="175" font-family="'JetBrains Mono',monospace" font-size="11" fill="#D0C8BC">💳  Pembiayaan</text>
+  <text x="45" y="210" font-family="'JetBrains Mono',monospace" font-size="11" fill="#D0C8BC">📅  Angsuran</text>
+  <text x="45" y="245" font-family="'JetBrains Mono',monospace" font-size="11" fill="#D0C8BC">🧾  Faktur &amp; Invoice</text>
+  <text x="45" y="280" font-family="'JetBrains Mono',monospace" font-size="11" fill="#D0C8BC">🚚  Surat Jalan</text>
+  <text x="45" y="315" font-family="'JetBrains Mono',monospace" font-size="11" fill="#D0C8BC">📦  Stok Gudang</text>
+  <text x="45" y="350" font-family="'JetBrains Mono',monospace" font-size="11" fill="#D0C8BC">👤  Debitur &amp; Survey</text>
+
+  <text x="45" y="400" font-family="'JetBrains Mono',monospace" font-size="10" fill="#888" letter-spacing="1">LAPORAN</text>
+  <text x="45" y="430" font-family="'JetBrains Mono',monospace" font-size="11" fill="#D0C8BC">📊  Kinerja Sales</text>
+  <text x="45" y="460" font-family="'JetBrains Mono',monospace" font-size="11" fill="#D0C8BC">💰  Tagihan Kolektor</text>
+  <text x="45" y="490" font-family="'JetBrains Mono',monospace" font-size="11" fill="#D0C8BC">📈  Omset Cabang</text>
+
+  <text x="45" y="535" font-family="'JetBrains Mono',monospace" font-size="10" fill="#888" letter-spacing="1">ADMIN</text>
+  <text x="45" y="560" font-family="'JetBrains Mono',monospace" font-size="11" fill="#D0C8BC">🏢  Multi-Cabang</text>
+  <text x="45" y="590" font-family="'JetBrains Mono',monospace" font-size="11" fill="#D0C8BC">🔐  Hak Akses RBAC</text>
+  <text x="45" y="620" font-family="'JetBrains Mono',monospace" font-size="11" fill="#D0C8BC">📜  Audit Log</text>
+
+  <!-- ═══════ KONTEN UTAMA ═══════ -->
+  <!-- Heading Dashboard -->
+  <text x="234" y="97" font-family="'Bricolage Grotesque','Trebuchet MS',sans-serif" font-size="22" font-weight="900" fill="#1F1B16">Dashboard Penjualan Kredit</text>
+  <text x="234" y="118" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5B5248">Data per Cabang Sragen · Last updated: Hari ini 14:32 WIB</text>
+
+  <!-- ═══════ KPI CARDS ROW 1 ═══════ -->
+  <!-- Card 1: Total Omset -->
+  <rect x="234" y="134" width="230" height="110" rx="8" fill="#FFF8EC" stroke="#1F1B16" stroke-width="3" filter="url(#sm-shadow)"/>
+  <text x="250" y="162" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5B5248" letter-spacing="1">TOTAL OMSET BULAN INI</text>
+  <text x="250" y="202" font-family="'Bricolage Grotesque','Trebuchet MS',sans-serif" font-size="28" font-weight="900" fill="#1F1B16">Rp 847 jt</text>
+  <text x="250" y="225" font-family="'JetBrains Mono',monospace" font-size="11" fill="#2BA84A">↑ +12.4% dari bulan lalu</text>
+
+  <!-- Card 2: SO Aktif -->
+  <rect x="478" y="134" width="220" height="110" rx="8" fill="#FFF8EC" stroke="#1F1B16" stroke-width="3" filter="url(#sm-shadow)"/>
+  <text x="494" y="162" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5B5248" letter-spacing="1">SALES ORDER AKTIF</text>
+  <text x="494" y="202" font-family="'Bricolage Grotesque','Trebuchet MS',sans-serif" font-size="28" font-weight="900" fill="#2D5BFF">247</text>
+  <text x="494" y="225" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5B5248">36 menunggu persetujuan</text>
+
+  <!-- Card 3: Angsuran Jatuh Tempo -->
+  <rect x="712" y="134" width="240" height="110" rx="8" fill="#FFF8EC" stroke="#1F1B16" stroke-width="3" filter="url(#sm-shadow)"/>
+  <text x="728" y="162" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5B5248" letter-spacing="1">JATUH TEMPO PEKAN INI</text>
+  <text x="728" y="202" font-family="'Bricolage Grotesque','Trebuchet MS',sans-serif" font-size="28" font-weight="900" fill="#F2542D">89</text>
+  <text x="728" y="225" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5B5248">angsuran · total Rp 134 jt</text>
+
+  <!-- Card 4: Stok Alert -->
+  <rect x="966" y="134" width="220" height="110" rx="8" fill="#FFF8EC" stroke="#1F1B16" stroke-width="3" filter="url(#sm-shadow)"/>
+  <text x="982" y="162" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5B5248" letter-spacing="1">STOK HAMPIR HABIS</text>
+  <text x="982" y="202" font-family="'Bricolage Grotesque','Trebuchet MS',sans-serif" font-size="28" font-weight="900" fill="#F5B700">12</text>
+  <text x="982" y="225" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5B5248">produk stok &lt; 5 unit</text>
+
+  <!-- ═══════ TABEL SALES ORDER TERBARU ═══════ -->
+  <rect x="234" y="262" width="680" height="310" rx="8" fill="#FFF8EC" stroke="#1F1B16" stroke-width="3" filter="url(#sm-shadow)"/>
+  <!-- Header Tabel -->
+  <rect x="234" y="262" width="680" height="40" rx="7" fill="#1F1B16"/>
+  <text x="250" y="287" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="800" fill="#F5B700">SALES ORDER TERBARU</text>
+  <rect x="830" y="272" width="70" height="22" rx="4" fill="#F2542D"/>
+  <text x="865" y="287" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#FFF8EC">+ Tambah SO</text>
+
+  <!-- Table Header Row -->
+  <rect x="234" y="302" width="680" height="28" fill="#F6EBD6"/>
+  <text x="250" y="320" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="800" fill="#5B5248">NO. SO</text>
+  <text x="340" y="320" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="800" fill="#5B5248">NAMA DEBITUR</text>
+  <text x="490" y="320" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="800" fill="#5B5248">BARANG</text>
+  <text x="620" y="320" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="800" fill="#5B5248">TENOR</text>
+  <text x="680" y="320" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="800" fill="#5B5248">ANGSURAN/BLN</text>
+  <text x="800" y="320" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="800" fill="#5B5248">STATUS</text>
+
+  <!-- Data Rows -->
+  <!-- Row 1 -->
+  <line x1="234" y1="330" x2="914" y2="330" stroke="#E2D4BC" stroke-width="1"/>
+  <text x="250" y="348" font-family="'JetBrains Mono',monospace" font-size="11" fill="#2D5BFF">SO-2026-0847</text>
+  <text x="340" y="348" font-family="'Instrument Sans',sans-serif" font-size="12" fill="#1F1B16">Budi Santoso</text>
+  <text x="490" y="348" font-family="'Instrument Sans',sans-serif" font-size="12" fill="#1F1B16">TV LED Samsung 55"</text>
+  <text x="620" y="348" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">24 bln</text>
+  <text x="680" y="348" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">Rp 587.500</text>
+  <rect x="800" y="336" width="80" height="20" rx="4" fill="#2BA84A" opacity="0.2" stroke="#2BA84A" stroke-width="1"/>
+  <text x="840" y="350" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#2BA84A">AKTIF</text>
+
+  <!-- Row 2 -->
+  <rect x="234" y="355" width="680" height="34" fill="#F6EBD6" opacity="0.4"/>
+  <text x="250" y="377" font-family="'JetBrains Mono',monospace" font-size="11" fill="#2D5BFF">SO-2026-0846</text>
+  <text x="340" y="377" font-family="'Instrument Sans',sans-serif" font-size="12" fill="#1F1B16">Siti Rahayu</text>
+  <text x="490" y="377" font-family="'Instrument Sans',sans-serif" font-size="12" fill="#1F1B16">Kulkas 2 Pintu Sharp</text>
+  <text x="620" y="377" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">18 bln</text>
+  <text x="680" y="377" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">Rp 423.000</text>
+  <rect x="800" y="365" width="80" height="20" rx="4" fill="#F5B700" opacity="0.3" stroke="#F5B700" stroke-width="1"/>
+  <text x="840" y="379" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8B6900">SURVEI</text>
+
+  <!-- Row 3 -->
+  <text x="250" y="406" font-family="'JetBrains Mono',monospace" font-size="11" fill="#2D5BFF">SO-2026-0845</text>
+  <text x="340" y="406" font-family="'Instrument Sans',sans-serif" font-size="12" fill="#1F1B16">Ahmad Fauzi</text>
+  <text x="490" y="406" font-family="'Instrument Sans',sans-serif" font-size="12" fill="#1F1B16">Mesin Cuci Polytron</text>
+  <text x="620" y="406" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">12 bln</text>
+  <text x="680" y="406" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">Rp 312.500</text>
+  <rect x="800" y="394" width="80" height="20" rx="4" fill="#2BA84A" opacity="0.2" stroke="#2BA84A" stroke-width="1"/>
+  <text x="840" y="408" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#2BA84A">AKTIF</text>
+
+  <!-- Row 4 -->
+  <rect x="234" y="413" width="680" height="34" fill="#F6EBD6" opacity="0.4"/>
+  <text x="250" y="435" font-family="'JetBrains Mono',monospace" font-size="11" fill="#2D5BFF">SO-2026-0844</text>
+  <text x="340" y="435" font-family="'Instrument Sans',sans-serif" font-size="12" fill="#1F1B16">Dewi Lestari</text>
+  <text x="490" y="435" font-family="'Instrument Sans',sans-serif" font-size="12" fill="#1F1B16">AC Daikin 1 PK</text>
+  <text x="620" y="435" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">36 bln</text>
+  <text x="680" y="435" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">Rp 198.000</text>
+  <rect x="800" y="423" width="80" height="20" rx="4" fill="#F2542D" opacity="0.2" stroke="#F2542D" stroke-width="1"/>
+  <text x="840" y="437" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#F2542D">TERLAMBAT</text>
+
+  <!-- Row 5 -->
+  <text x="250" y="464" font-family="'JetBrains Mono',monospace" font-size="11" fill="#2D5BFF">SO-2026-0843</text>
+  <text x="340" y="464" font-family="'Instrument Sans',sans-serif" font-size="12" fill="#1F1B16">Hendra Wijaya</text>
+  <text x="490" y="464" font-family="'Instrument Sans',sans-serif" font-size="12" fill="#1F1B16">Laptop ASUS ROG</text>
+  <text x="620" y="464" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">24 bln</text>
+  <text x="680" y="464" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">Rp 1.250.000</text>
+  <rect x="800" y="452" width="80" height="20" rx="4" fill="#2BA84A" opacity="0.2" stroke="#2BA84A" stroke-width="1"/>
+  <text x="840" y="466" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#2BA84A">AKTIF</text>
+
+  <!-- Row 6 -->
+  <rect x="234" y="471" width="680" height="34" fill="#F6EBD6" opacity="0.4"/>
+  <text x="250" y="493" font-family="'JetBrains Mono',monospace" font-size="11" fill="#2D5BFF">SO-2026-0842</text>
+  <text x="340" y="493" font-family="'Instrument Sans',sans-serif" font-size="12" fill="#1F1B16">Sri Mulyani</text>
+  <text x="490" y="493" font-family="'Instrument Sans',sans-serif" font-size="12" fill="#1F1B16">HP Samsung Galaxy S25</text>
+  <text x="620" y="493" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">12 bln</text>
+  <text x="680" y="493" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">Rp 875.000</text>
+  <rect x="800" y="481" width="80" height="20" rx="4" fill="#F5B700" opacity="0.3" stroke="#F5B700" stroke-width="1"/>
+  <text x="840" y="495" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8B6900">SURVEI</text>
+
+  <!-- Footer row count -->
+  <rect x="234" y="533" width="680" height="38" fill="#F6EBD6" rx="0"/>
+  <text x="250" y="556" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5B5248">Menampilkan 6 dari 247 sales order aktif</text>
+  <rect x="800" y="541" width="100" height="22" rx="4" fill="#1F1B16"/>
+  <text x="850" y="556" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#FFF8EC">Lihat Semua →</text>
+
+  <!-- ═══════ PANEL KANAN: Kalkulator Kredit Real-Time ═══════ -->
+  <rect x="930" y="262" width="256" height="310" rx="8" fill="#1F1B16" stroke="#1F1B16" stroke-width="3" filter="url(#sm-shadow)"/>
+  <text x="948" y="288" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="800" fill="#F5B700">🧮 SIMULASI KREDIT</text>
+  <text x="948" y="305" font-family="'JetBrains Mono',monospace" font-size="9" fill="#888">Alpine.js real-time calculator</text>
+
+  <!-- Input fields sim -->
+  <text x="948" y="330" font-family="'JetBrains Mono',monospace" font-size="10" fill="#D0C8BC">Harga Barang</text>
+  <rect x="948" y="336" width="220" height="26" rx="4" fill="#2D2620" stroke="#F5B700" stroke-width="1.5"/>
+  <text x="1058" y="353" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#FFF8EC">Rp 5.000.000</text>
+
+  <text x="948" y="376" font-family="'JetBrains Mono',monospace" font-size="10" fill="#D0C8BC">Uang Muka (DP)</text>
+  <rect x="948" y="382" width="220" height="26" rx="4" fill="#2D2620" stroke="#3D3630" stroke-width="1"/>
+  <text x="1058" y="399" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#FFF8EC">Rp 1.000.000</text>
+
+  <text x="948" y="420" font-family="'JetBrains Mono',monospace" font-size="10" fill="#D0C8BC">Tenor / Bunga</text>
+  <rect x="948" y="426" width="100" height="26" rx="4" fill="#2D2620" stroke="#3D3630" stroke-width="1"/>
+  <text x="998" y="443" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#FFF8EC">24 bln</text>
+  <rect x="1058" y="426" width="110" height="26" rx="4" fill="#2D2620" stroke="#3D3630" stroke-width="1"/>
+  <text x="1113" y="443" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#FFF8EC">1.5% / bln</text>
+
+  <!-- Result -->
+  <rect x="948" y="465" width="220" height="58" rx="6" fill="#F2542D" opacity="0.15" stroke="#F2542D" stroke-width="1.5"/>
+  <text x="1058" y="488" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#D0C8BC">ANGSURAN PER BULAN</text>
+  <text x="1058" y="512" text-anchor="middle" font-family="'Bricolage Grotesque','Trebuchet MS',sans-serif" font-size="22" font-weight="900" fill="#F5B700">Rp 230.417</text>
+
+  <rect x="948" y="535" width="220" height="28" rx="5" fill="#F2542D"/>
+  <text x="1058" y="553" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="800" fill="#FFF8EC">Buat Sales Order →</text>
+
+  <!-- ═══════ BARIS BAWAH: Jadwal Angsuran + Tech Stack ═══════ -->
+  <!-- Jadwal Angsuran Panel -->
+  <rect x="234" y="588" width="440" height="176" rx="8" fill="#FFF8EC" stroke="#1F1B16" stroke-width="3" filter="url(#sm-shadow)"/>
+  <rect x="234" y="588" width="440" height="36" rx="7" fill="#2D5BFF"/>
+  <text x="252" y="611" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="800" fill="#FFF8EC">JADWAL ANGSURAN (addMonthsNoOverflow)</text>
+
+  <!-- Angsuran Table Mini -->
+  <text x="252" y="643" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5B5248">BLN</text>
+  <text x="300" y="643" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5B5248">JATUH TEMPO</text>
+  <text x="430" y="643" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5B5248">ANGSURAN</text>
+  <text x="560" y="643" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5B5248">STATUS</text>
+  <line x1="234" y1="648" x2="674" y2="648" stroke="#E2D4BC" stroke-width="1"/>
+
+  <text x="252" y="666" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">1</text>
+  <text x="300" y="666" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">20 Jan 2026</text>
+  <text x="430" y="666" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">Rp 230.417</text>
+  <rect x="556" y="655" width="55" height="17" rx="3" fill="#2BA84A" opacity="0.2" stroke="#2BA84A" stroke-width="1"/>
+  <text x="583" y="666" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#2BA84A">LUNAS</text>
+
+  <rect x="234" y="671" width="440" height="22" fill="#F6EBD6" opacity="0.5"/>
+  <text x="252" y="686" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">2</text>
+  <text x="300" y="686" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">20 Feb 2026</text>
+  <text x="430" y="686" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">Rp 230.417</text>
+  <rect x="556" y="675" width="55" height="17" rx="3" fill="#2BA84A" opacity="0.2" stroke="#2BA84A" stroke-width="1"/>
+  <text x="583" y="686" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#2BA84A">LUNAS</text>
+
+  <text x="252" y="706" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">3</text>
+  <text x="300" y="706" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">20 Mar 2026</text>
+  <text x="430" y="706" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1F1B16">Rp 230.417</text>
+  <rect x="556" y="695" width="55" height="17" rx="3" fill="#F2542D" opacity="0.2" stroke="#F2542D" stroke-width="1"/>
+  <text x="583" y="706" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#F2542D">TERLAMBAT</text>
+
+  <text x="252" y="726" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5B5248">4</text>
+  <text x="300" y="726" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5B5248">20 Apr 2026</text>
+  <text x="430" y="726" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5B5248">Rp 230.417</text>
+  <rect x="556" y="715" width="55" height="17" rx="3" fill="#E2D4BC" stroke="#C4B89A" stroke-width="1"/>
+  <text x="583" y="726" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#5B5248">BELUM</text>
+
+  <text x="252" y="755" font-family="'JetBrains Mono',monospace" font-size="10" fill="#888">... dst 20 angsuran tersisa (tx atomik DB::transaction + lockForUpdate)</text>
+
+  <!-- Tech Stack Panel -->
+  <rect x="688" y="588" width="498" height="176" rx="8" fill="#FFF8EC" stroke="#1F1B16" stroke-width="3" filter="url(#sm-shadow)"/>
+  <rect x="688" y="588" width="498" height="36" rx="7" fill="#F5B700"/>
+  <text x="706" y="611" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="800" fill="#1F1B16">ARSITEKTUR &amp; KEAMANAN SISTEM</text>
+
+  <!-- Feature Bullets -->
+  <text x="706" y="643" font-family="'Instrument Sans',sans-serif" font-size="13" fill="#1F1B16">✓ BelongsToCabang global scope — isolasi data multi-cabang otomatis</text>
+  <text x="706" y="665" font-family="'Instrument Sans',sans-serif" font-size="13" fill="#1F1B16">✓ DB::transaction + lockForUpdate — penerbitan faktur &amp; stok atomik</text>
+  <text x="706" y="687" font-family="'Instrument Sans',sans-serif" font-size="13" fill="#1F1B16">✓ NIK debitur dienkripsi (Eloquent encrypted cast) — privasi data</text>
+  <text x="706" y="709" font-family="'Instrument Sans',sans-serif" font-size="13" fill="#1F1B16">✓ RBAC Spatie Permission + Policy &amp; Activitylog audit trail lengkap</text>
+  <text x="706" y="731" font-family="'Instrument Sans',sans-serif" font-size="13" fill="#1F1B16">✓ PHPUnit 11 — 50 feature/unit tests untuk kalkulasi finansial presisi</text>
+  <text x="706" y="753" font-family="'Instrument Sans',sans-serif" font-size="13" fill="#1F1B16">✓ Cetak nota kwitansi koordinat mm (DomPDF), ekspor CSV kolektor</text>
+</svg>
