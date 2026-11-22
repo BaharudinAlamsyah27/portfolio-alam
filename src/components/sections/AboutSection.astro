@@ -4,6 +4,7 @@ import CultureOrnaments from '../doodles/CultureOrnaments.astro';
 import TechHobbyOrnaments from '../doodles/TechHobbyOrnaments.astro';
 import GitHubActivity from '../islands/GitHubActivity';
 import HobbyStickers from '../islands/HobbyStickers';
+import DevIdCard from '../islands/DevIdCard';
 import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
 import { getExperienceData, getNowData, getProfileData, pickLocale } from '../../lib/content';
 
@@ -73,7 +74,7 @@ const githubUsername = githubUrl.split('/').filter(Boolean).pop() || 'BaharudinA
                 <li class="bg-paper-2 rounded-sm border-2 border-ink p-4 shadow-[2px_2px_0_var(--ink)]">
                   <div class="flex flex-wrap items-center justify-between gap-2">
                     <div class="flex flex-wrap items-center gap-2">
-                      <span class={`rounded-sm border border-ink px-1.5 py-0.2 font-mono text-[10px] font-bold ${kindBadge.bg}`}>
+                      <span data-stamp class={`rounded-sm border border-ink px-1.5 py-0.2 font-mono text-[10px] font-bold ${kindBadge.bg}`}>
                         {kindBadge.label}
                       </span>
                       <span class="font-display text-base font-bold text-ink">
@@ -122,8 +123,10 @@ const githubUsername = githubUrl.split('/').filter(Boolean).pop() || 'BaharudinA
       </div>
     </div>
 
-    <!-- Kolom Kanan (5 kolom): Kartu /now + GitHub Live Activity -->
+    <!-- Kolom Kanan (5 kolom): Kartu ID Developer + Kartu /now + GitHub Live Activity -->
     <div class="space-y-6 lg:col-span-5">
+      <DevIdCard client:visible locale={locale} />
+
       <aside class="sticker-card relative rotate-[0.7deg] rounded-xl bg-paper-2 p-6">
         <Tape color="blush" rotate="rotate-2" class="absolute -top-3 right-8" />
 

@@ -166,6 +166,18 @@ async function runPageEffects() {
         const el = entry.target as HTMLElement;
         if (el.matches('h2')) {
           animateHeadingBlock(el);
+        } else if (el.hasAttribute('data-stamp')) {
+          gsap.fromTo(
+            el,
+            { scale: 1.38, rotate: -10 },
+            {
+              scale: 1,
+              rotate: -2,
+              duration: 0.34,
+              ease: 'back.out(2.3)',
+              clearProps: 'transform',
+            },
+          );
         } else if (el.classList.contains('sticker-card')) {
           gsap.fromTo(
             el,
@@ -195,6 +207,13 @@ async function runPageEffects() {
     if (card.dataset.gsapInit !== '1') {
       card.dataset.gsapInit = '1';
       observer.observe(card);
+    }
+  });
+
+  document.querySelectorAll<HTMLElement>('[data-stamp]').forEach((stamp) => {
+    if (stamp.dataset.stampInit !== '1') {
+      stamp.dataset.stampInit = '1';
+      observer.observe(stamp);
     }
   });
 }

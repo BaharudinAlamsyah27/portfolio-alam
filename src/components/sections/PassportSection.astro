@@ -1,6 +1,7 @@
 ---
 import Tape from '../ui/Tape.astro';
 import CultureOrnaments from '../doodles/CultureOrnaments.astro';
+import PolaroidStack from '../islands/PolaroidStack';
 import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
 import { getPlacesData, getProfileData, pickLocale } from '../../lib/content';
 
@@ -79,6 +80,7 @@ function formatStampDate(date?: Date) {
                   </div>
 
                   <span
+                    data-stamp
                     class={`shrink-0 rounded-full border-2 px-2.5 py-1 font-mono text-[10px] font-bold uppercase ${stampColor}`}
                   >
                     {formatStampDate(place.data.visitedAt)}
@@ -91,6 +93,8 @@ function formatStampDate(date?: Date) {
           })
         }
       </div>
+
+      <PolaroidStack client:visible locale={locale} />
       </div>
     </div>
 

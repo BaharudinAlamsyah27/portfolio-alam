@@ -489,3 +489,19 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
 
 **Berikutnya:**
 - Jalankan `git push` untuk deploy ke Vercel.
+
+---
+
+### Sesi 17 — 2026-11-22 13:24–13:28 WIB
+**Model:** Gemini 4 Hydrogen (Medium)
+**Fase:** 7 — Lanjutan (Hybrid Scrapbook Polaroid, Dev ID Flip Card, & Efek Cap Stempel)
+
+**Dikerjakan:**
+- Menyimpan 7 foto kurasi (alam, bangunan, & teknologi) ke `public/images/polaroids/` (`bromo.jpg`, `ocean.jpg`, `architecture.jpg`, `shuttle.jpg`, `falcon-sunset.jpg`, `milkyway.jpg`, `nebula.jpg`).
+- Membuat [`src/components/islands/PolaroidStack.tsx`](src/components/islands/PolaroidStack.tsx) — tumpukan kartu Polaroid interaktif yang bisa diklik/dikocok, lengkap dengan selotip & catatan tangan, lalu dipasang di [`PassportSection.astro`](src/components/sections/PassportSection.astro).
+- Membuat [`src/components/islands/DevIdCard.tsx`](src/components/islands/DevIdCard.tsx) — kartu ID Developer 3D flip (`DEV ID · 027-ALAM`) berisi profil ringkas, asal, status MagangHub, & fakta belakang kartu, dipasang di [`AboutSection.astro`](src/components/sections/AboutSection.astro).
+- Menambahkan animasi ketukan stempel `[data-stamp]` di [`src/lib/deskEffects.ts`](src/lib/deskEffects.ts) untuk badge pendidikan/magang dan stempel kota paspor.
+- Verifikasi `npx astro check` (0 errors, 0 warnings, 0 hints pada 71 files) dan `npm run build` (39 halaman statis lolos dalam 5.78s).
+
+**Berikutnya:**
+- Jalankan `git push` untuk deploy ke Vercel.
