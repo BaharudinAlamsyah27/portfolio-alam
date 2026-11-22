@@ -1,0 +1,64 @@
+---
+title: Pohon Pengetahuan — Second Brain & Knowledge Tree (RAG + SQLite FTS5)
+tagline: "Otak Kedua Local-First: Ekstraksi Wawasan Matematis, Peta Pohon SVG, & Tanya AI (RAG)"
+summary:
+  id: "Sistem 'Otak Kedua' (local-first) yang mengolah postingan media sosial, artikel, dan transkrip video menjadi struktur pohon wawasan (Akar → Cabang → Daun) lengkap dengan mesin pencari cerdas, peta SVG interaktif, dan asisten tanya jawab AI berbasis RAG."
+  en: "A local-first Second Brain system that transforms social media posts, articles, and video transcripts into an insight tree (Roots → Branches → Leaves) with hybrid BM25/TF-IDF search, interactive SVG tree maps, and a RAG-powered AI assistant."
+role: "Creator & Full-Stack / AI Engineer"
+context: "Proyek Personal Knowledge Management (PKM) Gratis & Ramah Privasi"
+duration: ""
+stack:
+  - Python 3.13
+  - JavaScript (ES6+)
+  - SQLite FTS5
+  - Gemini AI (RAG)
+  - HTML5 & CSS3
+  - Interactive SVG
+  - Web Audio API
+  - Vercel
+tags:
+  - Second Brain
+  - Knowledge Tree
+  - RAG
+  - SQLite FTS5
+  - BM25
+  - TF-IDF
+  - Gemini 2.5 Flash
+  - Python SSG
+  - Neo-Brutalism
+  - Local-First
+category: ai
+demoUrl: "https://pohon-pengetahuan.vercel.app/"
+embedPreview: true
+repoUrl: ""
+featured: true
+draft: false
+order: 0
+date: 2026-11-22
+status: selesai
+---
+
+> **Catatan Demo Live:** Aplikasi berjalan statis dengan *custom Python SSG* di Vercel, dilengkapi pencarian hibrida SQLite FTS5 + TF-IDF dan asisten tanya jawab AI berbasis RAG (*Gemini 2.5 Flash* via *Vercel Serverless Function*).
+
+## Gambaran Umum
+
+**Pohon Pengetahuan** (*Second Brain & Knowledge Tree*) adalah aplikasi *Personal Knowledge Management* (PKM) berkonsep *local-first* yang dirancang agar tetap **Rp0 (100% gratis)**, ringan, dan aman secara privasi. Aplikasi ini mengubah potongan bacaan dari media sosial, artikel, hingga transkrip video menjadi struktur pohon wawasan yang rapi (**Akar → Cabang → Daun**).
+
+---
+
+## Fitur & Arsitektur Utama
+
+- **Ekstraksi Konten Matematis (0-Biaya):** Membedah teks panjang menjadi kartu wawasan inti tanpa membuang kuota API menggunakan algoritma **Shannon Entropy**, **TextTiling**, **LexRank**, dan **Maximal Marginal Relevance (MMR)**.
+- **Pencarian Hibrida & Tanya AI (RAG):** Menggabungkan **SQLite FTS5 (BM25)** dan **TF-IDF + Cosine Similarity** dwibahasa (ID–EN) dengan **Reciprocal Rank Fusion (RRF)**, lalu disambungkan ke **Google Gemini 2.5 Flash** melalui *Vercel Serverless Function* untuk menjawab pertanyaan lengkap beserta sitasi kartu sumber.
+- **Peta Pohon & Jalur Usia Interaktif:** Visualisasi cabang pengetahuan berbasis **SVG 3-kolom**, peta *timeline* tahap hidup, grafik otoritas **HITS**, jadwal pengulangan **SM-2 Spaced Repetition**, serta audit kesenjangan dan pertentangan antar-ide.
+- **Desain Neo-Brutalisme & Privasi Ketat:** Dilengkapi tema Terang/Gelap, *Web Audio Synthesizer* (*Musik & Suara Meja*), antrean tautan *offline-first* (`localStorage`), serta skrip audit anti-kebocoran sebelum data dipublikasikan ke web statis.
+
+---
+
+## Tech Stack
+
+- **Frontend & UI:** Vanilla HTML5, CSS3 (Neo-Brutalist UI, Light/Dark Mode), Vanilla JavaScript (ES6+), Interactive SVG, Web Audio API
+- **Backend & CLI:** Python 3.13 (*Zero-dependency standard library* & HTTP local server), Node.js (*Vercel Serverless Function*)
+- **Database & Pencarian:** Markdown (`.md` + YAML Frontmatter), SQLite FTS5 (BM25), TF-IDF + Cosine Similarity, Reciprocal Rank Fusion (RRF)
+- **AI & Algoritma:** Google Gemini 2.5 Flash API (RAG & OCR), Shannon Entropy, TextTiling, LexRank, MMR, HITS, SM-2 Spaced Repetition
+- **Build & Deployment:** Custom Python Static Site Generator (`bangun_pohon.py`), Git, Vercel
