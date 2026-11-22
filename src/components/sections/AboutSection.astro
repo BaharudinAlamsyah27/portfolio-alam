@@ -60,19 +60,40 @@ const githubUsername = githubUrl.split('/').filter(Boolean).pop() || 'BaharudinA
             experiences.map((exp) => {
               const roleTitle = pickLocale(exp.data.title, locale);
               const desc = pickLocale(exp.data.description, locale);
+              const startYear = exp.data.start ? new Date(exp.data.start).getFullYear() : '';
+              const endYear = exp.data.end ? new Date(exp.data.end).getFullYear() : (exp.data.current ? (locale === 'id' ? 'Sekarang' : 'Present') : '');
+              const period = startYear ? `${startYear} — ${endYear}` : '';
+              const kindBadge = exp.data.kind === 'pendidikan'
+                ? { label: locale === 'id' ? 'PENDIDIKAN' : 'EDUCATION', bg: 'bg-cobalt text-paper' }
+                : exp.data.kind === 'magang'
+                  ? { label: locale === 'id' ? 'MAGANG' : 'INTERNSHIP', bg: 'bg-mustard text-ink' }
+                  : { label: exp.data.kind.toUpperCase(), bg: 'bg-paper text-ink' };
+
               return (
                 <li class="bg-paper-2 rounded-sm border-2 border-ink p-4 shadow-[2px_2px_0_var(--ink)]">
                   <div class="flex flex-wrap items-center justify-between gap-2">
-                    <span class="font-display text-base font-bold text-ink">
-                      {roleTitle} · <span class="text-tomato">{exp.data.organization}</span>
-                    </span>
-                    {exp.data.current && (
-                      <span class="bg-leaf text-paper rounded-sm border border-ink px-2 py-0.5 font-mono text-[10px] font-bold uppercase">
-                        AKTIF
+                    <div class="flex flex-wrap items-center gap-2">
+                      <span class={`rounded-sm border border-ink px-1.5 py-0.2 font-mono text-[10px] font-bold ${kindBadge.bg}`}>
+                        {kindBadge.label}
                       </span>
-                    )}
+                      <span class="font-display text-base font-bold text-ink">
+                        {roleTitle} · <span class="text-tomato">{exp.data.organization}</span>
+                      </span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      {period && (
+                        <span class="font-mono text-xs text-ink-soft font-semibold">
+                          {period}
+                        </span>
+                      )}
+                      {exp.data.current && (
+                        <span class="bg-leaf text-paper rounded-sm border border-ink px-2 py-0.5 font-mono text-[10px] font-bold uppercase">
+                          AKTIF
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  <p class="mt-1.5 text-xs leading-relaxed text-ink-soft sm:text-sm">{desc}</p>
+                  <p class="mt-2 text-xs leading-relaxed text-ink-soft sm:text-sm">{desc}</p>
                 </li>
               );
             })
