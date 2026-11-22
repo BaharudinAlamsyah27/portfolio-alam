@@ -474,3 +474,18 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
 
 **Berikutnya:**
 - Jalankan `git add .`, `git commit`, dan `git push` untuk deploy pembaruan ke Vercel.
+
+---
+
+### Sesi 16 — 2026-11-22 12:38–12:43 WIB
+**Model:** Gemini 4 Hydrogen (Medium)
+**Fase:** 7 — Lanjutan (Tema Alas Kertas per Halaman & Section Beranda)
+
+**Dikerjakan:**
+- Menambahkan atribut `data-page` dinamis (`home`, `notes`, `toko`, `projects`, `logbook`) pada `<body>` di [`src/layouts/BaseLayout.astro`](src/layouts/BaseLayout.astro) agar otomatis berganti saat View Transitions.
+- Menambahkan pola latar belakang CSS + inline SVG ringan (0 KB JS, adaptif 3 tema `day` / `rimuru` / `midnight`) di [`src/styles/global.css`](src/styles/global.css) untuk `/notes` (Buku Tulis Bergaris), `/toko` (Katalog Dot-Grid), `/projects` (Cutting Mat Crosshair), dan `/now` & `/log` (Logbook Teknik).
+- Menambahkan 4 alas kertas khusus pada section beranda: `.surface-blueprint` di [`SkillPlayground.tsx`](src/components/islands/SkillPlayground.tsx), `.surface-topography` di [`PassportSection.astro`](src/components/sections/PassportSection.astro), `.surface-bulletin` di [`GuestbookSection.astro`](src/components/sections/GuestbookSection.astro), dan `.surface-airmail` di [`ContactSection.astro`](src/components/sections/ContactSection.astro).
+- Verifikasi `npx astro check` (0 errors, 0 warnings, 0 hints pada 68 files) dan `npm run build` (39 halaman statis lolos).
+
+**Berikutnya:**
+- Jalankan `git push` untuk deploy ke Vercel.
