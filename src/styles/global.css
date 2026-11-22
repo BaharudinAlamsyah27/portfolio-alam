@@ -93,50 +93,50 @@
   /* 1. Catatan (/notes): Buku Tulis Bergaris (Notebook + margin garis tipis) */
   body[data-page='notes'] {
     background-image:
-      linear-gradient(90deg, transparent 0, transparent 44px, rgba(242, 84, 45, 0.12) 44px, rgba(242, 84, 45, 0.12) 46px, transparent 46px),
-      repeating-linear-gradient(180deg, transparent 0, transparent 31px, rgba(45, 91, 255, 0.085) 31px, rgba(45, 91, 255, 0.085) 32px);
+      linear-gradient(90deg, transparent 0, transparent 44px, rgba(242, 84, 45, 0.22) 44px, rgba(242, 84, 45, 0.22) 46px, transparent 46px),
+      repeating-linear-gradient(180deg, transparent 0, transparent 31px, rgba(45, 91, 255, 0.14) 31px, rgba(45, 91, 255, 0.14) 32px);
   }
   html[data-theme='rimuru'] body[data-page='notes'] {
     background-image:
-      linear-gradient(90deg, transparent 0, transparent 44px, rgba(232, 77, 61, 0.12) 44px, rgba(232, 77, 61, 0.12) 46px, transparent 46px),
-      repeating-linear-gradient(180deg, transparent 0, transparent 31px, rgba(29, 99, 220, 0.09) 31px, rgba(29, 99, 220, 0.09) 32px);
+      linear-gradient(90deg, transparent 0, transparent 44px, rgba(232, 77, 61, 0.22) 44px, rgba(232, 77, 61, 0.22) 46px, transparent 46px),
+      repeating-linear-gradient(180deg, transparent 0, transparent 31px, rgba(29, 99, 220, 0.15) 31px, rgba(29, 99, 220, 0.15) 32px);
   }
   html[data-theme='midnight'] body[data-page='notes'] {
     background-image:
       radial-gradient(circle at 18% 12%, rgba(230, 184, 92, 0.06) 0%, transparent 45%),
-      linear-gradient(90deg, transparent 0, transparent 44px, rgba(227, 114, 84, 0.16) 44px, rgba(227, 114, 84, 0.16) 46px, transparent 46px),
-      repeating-linear-gradient(180deg, transparent 0, transparent 31px, rgba(130, 170, 255, 0.08) 31px, rgba(130, 170, 255, 0.08) 32px);
+      linear-gradient(90deg, transparent 0, transparent 44px, rgba(227, 114, 84, 0.24) 44px, rgba(227, 114, 84, 0.24) 46px, transparent 46px),
+      repeating-linear-gradient(180deg, transparent 0, transparent 31px, rgba(130, 170, 255, 0.12) 31px, rgba(130, 170, 255, 0.12) 32px);
   }
 
   /* 2. Toko (/toko): Katalog Dot-Grid bersih */
   body[data-page='toko'] {
     background-image:
-      radial-gradient(circle, rgba(31, 27, 22, 0.14) 1.15px, transparent 1.15px);
+      radial-gradient(circle, rgba(31, 27, 22, 0.22) 1.35px, transparent 1.35px);
     background-size: 20px 20px;
   }
   html[data-theme='rimuru'] body[data-page='toko'] {
     background-image:
-      radial-gradient(circle, rgba(11, 110, 199, 0.15) 1.15px, transparent 1.15px);
+      radial-gradient(circle, rgba(11, 110, 199, 0.22) 1.35px, transparent 1.35px);
     background-size: 20px 20px;
   }
   html[data-theme='midnight'] body[data-page='toko'] {
     background-image:
       radial-gradient(circle at 82% 14%, rgba(230, 184, 92, 0.07) 0%, transparent 42%),
-      radial-gradient(circle, rgba(239, 230, 213, 0.12) 1.15px, transparent 1.15px);
+      radial-gradient(circle, rgba(239, 230, 213, 0.18) 1.35px, transparent 1.35px);
     background-size: 100% 100%, 20px 20px;
   }
 
   /* 3. Arsip Proyek (/projects): Cutting Mat / Crosshair Studio */
   body[data-page='projects'] {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cpath d='M24 19v10M19 24h10' stroke='%232d5bff' stroke-opacity='0.14' stroke-width='1.2'/%3E%3Ccircle cx='0' cy='0' r='1' fill='%231f1b16' fill-opacity='0.08'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cpath d='M24 18v12M18 24h12' stroke='%232d5bff' stroke-opacity='0.22' stroke-width='1.4'/%3E%3Ccircle cx='0' cy='0' r='1.2' fill='%231f1b16' fill-opacity='0.12'/%3E%3C/svg%3E");
   }
   html[data-theme='rimuru'] body[data-page='projects'] {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cpath d='M24 19v10M19 24h10' stroke='%231d63dc' stroke-opacity='0.16' stroke-width='1.2'/%3E%3Ccircle cx='0' cy='0' r='1' fill='%23132238' fill-opacity='0.09'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cpath d='M24 18v12M18 24h12' stroke='%231d63dc' stroke-opacity='0.24' stroke-width='1.4'/%3E%3Ccircle cx='0' cy='0' r='1.2' fill='%23132238' fill-opacity='0.12'/%3E%3C/svg%3E");
   }
   html[data-theme='midnight'] body[data-page='projects'] {
     background-image:
       radial-gradient(circle at 20% 15%, rgba(130, 170, 255, 0.07) 0%, transparent 46%),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cpath d='M24 19v10M19 24h10' stroke='%2382aaff' stroke-opacity='0.14' stroke-width='1.2'/%3E%3Ccircle cx='0' cy='0' r='1' fill='%23efe6d5' fill-opacity='0.08'/%3E%3C/svg%3E");
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cpath d='M24 18v12M18 24h12' stroke='%2382aaff' stroke-opacity='0.2' stroke-width='1.4'/%3E%3Ccircle cx='0' cy='0' r='1.2' fill='%23efe6d5' fill-opacity='0.1'/%3E%3C/svg%3E");
   }
 
   /* 4. Now & Log (/now, /log): Logbook Teknik (Dotted Ledger) */

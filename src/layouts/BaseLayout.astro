@@ -19,6 +19,7 @@ import CultureOrnaments from '../components/doodles/CultureOrnaments.astro';
 import MidnightAtmosphere from '../components/doodles/MidnightAtmosphere.astro';
 import SideMarginOrnaments from '../components/doodles/SideMarginOrnaments.astro';
 import TensuraAmbientSquares from '../components/doodles/TensuraAmbientSquares.astro';
+import PageAmbientOrnaments from '../components/doodles/PageAmbientOrnaments.astro';
 import TechHobbyOrnaments from '../components/doodles/TechHobbyOrnaments.astro';
 import { getLocaleFromUrl, getLocalizedPath, useTranslations } from '../i18n/utils';
 import {
@@ -417,7 +418,7 @@ const terminalContext: TerminalContext = {
     </footer>
 
     <MidnightAtmosphere />
-    <TensuraAmbientSquares />
+    {pageKind === 'home' ? <TensuraAmbientSquares /> : <PageAmbientOrnaments pageKind={pageKind} />}
     <SideMarginOrnaments />
 
     <TerminalModal client:idle context={terminalContext} />
