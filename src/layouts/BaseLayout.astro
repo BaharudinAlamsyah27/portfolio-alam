@@ -49,6 +49,16 @@ const tokoHref = getLocalizedPath('/toko', locale);
 const notesHref = getLocalizedPath('/notes', locale);
 const nowHref = getLocalizedPath('/now', locale);
 const logHref = getLocalizedPath('/log', locale);
+const cleanPath = Astro.url.pathname.replace(/^\/en(?=\/|$)/, '') || '/';
+const pageKind = cleanPath.startsWith('/notes')
+  ? 'notes'
+  : cleanPath.startsWith('/toko')
+    ? 'toko'
+    : cleanPath.startsWith('/projects')
+      ? 'projects'
+      : cleanPath.startsWith('/now') || cleanPath.startsWith('/log')
+        ? 'logbook'
+        : 'home';
 const siteBase = (Astro.site?.toString() ?? 'https://alam-portfolio.vercel.app').replace(/\/$/, '');
 const canonicalUrl = `${siteBase}${Astro.url.pathname}`;
 const ogImageUrl = `${siteBase}/og/cover.svg`;
@@ -141,7 +151,7 @@ const terminalContext: TerminalContext = {
     <title>{title}</title>
     <ClientRouter />
   </head>
-  <body class="flex min-h-dvh flex-col">
+  <body data-page={pageKind} class="flex min-h-dvh flex-col">
     <a
       href="#main-content"
       class="bg-mustard text-ink sr-only fixed top-3 left-3 z-50 border-2 border-ink px-3 py-1.5 text-sm font-semibold focus:not-sr-only"

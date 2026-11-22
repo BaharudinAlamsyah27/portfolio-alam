@@ -145,7 +145,7 @@ export default function SkillPlayground({ skills, locale, labels }: Props) {
   }, [physicsMode, skills]);
 
   return (
-    <div class="sticker-card mb-7 rounded-md bg-paper p-5">
+    <div class="sticker-card surface-blueprint mb-7 rounded-md bg-paper p-5">
       <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-dashed border-ink/25 pb-4">
         <div class="flex flex-wrap items-center gap-2">
           <button
