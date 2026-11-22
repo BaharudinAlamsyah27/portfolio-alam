@@ -4,7 +4,7 @@ interface Props {
   locale: 'id' | 'en';
 }
 
-type SoundMode = 'off' | 'gamelan' | 'tensura' | 'rain' | 'purr' | 'focus';
+type SoundMode = 'off' | 'gamelan' | 'tensura' | 'pain' | 'rain' | 'purr' | 'focus';
 
 export default function DeskAudio({ locale }: Props) {
   const [open, setOpen] = useState(false);
@@ -304,6 +304,103 @@ export default function DeskAudio({ locale }: Props) {
       osc1.start();
       osc2.start();
       lfo.start();
+    } else if (nextMode === 'pain') {
+      // Tema Gotik Epik ala Pain / Akatsuki (E Minor / Harmonic Minor: Choir Organ + Deep Drum)
+      const delay = ctx.createDelay(1.2);
+      delay.delayTime.value = 0.42;
+      const fb = ctx.createGain();
+      fb.gain.value = 0.4;
+      const wet = ctx.createGain();
+      wet.gain.value = 0.45;
+      delay.connect(fb);
+      fb.connect(delay);
+      delay.connect(wet);
+      wet.connect(master);
+
+      const choirFilter = ctx.createBiquadFilter();
+      choirFilter.type = 'lowpass';
+      choirFilter.frequency.value = 950;
+      choirFilter.connect(master);
+      choirFilter.connect(delay);
+
+      // Akor gotik lambat (Em - C - B7 - Em)
+      const chords = [
+        [164.81, 196.0, 246.94], // Em
+        [130.81, 164.81, 196.0], // C
+        [123.47, 155.56, 185.0], // B (dramatis)
+        [164.81, 196.0, 246.94], // Em
+      ];
+      // Melodi nyanyian choir atas
+      const melody = [329.63, 392.0, 369.99, 329.63, 311.13, 329.63, 392.0, 493.88];
+      const bassNotes = [82.41, 82.41, 65.41, 65.41, 61.74, 61.74, 82.41, 82.41];
+
+      const playChoirChord = (freqs: number[]) => {
+        const now = ctx.currentTime;
+        freqs.forEach((f) => {
+          const osc = ctx.createOscillator();
+          const g = ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(f, now);
+
+          g.gain.setValueAtTime(0.0001, now);
+          g.gain.linearRampToValueAtTime(0.038, now + 0.5);
+          g.gain.exponentialRampToValueAtTime(0.0001, now + 3.1);
+
+          osc.connect(g);
+          g.connect(choirFilter);
+          osc.start(now);
+          osc.stop(now + 3.2);
+        });
+      };
+
+      const playDeepPulse = (freq: number) => {
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq * 1.15, now);
+        osc.frequency.exponentialRampToValueAtTime(freq, now + 0.14);
+
+        g.gain.setValueAtTime(0.0001, now);
+        g.gain.linearRampToValueAtTime(0.22, now + 0.03);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + 1.3);
+
+        osc.connect(g);
+        g.connect(master);
+        osc.start(now);
+        osc.stop(now + 1.4);
+      };
+
+      const playLead = (freq: number) => {
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now);
+
+        g.gain.setValueAtTime(0.0001, now);
+        g.gain.linearRampToValueAtTime(0.09, now + 0.18);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + 1.5);
+
+        osc.connect(g);
+        g.connect(choirFilter);
+        osc.start(now);
+        osc.stop(now + 1.6);
+      };
+
+      let step = 0;
+      const tick = () => {
+        if (ctx.state === 'closed') return;
+        if (step % 4 === 0) {
+          playChoirChord(chords[(step >> 2) % chords.length]);
+        }
+        playDeepPulse(bassNotes[step % bassNotes.length]);
+        playLead(melody[step % melody.length]);
+        step += 1;
+      };
+
+      tick();
+      timerRef.current = window.setInterval(tick, 760);
     } else if (nextMode === 'focus') {
       // Hum hangat lo-fi untuk fokus ngoding
       const freqs = [130.81, 196.0, 246.94];
@@ -335,12 +432,13 @@ export default function DeskAudio({ locale }: Props) {
     off: locale === 'id' ? 'Mati' : 'Off',
     gamelan: locale === 'id' ? '🎵 Gamelan Jawa' : '🎵 Javanese Gamelan',
     tensura: locale === 'id' ? '💧 Jura Tempest' : '💧 Jura Tempest',
+    pain: locale === 'id' ? '☁️ Pain / Akatsuki' : '☁️ Pain / Akatsuki',
     rain: locale === 'id' ? '🌧️ Hujan Halus' : '🌧️ Soft Rain',
     purr: locale === 'id' ? '🐈 Kucing Purr' : '🐈 Cat Purr',
     focus: locale === 'id' ? '🎧 Fokus Hangat' : '🎧 Warm Focus',
   };
 
-  const modeOrder: SoundMode[] = ['gamelan', 'tensura', 'rain', 'purr', 'focus', 'off'];
+  const modeOrder: SoundMode[] = ['gamelan', 'tensura', 'pain', 'rain', 'purr', 'focus', 'off'];
 
   return (
     <div class="fixed bottom-4 left-4 z-40">
@@ -368,7 +466,9 @@ export default function DeskAudio({ locale }: Props) {
                   mode === item
                     ? item === 'tensura'
                       ? 'bg-slime text-ink'
-                      : 'bg-mustard text-ink'
+                      : item === 'pain'
+                        ? 'bg-tomato text-paper'
+                        : 'bg-mustard text-ink'
                     : 'bg-paper-2 text-ink-soft hover:text-ink'
                 }`}
               >
@@ -399,9 +499,11 @@ export default function DeskAudio({ locale }: Props) {
         class={`sticker-btn rounded-sm px-3 py-1.5 font-mono text-xs ${
           mode === 'tensura'
             ? 'bg-slime text-ink'
-            : mode !== 'off'
-              ? 'bg-mustard text-ink'
-              : 'bg-paper text-ink'
+            : mode === 'pain'
+              ? 'bg-tomato text-paper'
+              : mode !== 'off'
+                ? 'bg-mustard text-ink'
+                : 'bg-paper text-ink'
         }`}
         title={labels.title}
       >
