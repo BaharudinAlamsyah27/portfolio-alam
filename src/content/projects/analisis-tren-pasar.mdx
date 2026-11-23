@@ -1,0 +1,68 @@
+---
+title: Analisis Tren Pasar Perbankan Syariah & BPRS Indonesia
+tagline: "Dashboard Riset Kuantitatif & Simulator Ekonometrika Data SPS OJK"
+summary:
+  id: "Dashboard riset kuantitatif dan simulator ekonometrika interaktif berbasis data resmi Statistik Perbankan Syariah (SPS) OJK untuk memantau kinerja aset, pembiayaan, DPK, risiko NPF, likuiditas FDR, efisiensi BOPO, dan profitabilitas ROA industri BPR Syariah di Indonesia."
+  en: "Interactive quantitative research dashboard and econometric simulator built on official OJK Sharia Banking Statistics (SPS) to monitor assets, financing, deposits, NPF risk, FDR liquidity, BOPO efficiency, and ROA profitability of Indonesia's Sharia Rural Banks (BPRS)."
+role: "Full-Stack & Quantitative Data Engineer"
+context: "Riset Data Perbankan Syariah (SPS OJK Desember 2024 · 46 Periode & 24 Provinsi)"
+duration: ""
+stack:
+  - Next.js 15
+  - React 19
+  - TypeScript
+  - Tailwind CSS
+  - Custom SVG Charts
+  - SheetJS (xlsx)
+  - Python (pandas / statsmodels)
+  - Vercel
+tags:
+  - Perbankan Syariah
+  - BPRS
+  - SPS OJK
+  - Ekonometrika
+  - Holt-Winters
+  - OLS Lead-Lag
+  - Static-First Hybrid
+  - Next.js 15
+  - TypeScript
+category: ai
+demoUrl: "https://analisis-tren-pasar.vercel.app/"
+embedPreview: true
+repoUrl: "https://github.com/BaharudinAlamsyah27/analisis-tren-pasar"
+featured: true
+draft: false
+order: 0
+date: 2026-11-23
+status: selesai
+---
+
+> **Catatan Demo Live:** Aplikasi berjalan dengan arsitektur **Static-First Hybrid** (Next.js *static export* + mesin ekonometrika TypeScript *client-side*), bebas biaya server (*zero cold-start*), dan seluruh pemrosesan unggahan file Excel/CSV pengguna terjadi 100% lokal di browser.
+
+## Gambaran Umum
+
+Aplikasi web analitik finansial bergaya editorial yang mengolah data resmi **Statistik Perbankan Syariah (SPS) OJK (Desember 2024)** lintas *sheet* (`Tabel 1a`, `26`, `27`, `31`, `32`, `42`, dan `44`) mencakup **46 periode historis (2020–2024)** dan **24 provinsi di Indonesia** (Total Aset Rp 25,03 triliun, PYD Rp 18,99 triliun, DPK Rp 16,84 triliun, NPF Gross 7,75%, FDR 112,73%, ROA 1,51%, BOPO 90,61%).
+
+---
+
+## Fitur Utama
+
+1. **Ringkasan Eksekutif & Papan Indikator (Executive Ledger):**
+   6 KPI utama BPRS beserta pertumbuhan YoY, CAGR berbasis bulan kalender, proyeksi 12 bulan, serta indikator ambang sehat OJK.
+2. **Workbench Prakiraan & Stress Test Makro (*Real-Time*):**
+   Grafik *fan chart* SVG interaktif dengan interval kepercayaan 80% & 95%, kalibrasi langsung parameter *Holt-Winters* (α, β, γ), simulasi kejutan makro (*BI-Rate*, deviasi DPK, tekanan NPF), *Early Warning System* (EWS) kepatuhan OJK & estimasi dampak PPAP, dekomposisi klasik 2×12 CMA, *out-of-sample backtesting* 4 model (MAPE, RMSE, MAE), *seasonal heatmap*, dan ekspor proyeksi ke `.CSV`.
+3. **Korelasi, Regresi Lead-Lag & Deteksi Anomali:**
+   Matriks korelasi Pearson 7×7 interaktif, *scatter plot* regresi linier (OLS) dengan uji efek tunda (*Lag 0B–3B*), serta deteksi otomatis anomali residual (|Z| ≥ 1,85σ) yang ditandai pada grafik.
+4. **Struktur Akad, 24 Provinsi & Benchmark Industri:**
+   Pangsa 5 akad syariah (*Murabahah, Musyarakah, Mudharabah, Ijarah, Qardh*), tabel sebaran 24 provinsi lengkap dengan jumlah unit BPRS & pemilih provinsi sorotan interaktif, serta komparasi BPRS vs Bank Umum Syariah.
+5. **Lab Uji Dataset Mandiri (`.xlsx` / `.csv`) & Memo Eksekutif:**
+   Pembaca buku kerja Excel OJK multi-*sheet* langsung di browser (otomatis melewati kolom tersembunyi, konversi satuan/persen, pemilih *sheet*, dan *auto-transpose* CSV melebar OJK), dilengkapi generator Memo Eksekutif siap salin serta Kamus Regulasi OJK (POJK/SEOJK).
+
+---
+
+## Teknologi yang Digunakan
+
+- **Frontend & Styling:** Next.js 15 (App Router, Static Export), React 19, TypeScript, Tailwind CSS, Lucide React
+- **Visualisasi Data:** Custom SVG Charts (*Time Series Fan Chart*, *Decomposition Chart*, *OLS Scatter Plot*, *Stacked Akad Bar*, *Seasonal Heatmap*) dengan aksesibilitas keyboard & WCAG
+- **Ekonometrika & Pemrosesan Data:** TypeScript Econometric Engine (*Holt-Winters Seasonal*, *Damped Trend*, *Seasonal Naive*, 2×12 CMA, OLS *Lead-Lag*, *Z-Score Anomaly*), SheetJS (`xlsx`) Multi-Sheet Parser, Python Pipeline (`statsmodels`, `pandas`, `numpy`)
+- **Deployment & CI/CD:** Vercel (Static Hosting), GitHub Actions (ESLint, verifikasi integritas dataset JSON, & *static build*)
