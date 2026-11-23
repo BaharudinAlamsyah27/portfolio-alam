@@ -33,7 +33,7 @@
     <!-- URL Bar -->
     <rect x="130" y="11" width="540" height="32" rx="6" fill="#FFF8EC" stroke="#1F1B16" stroke-width="2" />
     <circle cx="150" cy="27" r="4" fill="#2BA84A" />
-    <text x="166" y="33" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="700" fill="#5B5248">https://alam-portfolio.vercel.app (Rp0 Vercel Hobby)</text>
+    <text x="166" y="33" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="700" fill="#5B5248">https://baharudin-alamsyah.vercel.app (Rp0 Vercel Hobby)</text>
 
     <!-- Chrome Badge -->
     <rect x="940" y="12" width="150" height="30" rx="5" fill="#1F1B16" />

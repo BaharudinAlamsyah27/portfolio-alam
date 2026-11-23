@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://alam-portfolio.vercel.app/sitemap.xml
+Sitemap: https://baharudin-alamsyah.vercel.app/sitemap.xml

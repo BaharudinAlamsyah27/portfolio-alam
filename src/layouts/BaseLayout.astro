@@ -60,7 +60,7 @@ const pageKind = cleanPath.startsWith('/notes')
       : cleanPath.startsWith('/now') || cleanPath.startsWith('/log')
         ? 'logbook'
         : 'home';
-const siteBase = (Astro.site?.toString() ?? 'https://alam-portfolio.vercel.app').replace(/\/$/, '');
+const siteBase = (Astro.site?.toString() ?? 'https://baharudin-alamsyah.vercel.app').replace(/\/$/, '');
 const canonicalUrl = `${siteBase}${Astro.url.pathname}`;
 const ogImageUrl = `${siteBase}/og/cover.svg`;
 

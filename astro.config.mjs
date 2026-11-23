@@ -24,7 +24,7 @@ function keystaticDevOnly() {
 }
 
 export default defineConfig({
-  site: 'https://alam-portfolio.vercel.app',
+  site: 'https://baharudin-alamsyah.vercel.app',
   integrations: [
     // Preact = komponen island website. React hanya untuk UI admin Keystatic.
     preact({ include: ['**/components/islands/**', '**/lib/**'] }),

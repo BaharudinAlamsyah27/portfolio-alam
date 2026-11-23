@@ -505,3 +505,23 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
 
 **Berikutnya:**
 - Jalankan `git push` untuk deploy ke Vercel.
+
+---
+
+### Sesi 18 — 2026-11-23 10:00 WIB
+**Model:** Gemini 3.8 Flash (Medium)
+**Fase:** 6 — Rilis & Branding Domain Resmi
+
+**Dikerjakan:**
+- Memperbarui domain utama portofolio ke `https://baharudin-alamsyah.vercel.app/` setelah domain lama `portfolio-alam.vercel.app` dihapus permanen oleh Alam.
+- Memperbarui konfigurasi canonical URL, sitemap XML, robots.txt, dan metadata di:
+  - [`astro.config.mjs`](astro.config.mjs) (`site: 'https://baharudin-alamsyah.vercel.app'`)
+  - [`src/layouts/BaseLayout.astro`](src/layouts/BaseLayout.astro) (fallback `siteBase`)
+  - [`src/pages/sitemap.xml.ts`](src/pages/sitemap.xml.ts) (fallback `baseUrl`)
+  - [`public/robots.txt`](public/robots.txt) (`Sitemap: https://baharudin-alamsyah.vercel.app/sitemap.xml`)
+  - [`src/content/projects/meja-kerja-portfolio.mdx`](src/content/projects/meja-kerja-portfolio.mdx) (`demoUrl`)
+  - [`public/images/meja-kerja-desk.svg`](public/images/meja-kerja-desk.svg) (URL bar SVG)
+- Verifikasi `npx astro check` dan `npm run build` lolos tanpa error.
+
+**Berikutnya:**
+- Jalankan `git push` untuk memperbarui live deployment di Vercel.

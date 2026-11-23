@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { getNotesData, getProductsData, getProjectsData } from '../lib/content';
 
 export const GET: APIRoute = async ({ site }) => {
-  const baseUrl = (site?.toString() ?? 'https://alam-portfolio.vercel.app').replace(/\/$/, '');
+  const baseUrl = (site?.toString() ?? 'https://baharudin-alamsyah.vercel.app').replace(/\/$/, '');
   const [projects, notes, products] = await Promise.all([
     getProjectsData(false),
     getNotesData(false),
