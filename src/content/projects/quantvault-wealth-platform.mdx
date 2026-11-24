@@ -1,0 +1,105 @@
+---
+title: QuantVault — Private Wealth, Robo-Advisor & Customer Intelligence Suite
+tagline: "Platform Wealth Management Terpadu: Optimasi Markowitz, CRM RM, & Customer Intelligence"
+summary:
+  id: "Platform perbankan digital & wealth management terpadu yang menggabungkan mesin optimasi portofolio kuantitatif Markowitz (Mean-Variance Optimization dengan Ledoit-Wolf Shrinkage dan verifikasi silang Python SciPy SLSQP) bersama CRM Wealth Advisor, segmentasi nasabah RFM K-Means, prediksi churn logistik, simulator kampanye uji A/B (Two-Proportion Z-Test), serta kontrol tata kelola Komite Risiko & DPS Syariah dalam satu sistem berbasis web."
+  en: "An integrated wealth management & private banking platform featuring a quantitative Markowitz portfolio optimization engine (Mean-Variance Optimization with Ledoit-Wolf Shrinkage & Python SciPy cross-validation), Wealth Advisor CRM, K-Means RFM customer segmentation, logistic churn prediction, an A/B testing campaign simulator (Two-Proportion Z-Test), and Risk & Sharia Compliance (DPS) governance controls."
+role: "Quantitative & Full-Stack Web Engineer"
+context: "Platform Wealth Management 5-in-1: Robo-Advisor, CRM RM, Analitik Nasabah, & Komite Risiko"
+duration: ""
+stack:
+  - Next.js 15
+  - React 19
+  - TypeScript 5.8
+  - Python 3
+  - NumPy 2.2
+  - SciPy 1.15 (SLSQP)
+  - Tailwind CSS v4
+  - Custom SVG Charts
+  - Zod 4
+  - Vitest 3
+  - Vercel
+tags:
+  - Wealth Management
+  - Robo-Advisor
+  - Markowitz MVO
+  - Ledoit-Wolf
+  - Python SciPy
+  - Monte Carlo GBM
+  - RFM K-Means
+  - Churn Prediction
+  - A/B Testing
+  - POJK & DPS Syariah
+  - Swiss Financial Grid
+  - Vitest
+category: ai
+demoUrl: "https://quantvault-wealth-platform.vercel.app/"
+embedPreview: true
+repoUrl: ""
+featured: true
+draft: false
+order: 0
+date: 2026-11-24
+status: selesai
+---
+
+> **Catatan Demo Live:** Aplikasi dapat langsung diuji di panel interaktif di atas atau kunjungi langsung [quantvault-wealth-platform.vercel.app](https://quantvault-wealth-platform.vercel.app/). Sistem berjalan 100% *zero-friction* tanpa API key berbayar, dilengkapi kalkulasi kuantitatif Markowitz *real-time* di browser (&lt; 15 ms) serta verifikasi silang solver ilmiah Python SciPy.
+
+## Gambaran Umum
+
+**QuantVault** adalah platform simulasi perbankan *wealth management* dan *private banking* terpadu yang menyatukan 5 kebutuhan divisi bank ke dalam satu aplikasi:
+1. **Robo-Advisor** untuk nasabah ritel dan *high-net-worth individual* (HNWI),
+2. **Meja Kerja CRM** untuk *Relationship Manager* (RM),
+3. **Customer Intelligence & Analitik** untuk tim pemasaran dan retensi (*RFM, Churn, A/B Testing, Loyalty ROI*),
+4. **Panel Komite Risiko & Auditor DPS Syariah** untuk tata kelola parameter pasar dan kepatuhan POJK,
+5. **Mesin Kuantitatif Dual-Engine** yang memadukan kecepatan *client-side* TypeScript dengan presisi ilmiah Python SciPy.
+
+---
+
+## 5 Modul & Fitur Kunci
+
+### 1. Portal Investor & Robo-Advisor Mandiri
+- **Profil Risiko 2-Dimensi:** Evaluasi toleransi risiko nasabah berbasis 8 pertanyaan terkalibrasi (*Kemampuan Finansial* vs *Kesediaan Psikologis*).
+- **Frontier Efisien Markowitz & Alokasi Optimal:** Menghitung bobot optimal aset (*Mean-Variance Optimization*) dengan *Ledoit-Wolf Covariance Shrinkage (15%)*, *Risk Parity*, dan *Equal Weight*.
+- **Simulasi Monte Carlo (Geometric Brownian Motion - 1.000 Jalur):** Menampilkan proyeksi nilai kekayaan masa depan dalam interval nominal maupun riil (disesuaikan inflasi).
+
+### 2. Meja Kerja Relationship Manager (CRM Wealth Advisor)
+- **Manajemen Portofolio CIF Nasabah:** Mengelola 24+ akun nasabah dengan filter segmentasi (*Priority*, *Private*, *Affluent*), pelacakan deviasi alokasi (*drift*), dan *AUM at Risk*.
+- **Order Ticket Rebalance & Eksekusi Otomatis:** Perhitungan otomatis selisih nominal Rupiah beli/jual per aset saat portofolio mengalami *drift* melebihi ambang batas toleransi.
+- **Generator Dokumen Resmi IPS (Investment Policy Statement):** Pencetakan laporan kebijakan investasi siap tanda tangan berbasis HTML/Print PDF.
+
+### 3. Customer Intelligence & Data Science Suite
+- **Segmentasi RFM K-Means (K=4):** Mengelompokkan nasabah secara otomatis ke dalam 4 klaster (*Champions*, *Loyal High Potential*, *At Risk*, dan *Hibernating*) berdasarkan metrik *Recency, Frequency,* dan *Monetary*.
+- **Model Probabilitas Churn Logistik:** Deteksi dini potensi nasabah menutup rekening/menarik dana, lengkap dengan ekspor *Call-List CSV* untuk tindakan preventif tim telemarketing.
+- **Simulator Kampanye Uji A/B (Two-Proportion Z-Test):** Menghitung nilai *p-value* dan signifikansi statistik kampanye pemasaran sebelum diimplementasikan secara massal.
+- **Kalkulator Kelayakan Program Loyalitas (Loyalty ROI):** Pemodelan margin keuntungan bersih dan titik impas (*break-even*) program *rewards* nasabah.
+
+### 4. Panel Komite Risiko & Kepatuhan DPS Syariah
+- **Audit Toleransi Dual-Engine:** Membandingkan deviasi hasil optimasi portofolio antara solver TypeScript browser dengan solver ilmiah **Python SciPy SLSQP**.
+- **Filter Ketat DPS Syariah & Batas POJK:** Mengunci ruang optimasi matematika agar tidak memasukkan instrumen non-halal dan menjaga batas maksimal eksposur aset berisiko (*POJK Suitability Cap*).
+- **Audit Trail & Log Eksekutif Perbankan:** Rekam jejak seluruh perubahan parameter, alokasi dana, dan persetujuan kebijakan secara transparan.
+
+---
+
+## Keunggulan Teknis & Arsitektur
+
+1. **Dual-Engine Quant Architecture (Kecepatan + Akurasi Ilmiah):**
+   - Perubahan slider profil risiko atau batas bobot aset langsung dihitung di browser dalam `&lt; 15 ms` menggunakan solver *Projected Gradient* TypeScript.
+   - Tersedia endpoint Python (`/api/optimize` via NumPy & SciPy SLSQP) untuk verifikasi silang hasil optimasi browser dengan toleransi selisih sangat ketat.
+2. **Closed-Loop Banking Ecosystem (Data Terhubung Antar Divisi):**
+   - Jika RM mengeksekusi *Rebalance* portofolio atau tim *Customer Intelligence* meluncurkan program retensi, metrik risiko *drift*, status kepatuhan POJK, skor risiko *churn*, AUM berisiko, dan *Audit Trail* bank langsung terbarui secara *real-time*.
+3. **Kepatuhan Regulasi Masuk ke Rumus Matematika:**
+   - Filter Syariah dan batas ambang POJK bukan sekadar validasi form, melainkan batasan matematis (*constraints*) aktif pada fungsi objektif *Mean-Variance* Markowitz.
+4. **Keandalan Matematika dengan 15 Unit Test (Vitest):**
+   - Memiliki 15 pengujian otomatis untuk memverifikasi invariansi matematika Markowitz (bobot $\sum w_i = 1$, batasan non-negatif $w_i \ge 0$), kekakuan kovariansi Ledoit-Wolf, dan akurasi model statistik.
+
+---
+
+## Teknologi yang Digunakan
+
+- **Frontend & UI:** Next.js 15 (App Router), React 19, TypeScript 5.8, Tailwind CSS v4 (*Swiss Financial Grid*), Lucide Icons, Plus Jakarta Sans (`tabular-nums`)
+- **Mesin Kuantitatif (Frontend):** Custom TypeScript Solver (Markowitz *Bounded Simplex*, *Ledoit-Wolf Shrinkage*, *Risk Parity*, *Monte Carlo GBM* 1.000 jalur)
+- **Mesin Kuantitatif (Backend):** Python 3, NumPy 2.2, SciPy 1.15 (`SLSQP`) via Serverless Function
+- **Analitik & Data Science:** Custom TypeScript ML Engine (K-Means Clustering $K=4$, Logistic Churn Probability, Two-Proportion Z-Test, Loyalty ROI)
+- **Validasi & Pengujian:** Zod 4, Vitest 3 (15 unit test invariansi matematika), ESLint
+- **Deployment:** Vercel (100% Static-First Hybrid & Serverless Python)
