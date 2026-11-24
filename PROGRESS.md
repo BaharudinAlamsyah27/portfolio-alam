@@ -539,3 +539,17 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
 
 **Berikutnya:**
 - Jalankan `git push` untuk deploy ke Vercel.
+
+---
+
+### Sesi 20 — 2026-11-24 23:15 WIB
+**Model:** Gemini 3.8 Flash (Medium)
+**Fase:** 7 — Lanjutan (Proyek CreditPulse — Loan Origination System & Credit Underwriting)
+
+**Dikerjakan:**
+- Menambahkan proyek studi kasus baru [`src/content/projects/creditpulse-los.mdx`](src/content/projects/creditpulse-los.mdx) dengan demo URL `https://creditpulse-los.vercel.app/`.
+- Menyusun rincian fitur & arsitektur: simulasi multi-akad (Anuitas Konvensional & Murabahah/Mudharabah Syariah), pra-screening deterministik (scoring 300–850, DSCR, Altman Z''), forensik mutasi rekening koran 6 bulan (*window dressing* & tolakan kliring), underwriting Four-Eyes Principle, pemisahan neraca bank vs pool investor P2P, manajemen likuiditas Treasury/ALCO (FDR/LDR, CAR/KPMM, BMPK 20%, stress testing), cetak dokumen resmi A4/PDF (MAK, SP3K, Risalah ALCO), dan unit test Vitest 2.1.
+- Menjalankan pengujian `npx astro check` dan `npm run build` untuk memverifikasi halaman detail dan rute i18n (`/projects/creditpulse-los` & `/en/projects/creditpulse-los`).
+
+**Berikutnya:**
+- Jalankan `git push` untuk deploy ke Vercel.

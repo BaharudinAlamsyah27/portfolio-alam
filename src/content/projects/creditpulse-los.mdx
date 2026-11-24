@@ -1,0 +1,96 @@
+---
+title: CreditPulse — Smart Loan Origination System & Credit Underwriting
+tagline: "Prototipe Sistem Origination Kredit, Forensik Rekening, & Manajemen Likuiditas Bank"
+summary:
+  id: "Prototipe aplikasi web Loan Origination System (LOS) dan Credit Underwriting interaktif untuk memodelkan alur pembiayaan perbankan konvensional dan syariah (Anuitas, Murabahah, Mudharabah/Musyarakah), forensik mutasi rekening 6 bulan, underwriting Four-Eyes Principle, serta manajemen likuiditas neraca bank (ALCO, FDR/LDR, CAR, BMPK)."
+  en: "An interactive banking simulation modeling SME Loan Origination Systems (LOS), conventional & Islamic financing (Annuity, Murabahah, Mudharabah), 6-month cash-flow forensics, Four-Eyes Principle underwriting, and bank balance-sheet liquidity management (ALCO, FDR/LDR, CAR, BMPK)."
+role: "Frontend & Quantitative Risk Engineer"
+context: "Simulasi Sistem Origination Kredit Perbankan (LOS) & Underwriting Multi-Portal"
+duration: ""
+stack:
+  - React 18
+  - TypeScript 5.6
+  - Vite 6
+  - Pure TypeScript Credit Engine
+  - Custom SVG Charts
+  - CSS Custom Properties (@media print)
+  - Vitest 2.1
+  - Vercel
+tags:
+  - Loan Origination System (LOS)
+  - Credit Underwriting
+  - Perbankan & Syariah
+  - Amortisasi Anuitas & Murabahah
+  - Altman Z-Score
+  - Forensik Rekening
+  - Four-Eyes Principle
+  - Treasury & ALCO
+  - Custom SVG Charts
+  - Vitest
+category: enterprise
+demoUrl: "https://creditpulse-los.vercel.app/"
+embedPreview: true
+repoUrl: ""
+featured: true
+draft: false
+order: 0
+date: 2026-11-24
+status: selesai
+---
+
+> **Catatan Demo Live:** Aplikasi dapat langsung diuji pada jendela interaktif di atas atau kunjungi langsung [creditpulse-los.vercel.app](https://creditpulse-los.vercel.app/). Sistem berjalan cepat sebagai Single Page Application (SPA) berbasis Vite & React 18 dengan seluruh kalkulasi kuantitatif perbankan dan forensik rekening diproses 100% lokal di browser.
+
+## Gambaran Umum
+
+**CreditPulse** adalah prototipe aplikasi web simulasi *Loan Origination System (LOS)* dan *Credit Underwriting* perbankan yang dirancang untuk memodelkan siklus kredit secara menyeluruh: mulai dari pengajuan debitur, pra-screening kuantitatif, analisis mutasi rekening koran, komite pemutus kredit (*Four-Eyes Principle*), hingga pemantauan likuiditas dan kesehatan neraca bank di meja *Treasury/ALCO*.
+
+Sistem mendukung skema kredit konvensional maupun pembiayaan syariah (*Murabahah* dan *Bagi Hasil Mudharabah/Musyarakah*).
+
+---
+
+## Fitur & Ruang Kerja Utama
+
+### 1. Portal Debitur & Simulator Finansial
+- **Simulasi Angsuran Multi-Akad:** Perhitungan jadwal amortisasi Anuitas Konvensional vs *Margin Flat/Efektif Murabahah*.
+- **Kalkulator Proyeksi Bagi Hasil Usaha:** Simulasi pembiayaan *Mudharabah/Musyarakah* berbasis laba riil dengan matriks sensitivitas 3 skenario (*optimis, moderat, dan pelemahan pasar*).
+
+### 2. Meja Analis Kredit & Forensik Rekening
+- **Pra-Screening Deterministik:** Scoring kredit otomatis (skala 300–850) berdasarkan kapasitas finansial, rasio DSCR/DSR, dan skor *Altman Z''*.
+- **Forensik Mutasi Rekening 6 Bulan:** Deteksi anomali mutasi seperti *window dressing* (lonjakan saldo sesaat jelang penutupan buku) serta tolakan kliring (*bounced check*).
+- **Checklist 4 Tahap & Four-Eyes Principle:** Alur penelaahan dokumen terstruktur dengan panel diskusi dan catatan peninjau independen sebelum diajukan ke komite.
+
+### 3. Pemisahan Jalur Komite & Pendanaan Investor
+- **Dua Jalur Pendanaan Independen:** Memisahkan persetujuan pembiayaan dari neraca internal bank (*Bank Balance Sheet*) dengan jalur sindikasi investor (*P2P / Investor Pool Syariah*).
+- **Penerimaan Penawaran Debitur:** Memastikan debitur menyetujui surat penawaran (*Offering Letter / SP3K*) sebelum dana dapat dicairkan oleh bagian *Treasury*.
+
+### 4. Meja Treasury & Manajemen Likuiditas Bank (ALCO)
+- **Pemantauan Rasio Prudensial Real-Time:** Simulasi dampak pencairan kredit terhadap rasio FDR/LDR, CAR/KPMM, DPK, kas likuid, dan batas BMPK (*Batas Maksimum Pemberian Kredit* 20%).
+- **Uji Stres Likuiditas (Stress Testing):** Simulasi skenario krisis penarikan dana massal (*deposit run*) dan lonjakan kredit bermasalah (*NPL shock*).
+
+### 5. Dokumen Resmi Siap Cetak & Audit Trail
+- **Generator Dokumen Perbankan Format A4:** Tata letak khusus `@media print` untuk mencetak Memorandum Analisis Kredit (MAK), Surat Pemberitahuan Persetujuan Kredit (SP3K), dan Risalah Rapat ALCO ke PDF.
+- **Ekspor Riwayat:** Penyimpanan state simulasi lokal (`localStorage`) serta ekspor audit ke format `.CSV`, `.JSON`, dan `.HTML`.
+
+---
+
+## Keunggulan Teknis & Arsitektur
+
+1. **Pure TypeScript Deterministic Credit Engine:**
+   - Seluruh logika keuangan (jadwal amortisasi, rasio DSCR, Altman Z'', deteksi anomali mutasi 6 bulan, dan neraca perbankan) dibangun dalam modul TypeScript murni tanpa ketergantungan library luar sehingga mudah diuji dan sangat cepat.
+2. **Custom SVG Visualizations (Ringan & Zero-Dependency):**
+   - Menampilkan visualisasi data performa tinggi (*Speedometer Skor Kredit, Area Chart Mutasi 6 Bulan, Donut Portofolio, Diverging Risk Factor, Stacked Amortization*) menggunakan SVG murni tanpa library charting yang berat.
+3. **Pengujian Unit Otomatis (Vitest 2.1):**
+   - Diuji dengan *unit test* komprehensif untuk memastikan akurasi rumus amortisasi bunga/margin, rasio likuiditas bank, dan algoritma deteksi manipulasi rekening.
+
+---
+
+## Teknologi yang Digunakan
+
+- **Frontend Framework:** React 18, TypeScript 5.6
+- **Build Tool & Bundler:** Vite 6 (~400 KB JS Production Bundle)
+- **Quantitative & Risk Engine:** Pure TypeScript Module (`creditEngine.ts`)
+- **Visualisasi Data:** Custom SVG Charts (`AdminCharts.tsx`)
+- **Styling & Print Engine:** CSS Custom Properties, `@media print` A4 Grid, `tabular-nums`
+- **Testing & Kualitas:** Vitest 2.1 (Unit Testing Formula Keuangan & Deteksi Anomali)
+- **Penyimpanan:** Browser LocalStorage & Blob Export API
+- **Deployment:** Vercel (SPA Static Hosting)
