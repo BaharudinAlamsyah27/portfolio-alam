@@ -601,3 +601,18 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
 
 **Berikutnya:**
 - Jalankan `git push origin main` untuk deploy ke Vercel.
+
+
+---
+
+### Sesi 24 — 2026-11-25 19:52 WIB
+**Model:** Gemini 4 Neon (Medium)
+**Fase:** 7 — Lanjutan (Indeks Proyek per Kategori Siap 25+ Karya & Peta Eksplorasi Coding)
+
+**Dikerjakan:**
+- Membuat [`ROADMAP_EKSPLORASI.md`](ROADMAP_EKSPLORASI.md) — peta checklist lengkap 10 cabang dunia pemrograman (Backend, Networking, CLI, Mobile, Game Dev, AI/ML Murni, Security, Browser Extension, Data Engineering, Systems/Compilers) berisi 30+ ide proyek eksplorasi bertahap.
+- Merombak [`ProjectsSection.astro`](src/components/sections/ProjectsSection.astro) menjadi **Indeks Daftar per Kategori (2 kolom rak kategori di desktop)** bergaya `- Judul Proyek ↗ · detail` agar tetap super ringkas, tenang, dan mudah dipindai meski koleksi tumbuh ke 25–50+ proyek.
+- Menjalankan `npx astro check` dan `npm run build` untuk verifikasi.
+
+**Berikutnya:**
+- Jalankan `git push origin main` untuk deploy ke Vercel.

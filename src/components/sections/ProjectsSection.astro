@@ -17,35 +17,81 @@ const allProjects = await getProjectsData(false);
 const homeHref = getLocalizedPath('/', locale);
 const isExternalUrl = (url: string) => /^https?:\/\//i.test(url.trim());
 
-const categoryColors: Record<string, string> = {
-  web: 'bg-tomato text-paper',
-  ai: 'bg-mustard text-ink',
-  enterprise: 'bg-cobalt text-paper',
-  gis: 'bg-leaf text-paper',
-  mobile: 'bg-cobalt text-paper',
-  game: 'bg-blush text-ink',
-  network: 'bg-leaf text-paper',
-  other: 'bg-paper-2 text-ink',
+const categoryOrder = ['enterprise', 'ai', 'web', 'gis', 'mobile', 'game', 'network', 'other'] as const;
+
+const categoryMeta: Record<
+  string,
+  { id: string; en: string; badge: string; dot: string }
+> = {
+  all: { id: 'Semua', en: 'All', badge: 'bg-ink text-paper', dot: 'bg-ink' },
+  enterprise: {
+    id: 'Sistem Kantor & Perbankan',
+    en: 'Enterprise & Banking',
+    badge: 'bg-cobalt text-paper',
+    dot: 'bg-cobalt',
+  },
+  ai: {
+    id: 'AI, Data & Kuantitatif',
+    en: 'AI, Data & Quant',
+    badge: 'bg-mustard text-ink',
+    dot: 'bg-mustard',
+  },
+  web: {
+    id: 'Web App & Utilitas',
+    en: 'Web Apps & Utilities',
+    badge: 'bg-tomato text-paper',
+    dot: 'bg-tomato',
+  },
+  gis: {
+    id: 'Geospasial & 3D',
+    en: 'Geospatial & 3D',
+    badge: 'bg-leaf text-paper',
+    dot: 'bg-leaf',
+  },
+  mobile: {
+    id: 'Mobile App',
+    en: 'Mobile Apps',
+    badge: 'bg-cobalt text-paper',
+    dot: 'bg-cobalt',
+  },
+  game: {
+    id: 'Game & Kreatif',
+    en: 'Games & Creative',
+    badge: 'bg-blush text-ink',
+    dot: 'bg-blush',
+  },
+  network: {
+    id: 'Jaringan & Sistem',
+    en: 'Networking & Systems',
+    badge: 'bg-leaf text-paper',
+    dot: 'bg-leaf',
+  },
+  other: {
+    id: 'Eksperimen Lainnya',
+    en: 'Other Experiments',
+    badge: 'bg-paper-2 text-ink',
+    dot: 'bg-ink-soft',
+  },
 };
 
-const categoryLabels: Record<string, { id: string; en: string }> = {
-  all: { id: 'Semua', en: 'All' },
-  enterprise: { id: 'Sistem Kantor', en: 'Enterprise' },
-  ai: { id: 'AI & Data', en: 'AI & Data' },
-  web: { id: 'Web App', en: 'Web App' },
-  gis: { id: 'Geospasial', en: 'Geospatial' },
-  mobile: { id: 'Mobile', en: 'Mobile' },
-  game: { id: 'Game', en: 'Game' },
-  network: { id: 'Jaringan', en: 'Network' },
-  other: { id: 'Lainnya', en: 'Other' },
-};
+const groupedMap = new Map<string, typeof allProjects>();
+for (const entry of allProjects) {
+  const cat = entry.data.category || 'other';
+  const list = groupedMap.get(cat) ?? [];
+  list.push(entry);
+  groupedMap.set(cat, list);
+}
 
-const categoryCounts = allProjects.reduce<Record<string, number>>((acc, p) => {
-  acc[p.data.category] = (acc[p.data.category] ?? 0) + 1;
-  return acc;
-}, {});
-
-const availableCategories = ['all', ...Object.keys(categoryCounts)];
+const orderedGroups = [
+  ...categoryOrder.filter((cat) => groupedMap.has(cat)),
+  ...Array.from(groupedMap.keys()).filter(
+    (cat) => !(categoryOrder as readonly string[]).includes(cat),
+  ),
+].map((cat) => ({
+  key: cat,
+  meta: categoryMeta[cat] ?? categoryMeta.other,
+  items: groupedMap.get(cat) ?? [],
+}));
 
 const liveDemoCount = allProjects.filter((p) => isExternalUrl(p.data.demoUrl)).length;
 ---
@@ -53,7 +99,7 @@ const liveDemoCount = allProjects.filter((p) => isExternalUrl(p.data.demoUrl)).l
 <section
   id="projects"
   aria-labelledby="projects-heading"
-  class={isArchive ? 'mx-auto max-w-5xl space-y-7' : 'desk-section-projects scroll-mt-20'}
+  class={isArchive ? 'mx-auto max-w-5xl space-y-6' : 'desk-section-projects scroll-mt-20'}
 >
   {
     isArchive && (
@@ -71,14 +117,14 @@ const liveDemoCount = allProjects.filter((p) => isExternalUrl(p.data.demoUrl)).l
     )
   }
 
-  <!-- Header Section -->
-  <div class="mb-6 flex flex-col justify-between gap-3 border-b-2 border-ink pb-4 sm:flex-row sm:items-end">
-    <div class="max-w-2xl space-y-2">
+  <!-- Header Ringkas -->
+  <div class="mb-5 flex flex-col justify-between gap-3 border-b-2 border-ink pb-4 sm:flex-row sm:items-end">
+    <div class="max-w-2xl space-y-1.5">
       <div class="flex items-center gap-2.5">
         <span class="bg-tomato text-paper inline-block rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold uppercase shadow-[2px_2px_0_var(--ink)]">
-          {isArchive ? '/PROJECTS · DIREKTORI KARYA' : '01 · PROJECTS'}
+          {isArchive ? '/PROJECTS · INDEKS KARYA' : '01 · PROJECTS'}
         </span>
-        <TechHobbyOrnaments variant="rocket" class="h-9 w-8" />
+        <TechHobbyOrnaments variant="rocket" class="h-8 w-7" />
       </div>
       {
         isArchive ? (
@@ -91,261 +137,207 @@ const liveDemoCount = allProjects.filter((p) => isExternalUrl(p.data.demoUrl)).l
           </h2>
         )
       }
-      <p class="text-ink-soft text-sm leading-relaxed sm:text-base">
+      <p class="text-ink-soft text-sm leading-relaxed">
         {locale === 'id'
-          ? `Daftar sistem web, prototipe perbankan, dan aplikasi yang pernah saya kerjakan (${allProjects.length} proyek). Klik langsung untuk mencoba demo live-nya.`
-          : `A curated directory of web systems, banking prototypes, and tools I have built (${allProjects.length} projects). Click any item to explore its live demo.`}
+          ? `Indeks sederhana berisi ${allProjects.length} proyek yang dikelompokkan per kategori. Klik judul untuk membuka live demo, atau klik detail untuk catatan teknisnya.`
+          : `A compact index of ${allProjects.length} projects grouped by category. Click any title to open its live demo, or detail for technical notes.`}
       </p>
     </div>
 
-    <div class="flex items-center gap-2">
-      <span class="inline-flex items-center gap-1.5 rounded-sm border-2 border-ink bg-leaf/15 px-3 py-1 font-mono text-xs font-bold text-leaf">
-        <span class="h-2 w-2 rounded-full bg-leaf animate-pulse" aria-hidden="true" />
-        <span>{`${liveDemoCount} ${locale === 'id' ? 'Situs Aktif' : 'Live Sites'}`}</span>
-      </span>
-    </div>
+    <span class="inline-flex shrink-0 items-center gap-1.5 self-start rounded-sm border-2 border-ink bg-leaf/15 px-2.5 py-1 font-mono text-[11px] font-bold text-leaf sm:self-end">
+      <span class="h-2 w-2 rounded-full bg-leaf" aria-hidden="true" />
+      <span>{`${liveDemoCount} ${locale === 'id' ? 'Live' : 'Live'}`}</span>
+    </span>
   </div>
 
-  <!-- Kategori Filter Bar di Atas List -->
-  <div class="mb-5 space-y-3 rounded-md border-2 border-ink bg-paper-2 p-3.5 sm:p-4 shadow-[3px_3px_0_var(--ink)]">
-    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      <!-- Filter Kategori Tabs -->
-      <div
-        class="flex flex-wrap items-center gap-1.5 sm:gap-2"
-        role="group"
-        aria-label={locale === 'id' ? 'Filter kategori proyek' : 'Filter project category'}
-      >
-        {availableCategories.map((cat) => {
-          const count = cat === 'all' ? allProjects.length : (categoryCounts[cat] ?? 0);
-          const label = categoryLabels[cat]?.[locale] ?? cat;
-          return (
-            <button
-              type="button"
-              data-project-filter={cat}
-              aria-pressed={cat === 'all' ? 'true' : 'false'}
-              class={`inline-flex items-center gap-1.5 rounded-sm border-2 border-ink px-2.5 py-1 font-mono text-xs font-bold transition-all ${
-                cat === 'all'
-                  ? 'bg-ink text-paper shadow-[2px_2px_0_var(--mustard)]'
-                  : 'bg-paper text-ink hover:bg-mustard/35'
-              }`}
-            >
-              <span>{label}</span>
-              <span
-                data-count-badge
-                class={`rounded-sm px-1.5 py-0.2 text-[10px] ${
-                  cat === 'all' ? 'bg-mustard text-ink' : 'bg-paper-2 text-ink-soft'
-                }`}
-              >
-                {count}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-
-      <!-- Quick Search Input -->
-      <div class="w-full sm:w-64">
-        <label for="project-search-input" class="sr-only">
-          {locale === 'id' ? 'Cari proyek' : 'Search projects'}
-        </label>
-        <input
-          id="project-search-input"
-          type="search"
-          data-project-search
-          placeholder={
-            locale === 'id'
-              ? 'Filter judul / stack...'
-              : 'Filter title / stack...'
-          }
-          class="w-full rounded-sm border-2 border-ink bg-paper px-3 py-1 font-mono text-xs text-ink placeholder:text-ink-soft/75 focus:outline-none focus:ring-2 focus:ring-mustard"
-        />
-      </div>
-    </div>
-
-    <!-- Info counter & reset -->
-    <div class="flex flex-wrap items-center justify-between gap-2 border-t border-dashed border-ink/20 pt-2 font-mono text-[11px] text-ink-soft">
-      <span data-project-result-count>
-        {locale === 'id'
-          ? `Menampilkan ${allProjects.length} dari ${allProjects.length} proyek`
-          : `Showing ${allProjects.length} of ${allProjects.length} projects`}
-      </span>
-
+  <!-- Filter Kategori + Cari Cepat -->
+  <div class="mb-5 flex flex-col gap-3 rounded-md border-2 border-ink bg-paper-2 p-3 sm:flex-row sm:items-center sm:justify-between shadow-[3px_3px_0_var(--ink)]">
+    <div
+      class="flex flex-wrap items-center gap-1.5"
+      role="group"
+      aria-label={locale === 'id' ? 'Filter kategori proyek' : 'Filter project category'}
+    >
       <button
         type="button"
-        data-project-reset
-        class="hidden font-bold text-tomato underline underline-offset-2 hover:text-ink"
+        data-project-filter="all"
+        aria-pressed="true"
+        class="inline-flex items-center gap-1.5 rounded-sm border-2 border-ink bg-ink px-2.5 py-1 font-mono text-xs font-bold text-paper shadow-[2px_2px_0_var(--mustard)] transition-all"
       >
-        {locale === 'id' ? 'Reset filter' : 'Reset filters'}
+        <span>{categoryMeta.all[locale]}</span>
+        <span data-count-badge class="rounded-sm bg-mustard px-1.5 text-[10px] text-ink">
+          {allProjects.length}
+        </span>
       </button>
+
+      {orderedGroups.map((group) => (
+        <button
+          type="button"
+          data-project-filter={group.key}
+          aria-pressed="false"
+          class="inline-flex items-center gap-1.5 rounded-sm border-2 border-ink bg-paper px-2.5 py-1 font-mono text-xs font-bold text-ink transition-all hover:bg-mustard/35"
+        >
+          <span>{group.meta[locale]}</span>
+          <span data-count-badge class="rounded-sm bg-paper-2 px-1.5 text-[10px] text-ink-soft">
+            {group.items.length}
+          </span>
+        </button>
+      ))}
+    </div>
+
+    <div class="flex items-center gap-2 sm:w-56">
+      <label for="project-search-input" class="sr-only">
+        {locale === 'id' ? 'Cari proyek' : 'Search projects'}
+      </label>
+      <input
+        id="project-search-input"
+        type="search"
+        data-project-search
+        placeholder={locale === 'id' ? 'Cari judul / stack...' : 'Search title / stack...'}
+        class="w-full rounded-sm border-2 border-ink bg-paper px-2.5 py-1 font-mono text-xs text-ink placeholder:text-ink-soft/75 focus:outline-none focus:ring-2 focus:ring-mustard"
+      />
     </div>
   </div>
 
-  <!-- DAFTAR SITUS / LIST DIREKTORI BERSIH & SEDERHANA -->
-  <div class="space-y-3" data-project-list>
+  <!-- INDEKS PER KATEGORI (2 Kolom di Desktop, Siap 25+ Proyek Tanpa Scroll Panjang) -->
+  <div class="grid gap-5 md:grid-cols-2" data-project-groups>
     {
-      allProjects.map((entry, idx) => {
-        const summary = pickLocale(entry.data.summary, locale);
-        const statusKey = `projects.status.${entry.data.status}` as const;
-        const detailHref = getLocalizedPath(`/projects/${entry.id}`, locale);
-        const hasExternalDemo = isExternalUrl(entry.data.demoUrl);
-        const catLabel = categoryLabels[entry.data.category]?.[locale] ?? entry.data.category;
-        const searchableText = [
-          entry.data.title,
-          entry.data.tagline,
-          summary,
-          catLabel,
-          entry.data.category,
-          entry.data.role,
-          entry.data.context,
-          ...entry.data.stack,
-          ...entry.data.tags,
-        ]
-          .join(' ')
-          .toLowerCase();
-        const stacksAttr = entry.data.stack.map((s) => s.trim().toLowerCase()).join('|');
-
-        return (
-          <article
-            data-project-card
-            data-category={entry.data.category}
-            data-stacks={stacksAttr}
-            data-search={searchableText}
-            data-has-live={hasExternalDemo ? 'true' : 'false'}
-            class="group relative flex flex-col justify-between gap-3.5 rounded-md border-2 border-ink bg-paper p-4 transition-all duration-150 hover:-translate-y-0.5 hover:bg-paper-2 hover:shadow-[4px_4px_0_var(--ink)] sm:flex-row sm:items-center sm:gap-6"
-          >
-            <!-- Konten Kiri & Deskripsi -->
-            <div class="min-w-0 flex-1 space-y-1.5">
-              <div class="flex flex-wrap items-center gap-2">
-                <span class="font-mono text-xs font-bold text-ink-soft/75">
-                  #{String(idx + 1).padStart(2, '0')}
-                </span>
-
-                <span
-                  class={`rounded-sm border border-ink px-2 py-0.2 font-mono text-[10px] font-bold uppercase ${
-                    categoryColors[entry.data.category] ?? categoryColors.other
-                  }`}
-                >
-                  {catLabel}
-                </span>
-
-                {hasExternalDemo && (
-                  <span class="inline-flex items-center gap-1 font-mono text-[10px] font-bold text-leaf">
-                    <span class="h-1.5 w-1.5 rounded-full bg-leaf animate-pulse" aria-hidden="true" />
-                    LIVE
-                  </span>
-                )}
-
-                <span class="font-mono text-[10px] text-ink-soft/70">
-                  {t(statusKey)}
-                </span>
-              </div>
-
-              <!-- Judul Proyek -->
-              <div>
-                <h3 class="font-display text-base font-extrabold text-ink transition-colors group-hover:text-tomato sm:text-lg">
-                  <a
-                    href={hasExternalDemo ? entry.data.demoUrl : detailHref}
-                    target={hasExternalDemo ? '_blank' : undefined}
-                    rel={hasExternalDemo ? 'noopener noreferrer' : undefined}
-                    class="focus:outline-none focus:underline"
-                  >
-                    {entry.data.title}
-                    {hasExternalDemo && <span class="ml-1 inline-block text-xs font-normal text-ink-soft">↗</span>}
-                  </a>
-                </h3>
-
-                <p class="text-xs text-ink-soft leading-relaxed line-clamp-2 mt-0.5 sm:text-sm">
-                  {summary}
-                </p>
-              </div>
-
-              <!-- Tech Stack Badges Ringkas -->
-              <ul class="flex flex-wrap items-center gap-1.5 pt-1" aria-label="Tech stack">
-                {entry.data.stack.slice(0, 5).map((tech) => (
-                  <li class="rounded-sm border border-ink/30 bg-paper-2 px-1.5 py-0.2 font-mono text-[10px] text-ink-soft">
-                    {tech}
-                  </li>
-                ))}
-                {entry.data.stack.length > 5 && (
-                  <li class="font-mono text-[10px] text-ink-soft/60">
-                    +{entry.data.stack.length - 5}
-                  </li>
-                )}
-              </ul>
+      orderedGroups.map((group) => (
+        <section
+          data-project-group={group.key}
+          class="sticker-card flex flex-col rounded-md bg-paper p-4 sm:p-5"
+        >
+          <!-- Judul Kategori -->
+          <div class="mb-3 flex items-center justify-between gap-2 border-b-2 border-dashed border-ink/25 pb-2.5">
+            <div class="flex items-center gap-2">
+              <span
+                class={`h-2.5 w-2.5 shrink-0 rounded-full border border-ink ${group.meta.dot}`}
+                aria-hidden="true"
+              />
+              <h3 class="font-display text-base font-extrabold text-ink sm:text-lg">
+                {group.meta[locale]}
+              </h3>
             </div>
+            <span
+              data-group-count
+              class={`rounded-sm border border-ink px-2 py-0.2 font-mono text-[10px] font-bold ${group.meta.badge}`}
+            >
+              {group.items.length}
+            </span>
+          </div>
 
-            <!-- Tombol Aksi Kanan -->
-            <div class="flex shrink-0 items-center gap-2 border-t border-dashed border-ink/20 pt-2.5 sm:border-t-0 sm:pt-0">
-              {hasExternalDemo && (
-                <a
-                  href={entry.data.demoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="sticker-btn bg-mustard text-ink rounded-sm px-3.5 py-1.5 font-mono text-xs font-bold transition-all hover:bg-mustard/90 shadow-[2px_2px_0_var(--ink)]"
+          <!-- Daftar Judul Minimalis dengan tanda "-" -->
+          <ul class="divide-y divide-dashed divide-ink/15">
+            {group.items.map((entry) => {
+              const summary = pickLocale(entry.data.summary, locale);
+              const detailHref = getLocalizedPath(`/projects/${entry.id}`, locale);
+              const hasExternalDemo = isExternalUrl(entry.data.demoUrl);
+              const primaryHref = hasExternalDemo ? entry.data.demoUrl : detailHref;
+              const shortTitle = entry.data.title.split('—')[0]?.trim() || entry.data.title;
+              const subTitle = entry.data.title.includes('—')
+                ? entry.data.title.split('—').slice(1).join('—').trim()
+                : entry.data.tagline;
+              const searchableText = [
+                entry.data.title,
+                entry.data.tagline,
+                summary,
+                group.meta[locale],
+                entry.data.category,
+                ...entry.data.stack,
+                ...entry.data.tags,
+              ]
+                .join(' ')
+                .toLowerCase();
+
+              return (
+                <li
+                  data-project-item
+                  data-category={group.key}
+                  data-search={searchableText}
+                  class="group flex items-start justify-between gap-3 py-2.5 first:pt-1 last:pb-0"
                 >
-                  {locale === 'id' ? 'Buka Demo' : 'Live Demo'} ↗
-                </a>
-              )}
+                  <div class="flex min-w-0 items-baseline gap-2">
+                    <span class="font-mono text-xs font-bold text-tomato select-none" aria-hidden="true">
+                      -
+                    </span>
+                    <div class="min-w-0">
+                      <a
+                        href={primaryHref}
+                        target={hasExternalDemo ? '_blank' : undefined}
+                        rel={hasExternalDemo ? 'noopener noreferrer' : undefined}
+                        class="font-sans text-sm font-bold text-ink underline-offset-4 transition-colors group-hover:text-tomato group-hover:underline"
+                      >
+                        {shortTitle}
+                        {hasExternalDemo && (
+                          <span class="ml-1 font-mono text-[11px] font-normal text-ink-soft">↗</span>
+                        )}
+                      </a>
+                      {subTitle && (
+                        <p class="truncate text-xs text-ink-soft" title={subTitle}>
+                          {subTitle}
+                        </p>
+                      )}
+                    </div>
+                  </div>
 
-              <a
-                href={detailHref}
-                class="sticker-btn bg-paper text-ink rounded-sm px-3 py-1.5 font-mono text-xs hover:bg-paper-2 transition-all"
-              >
-                {locale === 'id' ? 'Detail' : 'Details'} →
-              </a>
-
-              {entry.data.repoUrl && (
-                <a
-                  href={entry.data.repoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="sticker-btn bg-paper-2 text-ink rounded-sm p-1.5 font-mono text-xs hover:bg-paper transition-all"
-                  title="GitHub Repository"
-                  aria-label="GitHub Repository"
-                >
-                  <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                  </svg>
-                </a>
-              )}
-            </div>
-          </article>
-        );
-      })
+                  <div class="flex shrink-0 items-center gap-2 pt-0.5 font-mono text-[11px]">
+                    <a
+                      href={detailHref}
+                      class="rounded-sm border border-ink/30 bg-paper-2 px-1.5 py-0.5 text-ink-soft transition-colors hover:border-ink hover:bg-mustard/50 hover:text-ink"
+                      title={locale === 'id' ? 'Baca catatan teknis' : 'Read technical notes'}
+                    >
+                      {locale === 'id' ? 'detail' : 'notes'}
+                    </a>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ))
     }
   </div>
 
-  <!-- Empty State saat filter tidak menemukan hasil -->
+  <!-- Info jumlah hasil & Empty State -->
+  <div class="mt-4 flex flex-wrap items-center justify-between gap-2 font-mono text-[11px] text-ink-soft">
+    <span data-project-result-count>
+      {locale === 'id'
+        ? `Menampilkan ${allProjects.length} proyek dalam ${orderedGroups.length} kategori`
+        : `Showing ${allProjects.length} projects across ${orderedGroups.length} categories`}
+    </span>
+    <button
+      type="button"
+      data-project-reset
+      class="hidden font-bold text-tomato underline underline-offset-2 hover:text-ink"
+    >
+      {locale === 'id' ? 'Reset filter' : 'Reset filter'}
+    </button>
+  </div>
+
   <div
     data-project-empty
-    class="mt-6 hidden rounded-md border-2 border-dashed border-ink/40 bg-paper-2 p-8 text-center"
+    class="mt-4 hidden rounded-md border-2 border-dashed border-ink/40 bg-paper-2 p-6 text-center"
   >
-    <p class="font-display text-lg font-bold text-ink">
+    <p class="font-display text-base font-bold text-ink">
       {locale === 'id'
-        ? 'Belum ada proyek yang cocok dengan filter ini.'
-        : 'No projects match these filters.'}
-    </p>
-    <p class="mt-1 text-xs text-ink-soft">
-      {locale === 'id'
-        ? 'Coba ubah kata kunci atau pilih kategori lain.'
-        : 'Try adjusting your search or select another category.'}
+        ? 'Tidak ada proyek yang cocok dengan pencarian ini.'
+        : 'No projects match this filter.'}
     </p>
     <button
       type="button"
       data-project-reset-empty
-      class="sticker-btn bg-mustard text-ink mt-4 rounded-sm px-4 py-1.5 font-mono text-xs"
+      class="sticker-btn bg-mustard text-ink mt-3 rounded-sm px-3.5 py-1.5 font-mono text-xs"
     >
-      {locale === 'id' ? 'Reset Filter' : 'Reset Filters'}
+      {locale === 'id' ? 'Tampilkan Semua' : 'Show All'}
     </button>
   </div>
 </section>
 
-<!-- Filter Script (Aktif di Beranda maupun Halaman /projects) -->
 <script>
   document.addEventListener('astro:page-load', () => {
-    const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-project-card]'));
+    const groups = Array.from(document.querySelectorAll<HTMLElement>('[data-project-group]'));
+    const items = Array.from(document.querySelectorAll<HTMLElement>('[data-project-item]'));
     const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-project-filter]'));
-    if (cards.length === 0 || buttons.length === 0) return;
+    if (items.length === 0 || buttons.length === 0) return;
 
     const searchInput = document.querySelector<HTMLInputElement>('[data-project-search]');
     const resultCountEl = document.querySelector<HTMLElement>('[data-project-result-count]');
@@ -358,28 +350,44 @@ const liveDemoCount = allProjects.filter((p) => isExternalUrl(p.data.demoUrl)).l
     let searchQuery = '';
 
     const applyFilters = () => {
-      const hasActiveFilter = activeCategory !== 'all' || searchQuery.trim().length > 0;
-      let visibleCount = 0;
+      const q = searchQuery.trim().toLowerCase();
+      const hasActiveFilter = activeCategory !== 'all' || q.length > 0;
+      let totalVisible = 0;
+      let visibleGroups = 0;
 
-      cards.forEach((card) => {
-        const cat = card.dataset.category || '';
-        const haystack = card.dataset.search || '';
+      groups.forEach((groupEl) => {
+        const groupKey = groupEl.dataset.projectGroup || '';
+        const groupItems = Array.from(groupEl.querySelectorAll<HTMLElement>('[data-project-item]'));
+        let groupVisible = 0;
 
-        const match =
-          (activeCategory === 'all' || cat === activeCategory) &&
-          (!searchQuery.trim() || haystack.includes(searchQuery.trim().toLowerCase()));
+        groupItems.forEach((item) => {
+          const cat = item.dataset.category || '';
+          const haystack = item.dataset.search || '';
+          const match =
+            (activeCategory === 'all' || cat === activeCategory) && (!q || haystack.includes(q));
+          item.classList.toggle('hidden', !match);
+          if (match) {
+            groupVisible += 1;
+            totalVisible += 1;
+          }
+        });
 
-        card.classList.toggle('hidden', !match);
-        if (match) visibleCount += 1;
+        const showGroup =
+          (activeCategory === 'all' || groupKey === activeCategory) && groupVisible > 0;
+        groupEl.classList.toggle('hidden', !showGroup);
+        if (showGroup) visibleGroups += 1;
+
+        const countBadge = groupEl.querySelector<HTMLElement>('[data-group-count]');
+        if (countBadge) countBadge.textContent = String(groupVisible);
       });
 
-      emptyEl?.classList.toggle('hidden', visibleCount > 0);
+      emptyEl?.classList.toggle('hidden', totalVisible > 0);
       resetBtn?.classList.toggle('hidden', !hasActiveFilter);
 
       if (resultCountEl) {
         resultCountEl.textContent = isEn
-          ? `Showing ${visibleCount} of ${cards.length} projects`
-          : `Menampilkan ${visibleCount} dari ${cards.length} proyek`;
+          ? `Showing ${totalVisible} projects across ${visibleGroups} categories`
+          : `Menampilkan ${totalVisible} proyek dalam ${visibleGroups} kategori`;
       }
     };
 
@@ -388,13 +396,13 @@ const liveDemoCount = allProjects.filter((p) => isExternalUrl(p.data.demoUrl)).l
         const active = (btn.dataset.projectFilter || 'all') === activeCategory;
         btn.setAttribute('aria-pressed', active ? 'true' : 'false');
         btn.className = active
-          ? 'inline-flex items-center gap-1.5 rounded-sm border-2 border-ink px-2.5 py-1 font-mono text-xs font-bold transition-all bg-ink text-paper shadow-[2px_2px_0_var(--mustard)]'
-          : 'inline-flex items-center gap-1.5 rounded-sm border-2 border-ink px-2.5 py-1 font-mono text-xs font-bold transition-all bg-paper text-ink hover:bg-mustard/35';
+          ? 'inline-flex items-center gap-1.5 rounded-sm border-2 border-ink bg-ink px-2.5 py-1 font-mono text-xs font-bold text-paper shadow-[2px_2px_0_var(--mustard)] transition-all'
+          : 'inline-flex items-center gap-1.5 rounded-sm border-2 border-ink bg-paper px-2.5 py-1 font-mono text-xs font-bold text-ink transition-all hover:bg-mustard/35';
         const badge = btn.querySelector<HTMLElement>('[data-count-badge]');
         if (badge) {
           badge.className = active
-            ? 'rounded-sm px-1.5 py-0.2 text-[10px] bg-mustard text-ink'
-            : 'rounded-sm px-1.5 py-0.2 text-[10px] bg-paper-2 text-ink-soft';
+            ? 'rounded-sm bg-mustard px-1.5 text-[10px] text-ink'
+            : 'rounded-sm bg-paper-2 px-1.5 text-[10px] text-ink-soft';
         }
       });
     };
