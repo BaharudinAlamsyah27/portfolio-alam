@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import AudienceSwitcher from '../islands/AudienceSwitcher';
+import LiveDeskStatus from '../islands/LiveDeskStatus';
 import HandDrawn from '../doodles/HandDrawn.astro';
 import RimuruSticker from '../islands/RimuruSticker';
 import LuminousCard from '../islands/LuminousCard';
@@ -33,6 +34,8 @@ const projectsHref = getLocalizedPath('/projects', locale);
           <span>{t('status.magang')}</span>
           <TechHobbyOrnaments variant="flag-id" class="ml-0.5" />
         </div>
+
+        <LiveDeskStatus client:idle locale={locale} />
 
         <span class="font-mono text-xs uppercase tracking-wider text-ink-soft">
           {t('home.eyebrow')}

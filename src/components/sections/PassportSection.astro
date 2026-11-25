@@ -2,6 +2,7 @@
 import Tape from '../ui/Tape.astro';
 import CultureOrnaments from '../doodles/CultureOrnaments.astro';
 import PolaroidStack from '../islands/PolaroidStack';
+import PassportMap from '../islands/PassportMap';
 import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
 import { getPlacesData, getProfileData, pickLocale } from '../../lib/content';
 
@@ -93,6 +94,8 @@ function formatStampDate(date?: Date) {
           })
         }
       </div>
+
+      <PassportMap client:visible locale={locale} />
 
       <PolaroidStack client:visible locale={locale} />
       </div>

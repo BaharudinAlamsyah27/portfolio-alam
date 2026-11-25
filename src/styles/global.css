@@ -660,3 +660,12 @@ html[data-audience='klien'] .desk-section-skills {
     scroll-behavior: auto;
   }
 }
+
+
+/* Mode Fokus Baca — meredupkan ornamen samping & ambien saat membaca artikel/studi kasus */
+html[data-focus-read='true'] .side-margin-ornament,
+html[data-focus-read='true'] .ambient-ornament,
+html[data-focus-read='true'] [data-ambient-ornament] {
+  opacity: 0.08 !important;
+  transition: opacity 250ms ease;
+}

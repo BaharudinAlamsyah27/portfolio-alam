@@ -1,0 +1,334 @@
+---
+import Tape from '../ui/Tape.astro';
+import { getLocaleFromUrl, getLocalizedPath } from '../../i18n/utils';
+import {
+  getExperienceData,
+  getProfileData,
+  getProjectsData,
+  getSkillsData,
+  pickLocale,
+} from '../../lib/content';
+
+const locale = getLocaleFromUrl(Astro.url);
+const isEn = locale === 'en';
+const homeHref = getLocalizedPath('/', locale);
+const projectsHref = getLocalizedPath('/projects', locale);
+
+const [profile, experiences, skills, projects] = await Promise.all([
+  getProfileData(),
+  getExperienceData(),
+  getSkillsData(),
+  getProjectsData(false),
+]);
+
+const name = profile?.name ?? 'Baharudin Alamsyah';
+const bio = pickLocale(profile?.bio, locale);
+const tagline = pickLocale(profile?.tagline, locale);
+const email = profile?.email ?? '';
+const socials = profile?.socials ?? [];
+const githubUrl = socials.find((s) => s.platform === 'github')?.url ?? '';
+const linkedinUrl = socials.find((s) => s.platform === 'linkedin')?.url ?? '';
+
+const groupedSkills = {
+  dikuasai: skills.filter((s) => s.level === 'dikuasai'),
+  didalami: skills.filter((s) => s.level === 'didalami'),
+  dieksplor: skills.filter((s) => s.level === 'dieksplor'),
+};
+
+const selectedProjects = projects.slice(0, 6);
+
+const hrSummaryText = isEn
+  ? `${name} — Full-Stack Web Developer (Fresh Graduate, MagangHub at BPRS Sukowati Sragen).\nCore: ${groupedSkills.dikuasai.map((s) => s.name).join(', ')}.\nPortfolio: https://baharudin-alamsyah.vercel.app/${email ? `\nEmail: ${email}` : ''}`
+  : `${name} — Web Developer (Fresh Graduate, MagangHub di BPRS Sukowati Sragen).\nKeahlian utama: ${groupedSkills.dikuasai.map((s) => s.name).join(', ')}.\nPortofolio: https://baharudin-alamsyah.vercel.app/${email ? `\nEmail: ${email}` : ''}`;
+
+const updatedStr = new Date().toLocaleDateString(isEn ? 'en-US' : 'id-ID', {
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<section class="cv-page mx-auto max-w-4xl space-y-6">
+  <!-- Bar aksi atas (disembunyikan saat cetak PDF) -->
+  <div class="cv-no-print flex flex-wrap items-center justify-between gap-3">
+    <a
+      href={homeHref}
+      class="sticker-btn bg-paper-2 text-ink rounded-sm px-3.5 py-1.5 font-mono text-xs"
+    >
+      &larr; {isEn ? 'Back to desk' : 'Kembali ke meja'}
+    </a>
+
+    <div class="flex flex-wrap items-center gap-2.5">
+      <button
+        type="button"
+        data-cv-copy
+        data-copy-text={hrSummaryText}
+        class="sticker-btn bg-paper text-ink rounded-sm px-3.5 py-1.5 font-mono text-xs"
+      >
+        <span data-cv-copy-label>{isEn ? 'Copy HR Summary' : 'Salin Ringkasan HR'}</span>
+      </button>
+
+      <button
+        type="button"
+        data-cv-print
+        class="sticker-btn bg-tomato text-paper rounded-sm px-4 py-1.5 font-mono text-xs font-bold"
+      >
+        <span>🖨️</span>
+        <span>{isEn ? 'Print / Save PDF (A4)' : 'Cetak / Simpan PDF (A4)'}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Lembar Kertas CV -->
+  <article class="cv-sheet sticker-card relative rounded-md bg-paper p-6 sm:p-10">
+    <Tape color="mustard" rotate="-rotate-1" class="cv-no-print absolute -top-3 left-10" />
+
+    <!-- Header Identitas -->
+    <header class="flex flex-col justify-between gap-4 border-b-2 border-ink pb-5 sm:flex-row sm:items-end">
+      <div class="space-y-1.5">
+        <span class="cv-no-print bg-mustard text-ink inline-block rounded-sm border border-ink px-2 py-0.5 font-mono text-[10px] font-bold uppercase">
+          CURRICULUM VITAE · AUTO-SYNC
+        </span>
+        <h1 class="font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
+          {name}
+        </h1>
+        <p class="font-mono text-xs font-semibold text-cobalt sm:text-sm">
+          {isEn ? 'Web Programmer · Fresh Graduate · MagangHub' : 'Web Programmer · Fresh Graduate · MagangHub'}
+        </p>
+        {tagline && <p class="text-xs italic text-ink-soft">&ldquo;{tagline}&rdquo;</p>}
+      </div>
+
+      <ul class="space-y-1 font-mono text-xs text-ink-soft sm:text-right">
+        <li>📍 Sragen / Brebes, Jawa Tengah, ID</li>
+        <li>
+          🌐 <a href="https://baharudin-alamsyah.vercel.app" class="text-ink underline underline-offset-2">
+            baharudin-alamsyah.vercel.app
+          </a>
+        </li>
+        {email && (
+          <li>
+            ✉️ <a href={`mailto:${email}`} class="text-ink underline underline-offset-2">{email}</a>
+          </li>
+        )}
+        {githubUrl && (
+          <li>
+            🐙 <a href={githubUrl} target="_blank" rel="noopener noreferrer" class="text-ink underline underline-offset-2">
+              {githubUrl.replace(/^https?:\/\//, '')}
+            </a>
+          </li>
+        )}
+        {linkedinUrl && (
+          <li>
+            💼 <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" class="text-ink underline underline-offset-2">
+              LinkedIn
+            </a>
+          </li>
+        )}
+      </ul>
+    </header>
+
+    <!-- Ringkasan -->
+    <section class="mt-6 space-y-2">
+      <h2 class="font-mono text-xs font-bold uppercase tracking-wider text-tomato">
+        {isEn ? '01 · Profile Summary' : '01 · Ringkasan Profil'}
+      </h2>
+      <p class="text-sm leading-relaxed text-ink-soft">{bio}</p>
+    </section>
+
+    <!-- Pengalaman & Pendidikan -->
+    <section class="mt-7 space-y-3 border-t border-dashed border-ink/25 pt-5">
+      <h2 class="font-mono text-xs font-bold uppercase tracking-wider text-tomato">
+        {isEn ? '02 · Experience & Education' : '02 · Pengalaman & Pendidikan'}
+      </h2>
+      <ol class="space-y-3.5">
+        {
+          experiences.map((exp) => {
+            const roleTitle = pickLocale(exp.data.title, locale);
+            const desc = pickLocale(exp.data.description, locale);
+            const startYear = exp.data.start ? new Date(exp.data.start).getFullYear() : '';
+            const endYear = exp.data.end
+              ? new Date(exp.data.end).getFullYear()
+              : exp.data.current
+                ? isEn
+                  ? 'Present'
+                  : 'Sekarang'
+                : '';
+            const period = startYear ? `${startYear} — ${endYear}` : '';
+
+            return (
+              <li class="space-y-1">
+                <div class="flex flex-wrap items-baseline justify-between gap-2">
+                  <h3 class="font-display text-base font-bold text-ink">
+                    {roleTitle} <span class="text-ink-soft font-normal">·</span>{' '}
+                    <span class="text-cobalt">{exp.data.organization}</span>
+                  </h3>
+                  {period && (
+                    <span class="font-mono text-xs font-semibold text-ink-soft">{period}</span>
+                  )}
+                </div>
+                <p class="text-xs leading-relaxed text-ink-soft sm:text-sm">{desc}</p>
+              </li>
+            );
+          })
+        }
+      </ol>
+    </section>
+
+    <!-- Keahlian Teknis -->
+    <section class="mt-7 space-y-3 border-t border-dashed border-ink/25 pt-5">
+      <h2 class="font-mono text-xs font-bold uppercase tracking-wider text-tomato">
+        {isEn ? '03 · Technical Skills' : '03 · Keahlian Teknis'}
+      </h2>
+
+      <dl class="space-y-2 text-xs sm:text-sm">
+        <div class="grid gap-1 sm:grid-cols-12">
+          <dt class="font-mono font-bold text-ink sm:col-span-3">
+            {isEn ? 'Core / Daily' : 'Dikuasai'}
+          </dt>
+          <dd class="text-ink-soft sm:col-span-9">
+            {groupedSkills.dikuasai.map((s) => s.name).join(' · ')}
+          </dd>
+        </div>
+        <div class="grid gap-1 sm:grid-cols-12">
+          <dt class="font-mono font-bold text-ink sm:col-span-3">
+            {isEn ? 'Deepening' : 'Sedang Didalami'}
+          </dt>
+          <dd class="text-ink-soft sm:col-span-9">
+            {groupedSkills.didalami.map((s) => s.name).join(' · ')}
+          </dd>
+        </div>
+        <div class="grid gap-1 sm:grid-cols-12">
+          <dt class="font-mono font-bold text-ink sm:col-span-3">
+            {isEn ? 'Exploring' : 'Dieksplor'}
+          </dt>
+          <dd class="text-ink-soft sm:col-span-9">
+            {groupedSkills.dieksplor.map((s) => s.name).join(' · ')}
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <!-- Proyek Terpilih -->
+    <section class="mt-7 space-y-3 border-t border-dashed border-ink/25 pt-5">
+      <div class="flex items-center justify-between gap-2">
+        <h2 class="font-mono text-xs font-bold uppercase tracking-wider text-tomato">
+          {isEn
+            ? `04 · Selected Projects (${selectedProjects.length} of ${projects.length})`
+            : `04 · Proyek Pilihan (${selectedProjects.length} dari ${projects.length})`}
+        </h2>
+        <a
+          href={projectsHref}
+          class="cv-no-print font-mono text-[11px] font-bold text-cobalt underline underline-offset-2"
+        >
+          {isEn ? 'Full directory →' : 'Lihat daftar lengkap →'}
+        </a>
+      </div>
+
+      <ul class="space-y-3">
+        {
+          selectedProjects.map((proj) => {
+            const sum = pickLocale(proj.data.summary, locale);
+            return (
+              <li class="space-y-0.5">
+                <div class="flex flex-wrap items-baseline justify-between gap-2">
+                  <h3 class="font-display text-sm font-bold text-ink sm:text-base">
+                    {proj.data.title}
+                  </h3>
+                  {proj.data.demoUrl && (
+                    <a
+                      href={proj.data.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="font-mono text-[11px] text-cobalt underline underline-offset-2"
+                    >
+                      {proj.data.demoUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                    </a>
+                  )}
+                </div>
+                <p class="text-xs leading-relaxed text-ink-soft line-clamp-2">{sum}</p>
+                <p class="font-mono text-[10px] text-ink-soft/80">
+                  Stack: {proj.data.stack.slice(0, 6).join(', ')}
+                </p>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </section>
+
+    <!-- Footer Kertas CV -->
+    <footer class="mt-8 flex flex-wrap items-center justify-between gap-2 border-t-2 border-ink pt-3 font-mono text-[11px] text-ink-soft">
+      <span>
+        {isEn ? `Auto-synced from portfolio · ${updatedStr}` : `Disinkronkan otomatis dari portofolio · ${updatedStr}`}
+      </span>
+      <span>baharudin-alamsyah.vercel.app/cv</span>
+    </footer>
+  </article>
+</section>
+
+<style is:global>
+  @media print {
+    @page {
+      size: A4 portrait;
+      margin: 12mm;
+    }
+
+    body > header,
+    body > footer,
+    .cv-no-print,
+    [data-scroll-top],
+    [data-scroll-progress],
+    #cat-companion-root,
+    .side-margin-ornament,
+    .ambient-ornament {
+      display: none !important;
+    }
+
+    body {
+      background: #ffffff !important;
+      color: #1f1b16 !important;
+    }
+
+    main#main-content {
+      max-width: 100% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .cv-sheet {
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      background: #ffffff !important;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const printBtn = document.querySelector<HTMLButtonElement>('[data-cv-print]');
+    if (printBtn && printBtn.dataset.bound !== 'true') {
+      printBtn.dataset.bound = 'true';
+      printBtn.addEventListener('click', () => window.print());
+    }
+
+    const copyBtn = document.querySelector<HTMLButtonElement>('[data-cv-copy]');
+    const copyLabel = document.querySelector<HTMLElement>('[data-cv-copy-label]');
+    if (copyBtn && copyLabel && copyBtn.dataset.bound !== 'true') {
+      copyBtn.dataset.bound = 'true';
+      const original = copyLabel.textContent || '';
+      const isEn = document.documentElement.lang === 'en';
+      copyBtn.addEventListener('click', async () => {
+        const text = copyBtn.dataset.copyText || '';
+        try {
+          await navigator.clipboard.writeText(text);
+          copyLabel.textContent = isEn ? '✓ Copied!' : '✓ Tersalin!';
+          setTimeout(() => {
+            copyLabel.textContent = original;
+          }, 2200);
+        } catch {
+          // fallback diam
+        }
+      });
+    }
+  });
+</script>

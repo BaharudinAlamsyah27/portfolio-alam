@@ -14,6 +14,7 @@ import '../styles/global.css';
 import TerminalModal from '../components/islands/TerminalModal';
 import CatCompanion from '../components/islands/CatCompanion';
 import DeskAudio from '../components/islands/DeskAudio';
+import ColophonModal from '../components/islands/ColophonModal';
 import RimuruDoodle from '../components/doodles/RimuruDoodle.astro';
 import CultureOrnaments from '../components/doodles/CultureOrnaments.astro';
 import MidnightAtmosphere from '../components/doodles/MidnightAtmosphere.astro';
@@ -409,6 +410,13 @@ const terminalContext: TerminalContext = {
           <a href={logHref} class="text-ink hover:text-tomato underline underline-offset-4">
             /log
           </a>
+          <a
+            href={locale === 'en' ? '/en/cv' : '/cv'}
+            class="text-ink hover:text-tomato underline underline-offset-4"
+          >
+            /cv
+          </a>
+          <ColophonModal client:idle locale={locale} />
           <span>
             Astro + Preact + Tailwind v4 · <span class="text-ink font-semibold">Rp0 stack</span>
           </span>

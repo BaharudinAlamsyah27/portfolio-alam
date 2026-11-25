@@ -583,3 +583,21 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
 
 **Berikutnya:**
 - `git push` untuk deploy.
+
+
+---
+
+### Sesi 23 — 2026-11-25 19:29 WIB
+**Model:** Gemini 4 Neon (Medium)
+**Fase:** 7 — Lanjutan (6 Fitur Nuansa Manusia & Tactile UX di Berbagai Halaman)
+
+**Dikerjakan:**
+1. **Halaman CV Interaktif Siap Cetak A4 (`/cv` & `/en/cv`):** Membuat [`CvView.astro`](src/components/sections/CvView.astro), [`src/pages/cv.astro`](src/pages/cv.astro), dan [`src/pages/en/cv.astro`](src/pages/en/cv.astro) yang otomatis tersinkronisasi dari Content Collections, dilengkapi tombol cetak PDF (`@media print` A4 bersih) & salin ringkasan HR; menautkannya di [`AboutSection.astro`](src/components/sections/AboutSection.astro), footer [`BaseLayout.astro`](src/layouts/BaseLayout.astro), dan [`sitemap.xml.ts`](src/pages/sitemap.xml.ts).
+2. **Jam Lokal Sragen & Status Meja Kerja:** Membuat [`LiveDeskStatus.tsx`](src/components/islands/LiveDeskStatus.tsx) (WIB real-time + aktivitas kontekstual per jam) dan memasangnya di [`HeroSection.astro`](src/components/sections/HeroSection.astro).
+3. **Modal "Di Balik Meja Ini" (Colophon):** Membuat [`ColophonModal.tsx`](src/components/islands/ColophonModal.tsx) dengan palet warna interaktif (klik untuk salin hex), tipografi, arsitektur Rp0, dan pintasan tersembunyi di footer [`BaseLayout.astro`](src/layouts/BaseLayout.astro).
+4. **Peta Sketsa Tangan Jawa Tengah:** Membuat [`PassportMap.tsx`](src/components/islands/PassportMap.tsx) (SVG murni 0 KB library eksternal) dengan pin interaktif Brebes, Semarang (UPGRIS), dan Sragen (MagangHub) di [`PassportSection.astro`](src/components/sections/PassportSection.astro).
+5. **Coretan / Tanda Tangan di Buku Tamu:** Memperbarui [`GuestbookWall.tsx`](src/components/islands/GuestbookWall.tsx) dengan kanvas sketchpad opsional (pointer/touch) agar pengunjung bisa meninggalkan tanda tangan atau coretan kecil pada kartu sticky note.
+6. **Micro-Interaction Baca:** Membuat [`ReadingToolbar.tsx`](src/components/islands/ReadingToolbar.tsx) (estimasi waktu baca, salin tautan dengan feedback stiker, dan Mode Fokus baca) di [`NoteDetail.astro`](src/components/sections/NoteDetail.astro) dan [`ProjectCaseStudy.astro`](src/components/sections/ProjectCaseStudy.astro).
+
+**Berikutnya:**
+- Jalankan `git push origin main` untuk deploy ke Vercel.

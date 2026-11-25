@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 
 export interface GuestbookEntry {
   name: string;
@@ -6,6 +6,7 @@ export interface GuestbookEntry {
   message: string;
   color: 'mustard' | 'blush' | 'paper' | 'leaf';
   date: string;
+  doodle?: string;
 }
 
 interface Props {
@@ -31,6 +32,10 @@ export default function GuestbookWall({ initialEntries, locale, web3formsKey }: 
   const [message, setMessage] = useState('');
   const [color, setColor] = useState<GuestbookEntry['color']>('mustard');
   const [sentNotice, setSentNotice] = useState(false);
+  const [hasDoodle, setHasDoodle] = useState(false);
+
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const drawingRef = useRef(false);
 
   useEffect(() => {
     try {
@@ -44,6 +49,59 @@ export default function GuestbookWall({ initialEntries, locale, web3formsKey }: 
     }
   }, []);
 
+  const getPoint = (e: PointerEvent, canvas: HTMLCanvasElement) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    return {
+      x: (e.clientX - rect.left) * scaleX,
+      y: (e.clientY - rect.top) * scaleY,
+    };
+  };
+
+  const handlePointerDown = (e: PointerEvent) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    canvas.setPointerCapture(e.pointerId);
+    drawingRef.current = true;
+    const { x, y } = getPoint(e, canvas);
+    ctx.strokeStyle = '#1F1B16';
+    ctx.lineWidth = 2.4;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + 0.1, y + 0.1);
+    ctx.stroke();
+    setHasDoodle(true);
+  };
+
+  const handlePointerMove = (e: PointerEvent) => {
+    if (!drawingRef.current) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const { x, y } = getPoint(e, canvas);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  };
+
+  const handlePointerUp = () => {
+    drawingRef.current = false;
+  };
+
+  const clearDoodle = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    ctx?.clearRect(0, 0, canvas.width, canvas.height);
+    setHasDoodle(false);
+  };
+
   const allEntries = [...userNotes, ...initialEntries];
 
   const handleSubmit = (e: Event) => {
@@ -52,12 +110,16 @@ export default function GuestbookWall({ initialEntries, locale, web3formsKey }: 
     const cleanMsg = message.trim();
     if (!cleanName || !cleanMsg) return;
 
+    const doodleData =
+      hasDoodle && canvasRef.current ? canvasRef.current.toDataURL('image/png') : undefined;
+
     const newNote: GuestbookEntry = {
       name: cleanName.slice(0, 40),
       role: role.trim().slice(0, 40) || (locale === 'id' ? 'Tamu' : 'Visitor'),
       message: cleanMsg.slice(0, 180),
       color,
       date: new Date().toISOString().slice(0, 10),
+      ...(doodleData ? { doodle: doodleData } : {}),
     };
 
     const updated = [newNote, ...userNotes];
@@ -79,6 +141,7 @@ export default function GuestbookWall({ initialEntries, locale, web3formsKey }: 
           role: newNote.role,
           message: newNote.message,
           color: newNote.color,
+          has_doodle: Boolean(doodleData),
         }),
       }).catch(() => {
         // tetap tersimpan lokal meskipun offline
@@ -87,6 +150,7 @@ export default function GuestbookWall({ initialEntries, locale, web3formsKey }: 
 
     setName('');
     setMessage('');
+    clearDoodle();
     setShowForm(false);
     setSentNotice(true);
     setTimeout(() => setSentNotice(false), 4000);
@@ -107,8 +171,8 @@ export default function GuestbookWall({ initialEntries, locale, web3formsKey }: 
                 ? 'Tutup Form'
                 : 'Close Form'
               : locale === 'id'
-                ? '+ Tempel Catatan Baru'
-                : '+ Pin a New Note'}
+                ? '+ Tempel Catatan & Tanda Tangan'
+                : '+ Pin a Note & Signature'}
           </span>
         </button>
 
@@ -170,6 +234,45 @@ export default function GuestbookWall({ initialEntries, locale, web3formsKey }: 
             />
           </label>
 
+          {/* Mini Signature / Doodle Sketchpad */}
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-ink">
+                {locale === 'id'
+                  ? 'Coretan / Tanda Tangan (opsional)'
+                  : 'Quick Sketch / Signature (optional)'}
+              </span>
+              {hasDoodle && (
+                <button
+                  type="button"
+                  onClick={clearDoodle}
+                  class="font-mono text-[11px] font-bold text-tomato underline underline-offset-2"
+                >
+                  {locale === 'id' ? 'Hapus coretan' : 'Clear sketch'}
+                </button>
+              )}
+            </div>
+            <div class="relative overflow-hidden rounded-sm border-2 border-dashed border-ink bg-[#FFF8EC]">
+              <canvas
+                ref={canvasRef}
+                width={360}
+                height={96}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+                onPointerLeave={handlePointerUp}
+                class="block h-24 w-full cursor-crosshair touch-none"
+              />
+              {!hasDoodle && (
+                <span class="pointer-events-none absolute inset-0 flex items-center justify-center font-hand text-sm text-[#5B5248]/60">
+                  {locale === 'id'
+                    ? '✎ coret tanda tangan atau gambar kucing di sini...'
+                    : '✎ draw your signature or a tiny cat here...'}
+                </span>
+              )}
+            </div>
+          </div>
+
           <div class="flex flex-wrap items-center justify-between gap-3">
             <div class="flex items-center gap-2 font-mono text-xs">
               <span class="text-ink-soft">{locale === 'id' ? 'Warna kertas:' : 'Note color:'}</span>
@@ -205,7 +308,19 @@ export default function GuestbookWall({ initialEntries, locale, web3formsKey }: 
               key={`${item.name}-${idx}`}
               class={`sticker-card flex flex-col justify-between rounded-sm p-5 ${COLOR_STYLES[item.color]} ${tilt}`}
             >
-              <p class="font-hand text-base leading-relaxed sm:text-lg">&ldquo;{item.message}&rdquo;</p>
+              <div class="space-y-3">
+                <p class="font-hand text-base leading-relaxed sm:text-lg">&ldquo;{item.message}&rdquo;</p>
+                {item.doodle && (
+                  <div class="rounded-xs border border-dashed border-ink/30 bg-[#FFF8EC]/80 p-1.5">
+                    <img
+                      src={item.doodle}
+                      alt={locale === 'id' ? `Coretan dari ${item.name}` : `Sketch by ${item.name}`}
+                      class="h-14 w-auto object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+              </div>
 
               <div class="mt-4 flex items-center justify-between border-t border-dashed border-current/30 pt-2.5 font-mono text-[11px]">
                 <div>
