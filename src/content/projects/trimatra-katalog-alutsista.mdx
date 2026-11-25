@@ -1,0 +1,104 @@
+---
+title: TRIMATRA — Katalog Alutsista & Simulasi Geospasial Interaktif
+tagline: "Katalog Alutsista 3 Matra, Model 3D 360°, Pembanding Radar, & Simulasi Geospasial ALKI"
+summary:
+  id: "Aplikasi web statis edukatif yang mendokumentasikan alat utama sistem senjata (alutsista) lintas tiga matra (Darat, Laut, Udara) berbasis open-source: dilengkapi 29 entri alutsista, model 3D 360°, pembandingan grafik radar, linimasa sejarah, serta pusat simulasi edukatif peta pangkalan militer, radius jangkauan, jalur ALKI, dan kalkulator fisika Mach/ISA."
+  en: "An educational static web application documenting military defense equipment across land, sea, and air: featuring 29 defense entries, 360° 3D models, specification radar charts, historical timelines, military base geospatial simulation, combat radius mapping, ALKI sealane corridors, and Mach/ISA physics calculators."
+role: "Full-Stack Web & Geospatial Developer"
+context: "Aplikasi Edukasi Pertahanan & Simulasi Geospasial Tiga Matra (Darat, Laut, Udara)"
+duration: ""
+stack:
+  - Astro 5
+  - TypeScript
+  - Tailwind CSS v4
+  - Leaflet
+  - OpenStreetMap / Esri
+  - Three.js / Model-Viewer
+  - Fuse.js
+  - SVG Radar Chart
+  - Sharp
+  - Vitest
+  - Vercel
+tags:
+  - Katalog Alutsista
+  - TRIMATRA
+  - Peta Geospasial
+  - Leaflet
+  - ALKI I-III
+  - Model 3D 360
+  - Grafik Radar
+  - Linimasa Sejarah
+  - Astro 5
+  - Tailwind CSS v4
+  - Vitest
+category: gis
+demoUrl: "https://trimatra-katalog-alutsista.vercel.app/"
+embedPreview: true
+repoUrl: ""
+featured: true
+draft: false
+order: 0
+date: 2026-11-25
+status: selesai
+---
+
+> **Catatan Demo Live:** Aplikasi dapat langsung dicoba pada panel interaktif di atas atau jelajahi modul [Linimasa Sejarah Alutsista (trimatra-katalog-alutsista.vercel.app/sejarah)](https://trimatra-katalog-alutsista.vercel.app/sejarah). Seluruh sistem dibangun dengan arsitektur statis murni Astro 5 (99 halaman HTML) yang super cepat, bebas biaya server, dan ramah privasi tanpa API key eksternal.
+
+## Gambaran Umum
+
+**TRIMATRA** adalah aplikasi web statis edukatif berbahasa Indonesia (dengan opsi label dwibahasa ID/EN) yang mendokumentasikan alat utama sistem senjata (alutsista) lintas tiga matra—**TNI Angkatan Darat, TNI Angkatan Laut, dan TNI Angkatan Udara**—berdasarkan data dan informasi sumber terbuka (*open-source intelligence*).
+
+Website ini memuat **29 entri alutsista**, **20 profil industri pertahanan nasional dan global**, foto asli berlisensi bebas teroptimasi, serta rangkaian laboratorium simulasi edukatif mulai dari peta geospasial hingga pemodelan fisika aviasi.
+
+---
+
+## Fitur & Modul Utama
+
+### 1. Katalog Alutsista & Model 3D 360° Interaktif
+- **Eksplorasi 3D Real-Time:** Penampil model 3D 360° (*glTF/GLB*) interaktif berbasis `@google/model-viewer` dan Three.js (dimuat secara *lazy-loaded*) lengkap dengan *hotspot* komponen dan dukungan *Augmented Reality* (AR).
+- **Grafik Radar Spesifikasi:** Komparasi metrik teknis (kecepatan, jangkauan operasi, kapasitas muat, daya gempur, mobilitas) menggunakan grafik radar SVG dinamis antar-alutsista.
+- **Pencarian Cepat Klien (Fuse.js):** Mesin pencari instan berbasis *fuzzy search* untuk menelusuri nama alutsista, pabrikan, matra, maupun peran taktis tanpa latensi server.
+
+### 2. Laboratorium Geospasial & Peta Taktis Interaktif
+- **Peta Pangkalan & Radius Jangkauan:** Peta interaktif berbasis **Leaflet**, OpenStreetMap, dan citra satelit *Esri World Imagery* yang memetakan pangkalan militer publik serta simulasi lingkaran radius tempur (*combat radius* / *ferry range*).
+- **Koridor ALKI (Alur Laut Kepulauan Indonesia):** Visualisasi rute pelayaran strategis ALKI I, II, dan III beserta animasi lintasan patroli dan garis terminator siang/malam Bumi.
+- **Pembanding Skala Ukuran:** Visualisasi dimensi fisik alutsista secara proporsional berdampingan untuk memahami perbandingan ukuran kendaraan tempur, kapal perang, dan pesawat.
+
+### 3. Linimasa Sejarah & Direktori Pertahanan
+- **Linimasa Sejarah Alutsista:** Dokumentasi kronologis perjalanan modernisasi alutsista Indonesia dari era pasca-kemerdekaan hingga pengadaan mutakhir.
+- **Direktori Industri Pertahanan:** Profil 20 industri pertahanan terkemuka (BUMN Inhan seperti PT Pindad, PT PAL, PT Dirgantara Indonesia, PT Dahana, PT Len Industri, serta pabrikan global).
+
+### 4. Pusat Kalkulator Edukatif & Fisika
+- **Kalkulator Fisika Mach & Atmosfer ISA:** Menghitung kecepatan suara aktual pada berbagai ketinggian dan lapisan atmosfer standar internasional.
+- **Kalkulator Cakrawala Bumi (Radar Horizon):** Menghitung jarak cakrawala deteksi visual dan radar berdasarkan elevasi antena sensor.
+- **Kalkulator Logistik Bantuan Kemanusiaan (HADR):** Estimasi daya angkut armada logistik bencana alam.
+- **Kuis Edukatif Interaktif:** Modul uji wawasan pertahanan dengan umpan balik langsung.
+
+---
+
+## Keunggulan Teknis & Arsitektur
+
+1. **Astro 5 Static Site Generation (Zero Cold-Start):**
+   - Mengompilasi 99 halaman HTML statis ultra-cepat saat build time, menghasilkan performa tinggi, skor Lighthouse optimal, dan biaya operasional Rp0 di Vercel.
+2. **Validasi Skema Data Ketat (Zod + Content Collections):**
+   - Seluruh data alutsista, industri pertahanan, dan pangkalan divalidasi dengan skema Zod sebelum dikompilasi, mencegah terjadinya inkonsistensi data.
+3. **Optimasi Aset Gambar & Model 3D:**
+   - Foto dioptimasi menggunakan pustaka Sharp menjadi format modern WebP ringan, sedangkan aset 3D menerapkan strategi kompresi dan *on-demand lazy loading*.
+4. **Desain Taktis Berstandar Aksesibilitas:**
+   - Antarmuka bertema militer modern dengan ornamen HUD (*Heads-Up Display*), dukungan mode gelap/terang, dan kontras warna yang memenuhi standar WCAG AA.
+5. **Keandalan Perhitungan dengan Vitest:**
+   - Rumus geospasial (jarak *Haversine*, koordinat poligon), fisika atmosfer ISA, dan kalkulasi logistik diverifikasi dengan *automated unit tests*.
+
+---
+
+## Teknologi yang Digunakan
+
+- **Framework & SSG:** Astro 5 (Static Output), TypeScript
+- **Skema Konten:** Astro Content Collections, Zod
+- **Styling & UI:** Tailwind CSS v4 (`@tailwindcss/vite`), Custom HUD Elements, Dark/Light Mode
+- **Visualisasi 3D & AR:** `@google/model-viewer`, Three.js (`.glb` + WebP)
+- **Peta & Geospasial:** Leaflet, OpenStreetMap, Esri World Imagery (Radius Tempur, ALKI I–III)
+- **Pencarian & Grafik:** Fuse.js, Custom SVG Radar Charts
+- **Optimasi Media:** Sharp
+- **Pengujian & CI:** Vitest, astro check, GitHub Actions
+- **Hosting:** Vercel (Static Hosting dengan caching jangka panjang)

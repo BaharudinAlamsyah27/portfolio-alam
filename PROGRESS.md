@@ -553,3 +553,17 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
 
 **Berikutnya:**
 - Jalankan `git push` untuk deploy ke Vercel.
+
+---
+
+### Sesi 21 — 2026-11-25 16:20 WIB
+**Model:** Gemini 3.8 Flash (Medium)
+**Fase:** 7 — Lanjutan (Proyek TRIMATRA — Katalog Alutsista & Simulasi Geospasial)
+
+**Dikerjakan:**
+- Menambahkan proyek baru [`src/content/projects/trimatra-katalog-alutsista.mdx`](src/content/projects/trimatra-katalog-alutsista.mdx) dengan kategori `gis` (Geospasial) dan URL live demo `https://trimatra-katalog-alutsista.vercel.app/`.
+- Menyusun rincian arsitektur teknis: Astro 5 Static Site Generation (99 halaman statis), model 3D 360° (@google/model-viewer + Three.js), grafik radar spesifikasi, simulasi geospasial Leaflet (peta pangkalan, radius jangkauan tempur, koridor ALKI I-III, garis siang/malam), linimasa sejarah alutsista, kalkulator fisika aviasi Mach/ISA & radar horizon, serta testing Vitest.
+- Menjalankan pengujian `npx astro check` dan `npm run build` untuk memverifikasi halaman detail dan rute i18n (`/projects/trimatra-katalog-alutsista` & `/en/projects/trimatra-katalog-alutsista`).
+
+**Berikutnya:**
+- Jalankan `git push` untuk deploy ke Vercel.
