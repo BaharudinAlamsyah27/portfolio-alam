@@ -1,7 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-import Tape from '../ui/Tape.astro';
-import LiveSitePreview from '../islands/LiveSitePreview';
 import TechHobbyOrnaments from '../doodles/TechHobbyOrnaments.astro';
 import { getLocaleFromUrl, getLocalizedPath, useTranslations } from '../../i18n/utils';
 import { getProjectsData, pickLocale } from '../../lib/content';
@@ -17,12 +14,7 @@ const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 const allProjects = await getProjectsData(false);
 
-const HOME_LIMIT = 4;
-const displayedProjects = isArchive ? allProjects : allProjects.slice(0, HOME_LIMIT);
-const remainingCount = Math.max(0, allProjects.length - HOME_LIMIT);
-
 const homeHref = getLocalizedPath('/', locale);
-const archiveHref = getLocalizedPath('/projects', locale);
 const isExternalUrl = (url: string) => /^https?:\/\//i.test(url.trim());
 
 const categoryColors: Record<string, string> = {
@@ -38,9 +30,9 @@ const categoryColors: Record<string, string> = {
 
 const categoryLabels: Record<string, { id: string; en: string }> = {
   all: { id: 'Semua', en: 'All' },
-  web: { id: 'Web App', en: 'Web App' },
-  ai: { id: 'AI & Data', en: 'AI & Data' },
   enterprise: { id: 'Sistem Kantor', en: 'Enterprise' },
+  ai: { id: 'AI & Data', en: 'AI & Data' },
+  web: { id: 'Web App', en: 'Web App' },
   gis: { id: 'Geospasial', en: 'Geospatial' },
   mobile: { id: 'Mobile', en: 'Mobile' },
   game: { id: 'Game', en: 'Game' },
@@ -54,10 +46,6 @@ const categoryCounts = allProjects.reduce<Record<string, number>>((acc, p) => {
 }, {});
 
 const availableCategories = ['all', ...Object.keys(categoryCounts)];
-
-const allStacks = Array.from(
-  new Set(allProjects.flatMap((p) => p.data.stack.map((s) => s.trim())).filter(Boolean)),
-).sort((a, b) => a.localeCompare(b));
 
 const liveDemoCount = allProjects.filter((p) => isExternalUrl(p.data.demoUrl)).length;
 ---
@@ -83,11 +71,12 @@ const liveDemoCount = allProjects.filter((p) => isExternalUrl(p.data.demoUrl)).l
     )
   }
 
+  <!-- Header Section -->
   <div class="mb-6 flex flex-col justify-between gap-3 border-b-2 border-ink pb-4 sm:flex-row sm:items-end">
     <div class="max-w-2xl space-y-2">
       <div class="flex items-center gap-2.5">
         <span class="bg-tomato text-paper inline-block rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold uppercase shadow-[2px_2px_0_var(--ink)]">
-          {isArchive ? '/PROJECTS · ARSIP PROYEK' : '01 · PROJECTS'}
+          {isArchive ? '/PROJECTS · DIREKTORI KARYA' : '01 · PROJECTS'}
         </span>
         <TechHobbyOrnaments variant="rocket" class="h-9 w-8" />
       </div>
@@ -103,137 +92,98 @@ const liveDemoCount = allProjects.filter((p) => isExternalUrl(p.data.demoUrl)).l
         )
       }
       <p class="text-ink-soft text-sm leading-relaxed sm:text-base">
-        {t('projects.sub')}
+        {locale === 'id'
+          ? `Daftar sistem web, prototipe perbankan, dan aplikasi yang pernah saya kerjakan (${allProjects.length} proyek). Klik langsung untuk mencoba demo live-nya.`
+          : `A curated directory of web systems, banking prototypes, and tools I have built (${allProjects.length} projects). Click any item to explore its live demo.`}
       </p>
     </div>
 
-    {
-      !isArchive && (
-        <a
-          href={archiveHref}
-          class="sticker-btn bg-mustard text-ink shrink-0 self-start rounded-sm px-3.5 py-2 font-mono text-xs font-bold sm:self-end"
-        >
-          {locale === 'id'
-            ? `Lihat Semua Proyek (${allProjects.length}) →`
-            : `View All Projects (${allProjects.length}) →`}
-        </a>
-      )
-    }
+    <div class="flex items-center gap-2">
+      <span class="inline-flex items-center gap-1.5 rounded-sm border-2 border-ink bg-leaf/15 px-3 py-1 font-mono text-xs font-bold text-leaf">
+        <span class="h-2 w-2 rounded-full bg-leaf animate-pulse" aria-hidden="true" />
+        <span>{`${liveDemoCount} ${locale === 'id' ? 'Situs Aktif' : 'Live Sites'}`}</span>
+      </span>
+    </div>
   </div>
 
-  <!-- Panel Filter, Kategori, Tech Stack, & Pencarian (khusus halaman /projects) -->
-  {
-    isArchive && (
-      <div class="mb-7 space-y-3 rounded-md border-2 border-ink bg-paper-2 p-4 shadow-[3px_3px_0_var(--ink)]">
-        <div
-          class="flex flex-wrap items-center gap-2"
-          role="group"
-          aria-label={locale === 'id' ? 'Filter kategori project' : 'Filter project category'}
-        >
-          {availableCategories.map((cat) => {
-            const count = cat === 'all' ? allProjects.length : (categoryCounts[cat] ?? 0);
-            const label = categoryLabels[cat]?.[locale] ?? cat;
-            return (
-              <button
-                type="button"
-                data-project-filter={cat}
-                aria-pressed={cat === 'all' ? 'true' : 'false'}
-                class={`inline-flex items-center gap-1.5 rounded-sm border-2 border-ink px-3 py-1 font-mono text-xs font-bold transition-all ${
-                  cat === 'all'
-                    ? 'bg-ink text-paper shadow-[2px_2px_0_var(--mustard)]'
-                    : 'bg-paper text-ink hover:bg-mustard/35'
-                }`}
-              >
-                <span>{label}</span>
-                <span
-                  data-count-badge
-                  class={`rounded-sm px-1.5 py-0.2 text-[10px] ${
-                    cat === 'all' ? 'bg-mustard text-ink' : 'bg-paper-2 text-ink-soft'
-                  }`}
-                >
-                  {count}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        <div class="grid gap-2.5 pt-1 sm:grid-cols-12">
-          <div class="sm:col-span-5">
-            <label for="project-search-input" class="sr-only">
-              {locale === 'id' ? 'Cari proyek' : 'Search projects'}
-            </label>
-            <input
-              id="project-search-input"
-              type="search"
-              data-project-search
-              placeholder={
-                locale === 'id'
-                  ? 'Cari judul, sistem, atau stack (mis. AI, Next.js, Laravel)...'
-                  : 'Search title, system, or stack (e.g. AI, Next.js)...'
-              }
-              class="w-full rounded-sm border-2 border-ink bg-paper px-3 py-1.5 font-mono text-xs text-ink placeholder:text-ink-soft/75 focus:outline-none focus:ring-2 focus:ring-mustard"
-            />
-          </div>
-
-          <div class="sm:col-span-4">
-            <label for="project-stack-select" class="sr-only">
-              {locale === 'id' ? 'Filter teknologi' : 'Filter by tech stack'}
-            </label>
-            <select
-              id="project-stack-select"
-              data-project-stack
-              class="w-full rounded-sm border-2 border-ink bg-paper px-3 py-1.5 font-mono text-xs font-medium text-ink focus:outline-none focus:ring-2 focus:ring-mustard"
-            >
-              <option value="all">
-                {locale === 'id' ? 'Semua Teknologi (Stack)' : 'All Technologies (Stack)'}
-              </option>
-              {allStacks.map((tech) => <option value={tech.toLowerCase()}>{tech}</option>)}
-            </select>
-          </div>
-
-          <div class="flex items-center gap-2 sm:col-span-3">
+  <!-- Kategori Filter Bar di Atas List -->
+  <div class="mb-5 space-y-3 rounded-md border-2 border-ink bg-paper-2 p-3.5 sm:p-4 shadow-[3px_3px_0_var(--ink)]">
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <!-- Filter Kategori Tabs -->
+      <div
+        class="flex flex-wrap items-center gap-1.5 sm:gap-2"
+        role="group"
+        aria-label={locale === 'id' ? 'Filter kategori proyek' : 'Filter project category'}
+      >
+        {availableCategories.map((cat) => {
+          const count = cat === 'all' ? allProjects.length : (categoryCounts[cat] ?? 0);
+          const label = categoryLabels[cat]?.[locale] ?? cat;
+          return (
             <button
               type="button"
-              data-project-live-toggle
-              aria-pressed="false"
-              class="inline-flex w-full items-center justify-center gap-1.5 rounded-sm border-2 border-ink bg-paper px-3 py-1.5 font-mono text-xs font-bold text-ink transition-all hover:bg-leaf/20"
+              data-project-filter={cat}
+              aria-pressed={cat === 'all' ? 'true' : 'false'}
+              class={`inline-flex items-center gap-1.5 rounded-sm border-2 border-ink px-2.5 py-1 font-mono text-xs font-bold transition-all ${
+                cat === 'all'
+                  ? 'bg-ink text-paper shadow-[2px_2px_0_var(--mustard)]'
+                  : 'bg-paper text-ink hover:bg-mustard/35'
+              }`}
             >
-              <span class="h-2 w-2 rounded-full bg-leaf" aria-hidden="true" />
-              <span>{`Live Demo (${liveDemoCount})`}</span>
+              <span>{label}</span>
+              <span
+                data-count-badge
+                class={`rounded-sm px-1.5 py-0.2 text-[10px] ${
+                  cat === 'all' ? 'bg-mustard text-ink' : 'bg-paper-2 text-ink-soft'
+                }`}
+              >
+                {count}
+              </span>
             </button>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap items-center justify-between gap-2 border-t border-dashed border-ink/20 pt-2 font-mono text-[11px] text-ink-soft">
-          <span data-project-result-count>
-            {locale === 'id'
-              ? `Menampilkan ${allProjects.length} dari ${allProjects.length} proyek`
-              : `Showing ${allProjects.length} of ${allProjects.length} projects`}
-          </span>
-
-          <button
-            type="button"
-            data-project-reset
-            class="hidden font-bold text-tomato underline underline-offset-2 hover:text-ink"
-          >
-            {locale === 'id' ? 'Reset filter' : 'Reset filters'}
-          </button>
-        </div>
+          );
+        })}
       </div>
-    )
-  }
 
-  <!-- Grid Asimetris (7 kolom + 5 kolom, bukan kartu kembar seragam) -->
-  <div class="grid gap-7 md:grid-cols-12" data-project-grid>
+      <!-- Quick Search Input -->
+      <div class="w-full sm:w-64">
+        <label for="project-search-input" class="sr-only">
+          {locale === 'id' ? 'Cari proyek' : 'Search projects'}
+        </label>
+        <input
+          id="project-search-input"
+          type="search"
+          data-project-search
+          placeholder={
+            locale === 'id'
+              ? 'Filter judul / stack...'
+              : 'Filter title / stack...'
+          }
+          class="w-full rounded-sm border-2 border-ink bg-paper px-3 py-1 font-mono text-xs text-ink placeholder:text-ink-soft/75 focus:outline-none focus:ring-2 focus:ring-mustard"
+        />
+      </div>
+    </div>
+
+    <!-- Info counter & reset -->
+    <div class="flex flex-wrap items-center justify-between gap-2 border-t border-dashed border-ink/20 pt-2 font-mono text-[11px] text-ink-soft">
+      <span data-project-result-count>
+        {locale === 'id'
+          ? `Menampilkan ${allProjects.length} dari ${allProjects.length} proyek`
+          : `Showing ${allProjects.length} of ${allProjects.length} projects`}
+      </span>
+
+      <button
+        type="button"
+        data-project-reset
+        class="hidden font-bold text-tomato underline underline-offset-2 hover:text-ink"
+      >
+        {locale === 'id' ? 'Reset filter' : 'Reset filters'}
+      </button>
+    </div>
+  </div>
+
+  <!-- DAFTAR SITUS / LIST DIREKTORI BERSIH & SEDERHANA -->
+  <div class="space-y-3" data-project-list>
     {
-      displayedProjects.map((entry, idx) => {
-        const isWide = idx % 2 === 0;
-        const colSpan = isWide ? 'md:col-span-7' : 'md:col-span-5';
-        const cardSurface = isWide
-          ? 'bg-paper rounded-md -rotate-[0.4deg]'
-          : 'bg-paper-2 rounded-xl rotate-[0.6deg]';
-        const tapeColor = isWide ? 'mustard' : 'blush';
+      allProjects.map((entry, idx) => {
         const summary = pickLocale(entry.data.summary, locale);
         const statusKey = `projects.status.${entry.data.status}` as const;
         const detailHref = getLocalizedPath(`/projects/${entry.id}`, locale);
@@ -261,114 +211,103 @@ const liveDemoCount = allProjects.filter((p) => isExternalUrl(p.data.demoUrl)).l
             data-stacks={stacksAttr}
             data-search={searchableText}
             data-has-live={hasExternalDemo ? 'true' : 'false'}
-            class={`sticker-card relative flex min-w-0 flex-col justify-between p-5 sm:p-6 ${colSpan} ${cardSurface}`}
+            class="group relative flex flex-col justify-between gap-3.5 rounded-md border-2 border-ink bg-paper p-4 transition-all duration-150 hover:-translate-y-0.5 hover:bg-paper-2 hover:shadow-[4px_4px_0_var(--ink)] sm:flex-row sm:items-center sm:gap-6"
           >
-            <Tape
-              color={tapeColor}
-              rotate={isWide ? '-rotate-2' : 'rotate-2'}
-              class="absolute -top-3 left-8"
-            />
+            <!-- Konten Kiri & Deskripsi -->
+            <div class="min-w-0 flex-1 space-y-1.5">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="font-mono text-xs font-bold text-ink-soft/75">
+                  #{String(idx + 1).padStart(2, '0')}
+                </span>
 
-            {idx === 0 && (
-              <span
-                aria-label={locale === 'id' ? 'Proyek terbaru' : 'Newest project'}
-                class="tensura-blob-bob bg-slime text-ink pointer-events-none absolute -top-4 right-2 z-20 inline-flex h-12 w-12 items-center justify-center rounded-[58%_42%_54%_46%/48%_56%_44%_52%] border-2 border-ink font-mono text-[10px] font-extrabold tracking-tight shadow-[2px_2px_0_var(--ink)] select-none sm:-right-3"
-              >
-                NEW!
-              </span>
-            )}
-
-            <div class="space-y-4">
-              <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
                 <span
-                  class={`rounded-sm border-2 border-ink px-2 py-0.5 font-mono text-xs font-bold uppercase ${
+                  class={`rounded-sm border border-ink px-2 py-0.2 font-mono text-[10px] font-bold uppercase ${
                     categoryColors[entry.data.category] ?? categoryColors.other
                   }`}
                 >
                   {catLabel}
                 </span>
 
-                <span class="bg-paper text-ink-soft rounded-sm border border-ink px-2 py-0.5 font-mono text-[11px]">
+                {hasExternalDemo && (
+                  <span class="inline-flex items-center gap-1 font-mono text-[10px] font-bold text-leaf">
+                    <span class="h-1.5 w-1.5 rounded-full bg-leaf animate-pulse" aria-hidden="true" />
+                    LIVE
+                  </span>
+                )}
+
+                <span class="font-mono text-[10px] text-ink-soft/70">
                   {t(statusKey)}
                 </span>
               </div>
 
-              {hasExternalDemo ? (
-                <LiveSitePreview
-                  client:visible
-                  url={entry.data.demoUrl}
-                  title={entry.data.title}
-                  variant="card"
-                  locale={locale}
-                  embed={entry.data.embedPreview}
-                  previewImage={entry.data.previewImage}
-                />
-              ) : (
-                entry.data.cover && (
+              <!-- Judul Proyek -->
+              <div>
+                <h3 class="font-display text-base font-extrabold text-ink transition-colors group-hover:text-tomato sm:text-lg">
                   <a
-                    href={detailHref}
-                    class="block overflow-hidden rounded-sm border-2 border-ink bg-paper-2 shadow-[3px_3px_0_var(--ink)]"
+                    href={hasExternalDemo ? entry.data.demoUrl : detailHref}
+                    target={hasExternalDemo ? '_blank' : undefined}
+                    rel={hasExternalDemo ? 'noopener noreferrer' : undefined}
+                    class="focus:outline-none focus:underline"
                   >
-                    <Image
-                      src={entry.data.cover}
-                      alt={entry.data.title}
-                      width={720}
-                      height={450}
-                      class="aspect-[16/10] w-full object-cover"
-                    />
+                    {entry.data.title}
+                    {hasExternalDemo && <span class="ml-1 inline-block text-xs font-normal text-ink-soft">↗</span>}
                   </a>
-                )
-              )}
+                </h3>
 
-              <h3 class="font-display text-2xl font-extrabold leading-snug">
-                <a href={detailHref} class="hover:text-tomato underline-offset-4 hover:underline">
-                  {entry.data.title}
-                </a>
-              </h3>
+                <p class="text-xs text-ink-soft leading-relaxed line-clamp-2 mt-0.5 sm:text-sm">
+                  {summary}
+                </p>
+              </div>
 
-              <p class="text-ink-soft text-sm leading-relaxed sm:text-base">{summary}</p>
-            </div>
-
-            <div class="mt-6 space-y-4 border-t-2 border-dashed border-ink/25 pt-4">
-              <ul class="flex flex-wrap gap-1.5" aria-label="Tech stack">
-                {entry.data.stack.map((tech) => (
-                  <li class="bg-paper text-ink rounded-sm border border-ink px-2 py-0.5 font-mono text-xs font-medium shadow-[1px_1px_0_var(--ink)]">
+              <!-- Tech Stack Badges Ringkas -->
+              <ul class="flex flex-wrap items-center gap-1.5 pt-1" aria-label="Tech stack">
+                {entry.data.stack.slice(0, 5).map((tech) => (
+                  <li class="rounded-sm border border-ink/30 bg-paper-2 px-1.5 py-0.2 font-mono text-[10px] text-ink-soft">
                     {tech}
                   </li>
                 ))}
+                {entry.data.stack.length > 5 && (
+                  <li class="font-mono text-[10px] text-ink-soft/60">
+                    +{entry.data.stack.length - 5}
+                  </li>
+                )}
               </ul>
+            </div>
 
-              <div class="flex flex-wrap items-center gap-3 pt-1">
+            <!-- Tombol Aksi Kanan -->
+            <div class="flex shrink-0 items-center gap-2 border-t border-dashed border-ink/20 pt-2.5 sm:border-t-0 sm:pt-0">
+              {hasExternalDemo && (
                 <a
-                  href={detailHref}
-                  class="sticker-btn bg-mustard text-ink rounded-sm px-3 py-1.5 font-mono text-xs"
+                  href={entry.data.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="sticker-btn bg-mustard text-ink rounded-sm px-3.5 py-1.5 font-mono text-xs font-bold transition-all hover:bg-mustard/90 shadow-[2px_2px_0_var(--ink)]"
                 >
-                  <span>{locale === 'id' ? 'Baca Studi Kasus' : 'Read Case Study'}</span>
-                  <span aria-hidden="true">&rarr;</span>
+                  {locale === 'id' ? 'Buka Demo' : 'Live Demo'} ↗
                 </a>
+              )}
 
-                {entry.data.demoUrl && (
-                  <a
-                    href={entry.data.demoUrl}
-                    target={hasExternalDemo ? '_blank' : undefined}
-                    rel={hasExternalDemo ? 'noopener noreferrer' : undefined}
-                    class="sticker-btn bg-paper text-ink rounded-sm px-3 py-1.5 font-mono text-xs"
-                  >
-                    {t('projects.demo')}{hasExternalDemo ? ' ↗' : ''}
-                  </a>
-                )}
+              <a
+                href={detailHref}
+                class="sticker-btn bg-paper text-ink rounded-sm px-3 py-1.5 font-mono text-xs hover:bg-paper-2 transition-all"
+              >
+                {locale === 'id' ? 'Detail' : 'Details'} →
+              </a>
 
-                {entry.data.repoUrl && (
-                  <a
-                    href={entry.data.repoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="sticker-btn bg-paper text-ink rounded-sm px-3 py-1.5 font-mono text-xs"
-                  >
-                    {t('projects.repo')}
-                  </a>
-                )}
-              </div>
+              {entry.data.repoUrl && (
+                <a
+                  href={entry.data.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="sticker-btn bg-paper-2 text-ink rounded-sm p-1.5 font-mono text-xs hover:bg-paper transition-all"
+                  title="GitHub Repository"
+                  aria-label="GitHub Repository"
+                >
+                  <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                  </svg>
+                </a>
+              )}
             </div>
           </article>
         );
@@ -376,184 +315,112 @@ const liveDemoCount = allProjects.filter((p) => isExternalUrl(p.data.demoUrl)).l
     }
   </div>
 
-  <!-- Banner "Lihat Selengkapnya" di halaman utama jika total proyek > 4 -->
-  {
-    !isArchive && remainingCount > 0 && (
-      <div class="mt-8 flex flex-col items-start justify-between gap-4 rounded-md border-2 border-dashed border-ink bg-paper-2 p-5 sm:flex-row sm:items-center">
-        <div>
-          <p class="font-display text-lg font-bold text-ink">
-            {locale === 'id'
-              ? `Masih ada ${remainingCount} proyek lainnya di arsip lengkap.`
-              : `${remainingCount} more projects are waiting in the full archive.`}
-          </p>
-          <p class="text-xs text-ink-soft sm:text-sm">
-            {locale === 'id'
-              ? 'Jelajahi seluruh sistem lengkap dengan filter kategori, pencarian, dan filter teknologi.'
-              : 'Browse all systems with category filters, search, and tech stack filtering.'}
-          </p>
-        </div>
-
-        <a
-          href={archiveHref}
-          class="sticker-btn bg-tomato text-paper shrink-0 rounded-sm px-4 py-2.5 font-mono text-xs font-bold"
-        >
-          {locale === 'id'
-            ? `Buka Semua Proyek (${allProjects.length}) →`
-            : `Explore All Projects (${allProjects.length}) →`}
-        </a>
-      </div>
-    )
-  }
-
-  <!-- Empty State khusus halaman /projects -->
-  {
-    isArchive && (
-      <div
-        data-project-empty
-        class="mt-6 hidden rounded-md border-2 border-dashed border-ink/40 bg-paper-2 p-8 text-center"
-      >
-        <p class="font-display text-lg font-bold text-ink">
-          {locale === 'id'
-            ? 'Belum ada proyek yang cocok dengan filter ini.'
-            : 'No projects match these filters.'}
-        </p>
-        <p class="mt-1 text-xs text-ink-soft">
-          {locale === 'id'
-            ? 'Coba ubah kata kunci atau reset filter untuk melihat semua karya.'
-            : 'Try adjusting your search or reset filters to view all projects.'}
-        </p>
-        <button
-          type="button"
-          data-project-reset-empty
-          class="sticker-btn bg-mustard text-ink mt-4 rounded-sm px-4 py-1.5 font-mono text-xs"
-        >
-          {locale === 'id' ? 'Reset Semua Filter' : 'Reset All Filters'}
-        </button>
-      </div>
-    )
-  }
+  <!-- Empty State saat filter tidak menemukan hasil -->
+  <div
+    data-project-empty
+    class="mt-6 hidden rounded-md border-2 border-dashed border-ink/40 bg-paper-2 p-8 text-center"
+  >
+    <p class="font-display text-lg font-bold text-ink">
+      {locale === 'id'
+        ? 'Belum ada proyek yang cocok dengan filter ini.'
+        : 'No projects match these filters.'}
+    </p>
+    <p class="mt-1 text-xs text-ink-soft">
+      {locale === 'id'
+        ? 'Coba ubah kata kunci atau pilih kategori lain.'
+        : 'Try adjusting your search or select another category.'}
+    </p>
+    <button
+      type="button"
+      data-project-reset-empty
+      class="sticker-btn bg-mustard text-ink mt-4 rounded-sm px-4 py-1.5 font-mono text-xs"
+    >
+      {locale === 'id' ? 'Reset Filter' : 'Reset Filters'}
+    </button>
+  </div>
 </section>
 
-{
-  isArchive && (
-    <script>
-      document.addEventListener('astro:page-load', () => {
-        const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-project-card]'));
-        const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-project-filter]'));
-        if (cards.length === 0 || buttons.length === 0) return;
+<!-- Filter Script (Aktif di Beranda maupun Halaman /projects) -->
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-project-card]'));
+    const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-project-filter]'));
+    if (cards.length === 0 || buttons.length === 0) return;
 
-        const searchInput = document.querySelector<HTMLInputElement>('[data-project-search]');
-        const stackSelect = document.querySelector<HTMLSelectElement>('[data-project-stack]');
-        const liveToggle = document.querySelector<HTMLButtonElement>('[data-project-live-toggle]');
-        const resultCountEl = document.querySelector<HTMLElement>('[data-project-result-count]');
-        const resetBtn = document.querySelector<HTMLButtonElement>('[data-project-reset]');
-        const resetEmptyBtn = document.querySelector<HTMLButtonElement>('[data-project-reset-empty]');
-        const emptyEl = document.querySelector<HTMLElement>('[data-project-empty]');
-        const isEn = document.documentElement.lang === 'en';
+    const searchInput = document.querySelector<HTMLInputElement>('[data-project-search]');
+    const resultCountEl = document.querySelector<HTMLElement>('[data-project-result-count]');
+    const resetBtn = document.querySelector<HTMLButtonElement>('[data-project-reset]');
+    const resetEmptyBtn = document.querySelector<HTMLButtonElement>('[data-project-reset-empty]');
+    const emptyEl = document.querySelector<HTMLElement>('[data-project-empty]');
+    const isEn = document.documentElement.lang === 'en';
 
-        let activeCategory = 'all';
-        let searchQuery = '';
-        let activeStack = 'all';
-        let liveOnly = false;
+    let activeCategory = 'all';
+    let searchQuery = '';
 
-        const applyFilters = () => {
-          const hasActiveFilter =
-            activeCategory !== 'all' ||
-            searchQuery.trim().length > 0 ||
-            activeStack !== 'all' ||
-            liveOnly;
+    const applyFilters = () => {
+      const hasActiveFilter = activeCategory !== 'all' || searchQuery.trim().length > 0;
+      let visibleCount = 0;
 
-          let visibleCount = 0;
+      cards.forEach((card) => {
+        const cat = card.dataset.category || '';
+        const haystack = card.dataset.search || '';
 
-          cards.forEach((card) => {
-            const cat = card.dataset.category || '';
-            const stacks = (card.dataset.stacks || '').split('|');
-            const haystack = card.dataset.search || '';
-            const hasLive = card.dataset.hasLive === 'true';
+        const match =
+          (activeCategory === 'all' || cat === activeCategory) &&
+          (!searchQuery.trim() || haystack.includes(searchQuery.trim().toLowerCase()));
 
-            const match =
-              (activeCategory === 'all' || cat === activeCategory) &&
-              (activeStack === 'all' || stacks.includes(activeStack)) &&
-              (!searchQuery.trim() || haystack.includes(searchQuery.trim().toLowerCase())) &&
-              (!liveOnly || hasLive);
-
-            card.classList.toggle('hidden', !match);
-            if (match) visibleCount += 1;
-          });
-
-          emptyEl?.classList.toggle('hidden', visibleCount > 0);
-          resetBtn?.classList.toggle('hidden', !hasActiveFilter);
-
-          if (resultCountEl) {
-            resultCountEl.textContent = isEn
-              ? `Showing ${visibleCount} of ${cards.length} projects`
-              : `Menampilkan ${visibleCount} dari ${cards.length} proyek`;
-          }
-        };
-
-        const syncCategoryButtons = () => {
-          buttons.forEach((btn) => {
-            const active = (btn.dataset.projectFilter || 'all') === activeCategory;
-            btn.setAttribute('aria-pressed', active ? 'true' : 'false');
-            btn.className = active
-              ? 'inline-flex items-center gap-1.5 rounded-sm border-2 border-ink px-3 py-1 font-mono text-xs font-bold transition-all bg-ink text-paper shadow-[2px_2px_0_var(--mustard)]'
-              : 'inline-flex items-center gap-1.5 rounded-sm border-2 border-ink px-3 py-1 font-mono text-xs font-bold transition-all bg-paper text-ink hover:bg-mustard/35';
-            const badge = btn.querySelector<HTMLElement>('[data-count-badge]');
-            if (badge) {
-              badge.className = active
-                ? 'rounded-sm px-1.5 py-0.2 text-[10px] bg-mustard text-ink'
-                : 'rounded-sm px-1.5 py-0.2 text-[10px] bg-paper-2 text-ink-soft';
-            }
-          });
-        };
-
-        const syncLiveButton = () => {
-          if (!liveToggle) return;
-          liveToggle.setAttribute('aria-pressed', liveOnly ? 'true' : 'false');
-          liveToggle.className = liveOnly
-            ? 'inline-flex w-full items-center justify-center gap-1.5 rounded-sm border-2 border-ink bg-leaf px-3 py-1.5 font-mono text-xs font-bold text-paper shadow-[2px_2px_0_var(--ink)] transition-all'
-            : 'inline-flex w-full items-center justify-center gap-1.5 rounded-sm border-2 border-ink bg-paper px-3 py-1.5 font-mono text-xs font-bold text-ink transition-all hover:bg-leaf/20';
-        };
-
-        const resetAll = () => {
-          activeCategory = 'all';
-          searchQuery = '';
-          activeStack = 'all';
-          liveOnly = false;
-          if (searchInput) searchInput.value = '';
-          if (stackSelect) stackSelect.value = 'all';
-          syncCategoryButtons();
-          syncLiveButton();
-          applyFilters();
-        };
-
-        buttons.forEach((btn) => {
-          btn.addEventListener('click', () => {
-            activeCategory = btn.dataset.projectFilter || 'all';
-            syncCategoryButtons();
-            applyFilters();
-          });
-        });
-
-        searchInput?.addEventListener('input', () => {
-          searchQuery = searchInput.value;
-          applyFilters();
-        });
-
-        stackSelect?.addEventListener('change', () => {
-          activeStack = stackSelect.value;
-          applyFilters();
-        });
-
-        liveToggle?.addEventListener('click', () => {
-          liveOnly = !liveOnly;
-          syncLiveButton();
-          applyFilters();
-        });
-
-        resetBtn?.addEventListener('click', resetAll);
-        resetEmptyBtn?.addEventListener('click', resetAll);
+        card.classList.toggle('hidden', !match);
+        if (match) visibleCount += 1;
       });
-    </script>
-  )
-}
+
+      emptyEl?.classList.toggle('hidden', visibleCount > 0);
+      resetBtn?.classList.toggle('hidden', !hasActiveFilter);
+
+      if (resultCountEl) {
+        resultCountEl.textContent = isEn
+          ? `Showing ${visibleCount} of ${cards.length} projects`
+          : `Menampilkan ${visibleCount} dari ${cards.length} proyek`;
+      }
+    };
+
+    const syncCategoryButtons = () => {
+      buttons.forEach((btn) => {
+        const active = (btn.dataset.projectFilter || 'all') === activeCategory;
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+        btn.className = active
+          ? 'inline-flex items-center gap-1.5 rounded-sm border-2 border-ink px-2.5 py-1 font-mono text-xs font-bold transition-all bg-ink text-paper shadow-[2px_2px_0_var(--mustard)]'
+          : 'inline-flex items-center gap-1.5 rounded-sm border-2 border-ink px-2.5 py-1 font-mono text-xs font-bold transition-all bg-paper text-ink hover:bg-mustard/35';
+        const badge = btn.querySelector<HTMLElement>('[data-count-badge]');
+        if (badge) {
+          badge.className = active
+            ? 'rounded-sm px-1.5 py-0.2 text-[10px] bg-mustard text-ink'
+            : 'rounded-sm px-1.5 py-0.2 text-[10px] bg-paper-2 text-ink-soft';
+        }
+      });
+    };
+
+    const resetAll = () => {
+      activeCategory = 'all';
+      searchQuery = '';
+      if (searchInput) searchInput.value = '';
+      syncCategoryButtons();
+      applyFilters();
+    };
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        activeCategory = btn.dataset.projectFilter || 'all';
+        syncCategoryButtons();
+        applyFilters();
+      });
+    });
+
+    searchInput?.addEventListener('input', () => {
+      searchQuery = searchInput.value;
+      applyFilters();
+    });
+
+    resetBtn?.addEventListener('click', resetAll);
+    resetEmptyBtn?.addEventListener('click', resetAll);
+  });
+</script>

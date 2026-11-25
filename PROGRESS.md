@@ -567,3 +567,19 @@ _Semua pertanyaan Fase 0 sudah terjawab:_
 
 **Berikutnya:**
 - Jalankan `git push` untuk deploy ke Vercel.
+
+
+---
+
+### Sesi 22 — 2026-11-25 19:15 WIB
+**Model:** Claude Opus 5.5 (Medium)
+**Fase:** 7 — Lanjutan (Penyederhanaan Tampilan Proyek)
+
+**Dikerjakan:**
+- Atas permintaan Alam (ingin terlihat sederhana, tidak terlalu "pamer"), [`ProjectsSection.astro`](src/components/sections/ProjectsSection.astro) diubah dari grid kartu besar + iframe live preview menjadi **daftar situs ringkas** (nomor, kategori, status LIVE, judul, ringkasan 2 baris, maks. 5 badge stack, tombol Buka Demo ↗ / Detail / GitHub).
+- Bar filter kategori + pencarian kini tampil di atas list (beranda & `/projects`). Klik judul langsung membuka live demo di tab baru.
+- Iframe `LiveSitePreview` tidak lagi dimuat di daftar (lebih ringan); tetap dipakai di halaman detail studi kasus.
+- Verifikasi `astro check` (0 errors) & `npm run build` (49 halaman).
+
+**Berikutnya:**
+- `git push` untuk deploy.
